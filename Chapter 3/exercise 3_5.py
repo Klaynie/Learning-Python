@@ -1,6 +1,6 @@
-grid_height = 4
-grid_width = 4
-block_width = 7
+grid_height = 5
+grid_width = 5
+block_width = 6
 block_height = 2
 
 def print_horizontal(width_in, amount_horizontal):
