@@ -1,6 +1,5 @@
 import math
 
 def hypothenuse(a,b):
-    cSquare = a**2 + b**2
-    c = math.sqrt(cSquare)
+    c = math.sqrt(a**2 + b**2)
     return c
