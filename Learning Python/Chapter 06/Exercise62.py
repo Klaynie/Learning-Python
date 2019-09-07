@@ -1,9 +1,4 @@
-import math
-
 def hypothenuse(a,b):
-    cSquare = a**2 + b**2
-    c = math.sqrt(cSquare)
-    print('c is', c)
-    return c
+    return 0
 
-hypothenuse(3, 4)
+print(hypothenuse(3, 4))
