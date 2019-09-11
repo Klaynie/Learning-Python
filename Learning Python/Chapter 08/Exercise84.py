@@ -1,7 +1,6 @@
 def find(word, letter, index):
-    index = index + 1
     if index > len(word):
-        return 'Please provide an index between 0 and ' + str(len(word))
+        return 'Please provide an index between 0 and ' + str(len(word)-1)
     else:
         while index < len(word):
             if word[index] == letter:
@@ -9,4 +8,4 @@ def find(word, letter, index):
             index = index + 1
         return -1
     
-print(find('counterintuitive', 'e', 1))
+print(find('banana', 'a', 2))
