@@ -45,16 +45,17 @@ def check_list():
 def combination_of_letters():
     list = itertools.combinations('abcdefghijklmnopqrstuvwxyz', 5)
     maximumHasNoLetterFromStringCounter = 0
+    counter = 0
     for items in list:
         string = items[0] + items[1] + items[2] + items[3] + items[4]
         if check_list2(string) > maximumHasNoLetterFromStringCounter:
             maximumHasNoLetterFromStringCounter = check_list2(string)
             maximumString = string
-        print(maximumHasNoLetterFromStringCounter, maximumString, string)
+        counter = counter + 1
+        print(maximumHasNoLetterFromStringCounter, maximumString, counter, string)
     
 '''
-To Do:
-Can you find a combination of 5 forbidden letters that excludes the smallest number of words?
+Can you find a combination of 5 forbidden letters that excludes the smallest number of words? -> It is jqwxz with #96,425 words
 '''
 
 def check_list2(string):
