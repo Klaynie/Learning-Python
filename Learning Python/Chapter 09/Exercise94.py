@@ -8,6 +8,12 @@ def uses_only(word, string):
         if checkLetterWordEqualLetterStringFlag == False:
             return False
     return True    
+
+def uses_only2(word, available):
+    for letter in word:
+        if letter not in available:
+            return False
+    return True
             
 def traverse_list(string):
     totalCounter = 0
