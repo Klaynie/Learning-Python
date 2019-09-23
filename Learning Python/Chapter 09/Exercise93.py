@@ -7,6 +7,12 @@ def avoid(word,string):
             return False
     return True
 
+def avoid2(word, forbidden):
+    for letter in string:
+        if letter in forbidden:
+            return False
+    return True
+
 def get_input():
     prompt = "This program will check if it can find a word that do not contain certain letters. Please type up to 5 letters!\n"
     string = input(prompt).lower()
