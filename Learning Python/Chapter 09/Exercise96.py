@@ -1,12 +1,10 @@
 def is_abecedarian(word):
     word = word.lower()
     i = 0
-    j = 1
     while i < len(word)-1:
-        if word[i]>word[j]:
+        if word[i] > word[i+1]:
             return False
         i = i + 1
-        j = j + 1
     return True
 
 def traverse_list():
