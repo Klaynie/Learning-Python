@@ -10,6 +10,7 @@ and you can download my solution from http://thinkpython.com/code/birthday.py
 '''
 
 import random
+import datetime
 
 def has_duplicates(t):
     i = 0
@@ -34,12 +35,16 @@ def create_random_int_list(length):
 def calculate_probability(persons,amount):
     i = 1
     probabilityCounter = 0
+    timestamp = datetime.datetime.utcnow()
+    timestampString = str(timestamp.strftime("%Y")) + '-' + str(timestamp.strftime("%m")) + '-' + str(timestamp.strftime("%d")) + '_' + str(timestamp.strftime("%H")) + str(timestamp.strftime("%M")) + str(timestamp.strftime("%S"))
+    outputFilename = 'Exercise107-Birthday-Results-' + str(persons) +'-' + str(amount) + '_' + timestampString + '.csv'
+    file = open(outputFilename ,'w') 
     while i <= amount:
         t = create_random_int_list(persons)
         if has_duplicates(t):
             probabilityCounter += 1
-        print(i, t, has_duplicates(t), probabilityCounter, probabilityCounter/i)
+        file.write(str(i) + '|' + str(t) + '|' + str(has_duplicates(t)) + '|' + str(probabilityCounter) + '|' + str(probabilityCounter/i) + '\n')
         i += 1
 
 #print(has_duplicates(t))
-calculate_probability(23,1000000)
+calculate_probability(23,100000)
