@@ -52,8 +52,8 @@ def traverseListForInterlock_general(n):
         if interlock_general(t, word, n):
             print(word)            
 
-traverseListForInterlock()
+#traverseListForInterlock()
            
-#traverseListForInterlock_general(2)
+traverseListForInterlock_general(3)
 
 #interlock_general_word('agonised', 3)
