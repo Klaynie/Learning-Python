@@ -40,5 +40,5 @@ def build_ackerman():
         m += 1 
         print(known)
         
-#print(build_ackerman()) Maximum is ack(3,5)
-print(ack(3,5)) #Maximum is ack(3,5)
+print(build_ackerman()) #Maximum is ack(3,5)
+#print(ack(3,5)) Maximum is ack(3,5)
