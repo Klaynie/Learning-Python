@@ -1,5 +1,4 @@
-import itertools
-
+import datetime
 def generateWordList():    
     t = []
     wordList = open('words.txt')
@@ -23,6 +22,10 @@ def buildLetterDictionary(wordList):
     return d
 
 def findAnagrams(d):
+    timestamp = datetime.datetime.utcnow()
+    timestampString = str(timestamp.strftime("%Y")) + '-' + str(timestamp.strftime("%m")) + '-' + str(timestamp.strftime("%d")) + '_' + str(timestamp.strftime("%H")) + str(timestamp.strftime("%M")) + str(timestamp.strftime("%S"))
+    outputFilename = 'Exercise1204-Anagram-List-' + timestampString + '.txt'
+    file = open(outputFilename ,'w')
     for key, value in d.items():
         if len(value) > 1:
             t = value
@@ -37,7 +40,13 @@ def findAnagrams(d):
                   if length == len(item):
                       u.append(item)
                 if len(u) > 1:
-                    print(u)
+                    p = '['
+                    for item in u:
+                        p += item
+                        p += ','
+                    p = p[:-1]
+                    p += ']'
+                    file.write(p + '\n')
     
 wordList = generateWordList()
 d = buildLetterDictionary(wordList)
