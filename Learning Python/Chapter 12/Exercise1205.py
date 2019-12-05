@@ -1,4 +1,5 @@
 import datetime
+import random
 
 def generateWordList():
     wordList = []
@@ -27,11 +28,14 @@ def findMetathesisPair(letterDictionary):
     for letterTuple, wordList in letterDictionary.items():
         lengthWordList = len(wordList)
         if lengthWordList > 1:
-            i = 1
-            while i <= lengthWordList-1:
-                if howManyLettersAreDifferent(wordList[0],wordList[i]) <= 2:
-                    metathesisWordTuple = wordList[0],wordList[i]
-                    metathesisWordList.append(metathesisWordTuple)
+            i = 0
+            j = 1
+            while i < lengthWordList:
+                while j < lengthWordList:
+                    if howManyLettersAreDifferent(wordList[i],wordList[j]) <= 2:
+                        metathesisWordTuple = wordList[i],wordList[j]
+                        metathesisWordList.append(metathesisWordTuple)
+                    j += 1
                 i += 1
     return metathesisWordList
 
