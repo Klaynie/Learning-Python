@@ -49,4 +49,4 @@ def howManyLettersAreDifferent(word1, word2):
 
 wordList = generateWordList()
 d = buildLetterDictionary(wordList)
-print(findMetathesisPair(d))
+print(wordList)
