@@ -27,7 +27,6 @@ def createWordListWithOneLetterRemoved(word):
 
 def checkIfWordCanBeReduced(word, wordDictionary):
     global flagForWordRemoval
-    flagForWordRemoval = False
     wordList = createWordListWithOneLetterRemoved(word)
     if wordList == []:
         flagForWordRemoval = True
@@ -38,8 +37,10 @@ def checkIfWordCanBeReduced(word, wordDictionary):
     return flagForWordRemoval
 
 def createDictionaryWithPossibleWords(wordDictionary):
+    global flagForWordRemoval
     wordLengthDictionary = {}
     for word in wordDictionary:
+        flagForWordRemoval = False
         if checkIfWordCanBeReduced(word, wordDictionary) == True:
             if len(word) not in wordLengthDictionary:
                     wordLengthDictionary[len(word)] = [word]
@@ -60,7 +61,8 @@ def printAllSubWords(word, wordDictionary):
 wordDictionary = generateWordDictionary()
 possibleWordDictionary = createDictionaryWithPossibleWords(wordDictionary)
 
-print(possibleWordDictionary[10]) #['insolating', 'restarting', 'staunchest', 'twitchiest']
+print(possibleWordDictionary[11]) #['complecting']
+print(possibleWordDictionary[10]) #['carrousels', 'completing', 'insolating', 'restarting', 'staunchest', 'stranglers', 'twitchiest']
 
 for word in possibleWordDictionary[10]:
     printAllSubWords(word, wordDictionary)
