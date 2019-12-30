@@ -23,4 +23,4 @@ def generateWordDictionairy(fileName):
     print(wordCounter)            
     return d
 
-print(generateWordDictionairy('English.txt'))
+print(len(generateWordDictionairy('English.txt')))
