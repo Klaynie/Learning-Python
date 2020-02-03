@@ -19,8 +19,7 @@ def generateWordDictionairy(fileName):
                 word = ''
             if line[letterCounter].isalpha():
                 word += line[letterCounter]
-            letterCounter += 1
-    print(wordCounter)            
+            letterCounter += 1            
     return d
 
 def invertDict(d):
