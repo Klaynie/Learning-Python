@@ -1,37 +1,32 @@
 import string
 
 def process_file(filename):
-    hist = dict()
+    wordSet = set()
     fp = open(filename)
     for line in fp:
-        process_line(line, hist)
-    return hist
+        process_line(line, wordSet)
+    return wordSet
 
-def process_line(line, hist):
+def process_line(line, wordSet):
     line = line.replace('-', ' ')
     word = ''
     for word in line.split():
         word = word.strip(string.punctuation + string.whitespace)
         word = word.lower()
-        hist[word] = hist.get(word, 0) + 1
+        if word not in wordSet:
+            wordSet.add(word)
 
-def total_words(hist):
-    return sum(hist.values())
+def checkForWordsNotInList(inputSet1, inputSet2):
+    outputSet3 = set()
+    for item in inputSet2:
+        if item not in inputSet1:
+            if item not in outputSet3:
+                outputSet3.add(item)
+    return outputSet3
 
-def different_words(hist):
-    return len(hist)
+wordsInBook = process_file('emma.txt')
+wordList = process_file('words.txt')
 
-def most_common(hist):
-    t = []
-    for key, value in hist.items():
-        t.append((value, key))
-    t.sort(reverse=True)
-    return t
+wordsNotInList = checkForWordsNotInList(wordList, wordsInBook)
 
-hist = process_file('emma.txt')
-print('Total number of words:', total_words(hist))
-print('Number of different words:', different_words(hist))
-t = most_common(hist)
-print('The most common words are:')
-for freq, word in t[0:10]:
-    print(word, '\t', freq)
+print(wordsNotInList)
