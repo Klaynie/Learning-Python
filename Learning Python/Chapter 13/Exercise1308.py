@@ -14,21 +14,23 @@ def process_file_markov(filename, prefixLength):
     positionDictionariy = dict()
     markovDictionariy = dict()
     fp = open(filename)
-    i = 0
+    i = 1
     for line in fp:
         process_line(line, positionDictionariy)
     while i < wordCounterDict:
         prefixList = []
         prefixTuple = tuple()
-        for j in range(prefixLength):
-            prefixList.append(positionDictionariy.get(i+j+1))
+        j = 0
+        while j < prefixLength:
+            prefixList.append(positionDictionariy.get(i+j))
+            j += 1
         prefixTuple = tuple(prefixList)
         if prefixTuple not in markovDictionariy:
-            markovDictionariy[prefixTuple] = [positionDictionariy.get(i+j+2)]
+            markovDictionariy[prefixTuple] = [positionDictionariy.get(i+j)]
         else:
-            if positionDictionariy.get(i+j+2) not in markovDictionariy[prefixTuple]:
-                markovDictionariy[prefixTuple].append(positionDictionariy.get(i+j+2))
-        i += j+2
+            if positionDictionariy.get(i+j) not in markovDictionariy[prefixTuple]:
+                markovDictionariy[prefixTuple].append(positionDictionariy.get(i+j))
+        i += j+1
     return markovDictionariy
 
 def process_line(line, positionDictionariy):
@@ -36,8 +38,8 @@ def process_line(line, positionDictionariy):
     line = line.replace('-', ' ')
     word = ''
     for word in line.split():
-        #word = word.strip(string.punctuation + string.whitespace)
-        #word = word.lower()
+        word = word.strip(string.punctuation + string.whitespace)
+        word = word.lower()
         positionDictionariy[wordCounterDict] = word
         wordCounterDict += 1
 
@@ -54,6 +56,5 @@ def createRandomSenctenceFromMarkovDictionariy(markovDictionariy, numberOfWords)
         i += 1
     print(sentence)
 
-hist = process_file_markov('emma.txt', 3)
+hist = process_file_markov('emma.txt', 2)
 createRandomSenctenceFromMarkovDictionariy(hist,30)
-#print(hist)
