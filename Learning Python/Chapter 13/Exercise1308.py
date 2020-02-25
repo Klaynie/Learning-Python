@@ -17,7 +17,7 @@ def process_file_markov(filename, prefixLength):
     i = 1
     for line in fp:
         process_line(line, positionDictionariy)
-    while i < wordCounterDict:
+    while i < wordCounterDict-1:
         prefixList = []
         prefixTuple = tuple()
         j = 0
@@ -42,6 +42,23 @@ def process_line(line, positionDictionariy):
         word = word.lower()
         positionDictionariy[wordCounterDict] = word
         wordCounterDict += 1
+
+def combineTwoDictionaries(dict1, dict2):
+    outputdict = dict()
+    for key, value in dict1.items():
+        if key not in dict2:
+            outputdict[key] = value
+        else:
+            combinedList = value[:]
+            if key in dict2:
+                for item in dict2[key]:
+                    if item not in combinedList:
+                        combinedList.append(item)
+            outputdict[key] = combinedList
+    for key, value in dict2.items():
+        if key not in dict1:
+            outputdict[key] = value
+    return outputdict
 
 def createRandomSenctenceFromMarkovDictionariy(markovDictionariy, numberOfWords):
     sentence = ''
@@ -79,5 +96,19 @@ def createRandomSenctenceFromMarkovDictionariy(markovDictionariy, numberOfWords)
         i += 1
     print(sentence)
 
-hist = process_file_markov('emma.txt', 2)
+hist1 = process_file_markov('emma.txt', 2)
+hist2 = process_file_markov('English.txt', 2)
+hist = combineTwoDictionaries(hist1,hist2)
+'''
+test code
+testtuple = tuple()
+testwords = ['and','his']
+testtuple = tuple(testwords)
+print(1)
+print(hist1[testtuple])
+print(2)
+print(hist2[testtuple])
+print('combined')
+print(hist[testtuple])
+'''
 createRandomSenctenceFromMarkovDictionariy(hist,30)
