@@ -28,8 +28,8 @@ def process_file_markov(filename, prefixLength):
         if prefixTuple not in markovDictionariy:
             markovDictionariy[prefixTuple] = [positionDictionariy.get(i+j)]
         else:
-            if positionDictionariy.get(i+j) not in markovDictionariy[prefixTuple]:
-                markovDictionariy[prefixTuple].append(positionDictionariy.get(i+j))
+            #if positionDictionariy.get(i+j) not in markovDictionariy[prefixTuple]:
+            markovDictionariy[prefixTuple].append(positionDictionariy.get(i+j))
         i += 1
     return markovDictionariy
 
@@ -52,8 +52,8 @@ def combineTwoDictionaries(dict1, dict2):
             combinedList = value[:]
             if key in dict2:
                 for item in dict2[key]:
-                    if item not in combinedList:
-                        combinedList.append(item)
+                    #if item not in combinedList:
+                    combinedList.append(item)
             outputdict[key] = combinedList
     for key, value in dict2.items():
         if key not in dict1:
@@ -96,8 +96,8 @@ def createRandomSenctenceFromMarkovDictionariy(markovDictionariy, numberOfWords)
         i += 1
     print(sentence)
 
-hist1 = process_file_markov('emma.txt', 2)
-hist2 = process_file_markov('English.txt', 2)
+hist1 = process_file_markov('emma.txt', 4)
+hist2 = process_file_markov('English.txt', 4)
 hist = combineTwoDictionaries(hist1,hist2)
 '''
 test code
