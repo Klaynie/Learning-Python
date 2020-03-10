@@ -1,5 +1,4 @@
 import urllib.request
-import urllib.parse
 
 def getURL(zipCode):
     return 'https://www.uszip.com/zip/' + str(zipCode)
@@ -12,6 +11,7 @@ def getTownName(zipCode):
     for line in content:
         if str(line).find('<title>') > 0:
             townName = str(line)[9:(str(line).find(','))]
+            break
     return townName
 
 def getTownPopulation(zipCode):
@@ -19,6 +19,7 @@ def getTownPopulation(zipCode):
     for line in content:
         if str(line).find('<dt>Total population</dt>') > 0:
             townPopulation = str(line)[str(line).find('<dt>Total population</dt>')+29:str(line).find('<span class')]
+            break
     return townPopulation
 
 def getZipCode():
