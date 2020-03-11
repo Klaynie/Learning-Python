@@ -6,28 +6,32 @@ def getURL(zipCode):
 def getContent(url):
     return urllib.request.urlopen(url)
 
-def getTownName(zipCode):
-    content = getContent(getURL(zipCode))
+def findValueInContent(content, startString, endString):
     for line in content:
-        if str(line).find('<title>') > 0:
-            townName = str(line)[9:(str(line).find(','))]
-            break
-    return townName
+        if str(line).find(startString) > 0:
+            return findValueInLine(line, startString, endString)
 
-def getTownPopulation(zipCode):
-    content = getContent(getURL(zipCode))
-    for line in content:
-        if str(line).find('<dt>Total population</dt>') > 0:
-            townPopulation = str(line)[str(line).find('<dt>Total population</dt>')+29:str(line).find('<span class')]
-            break
-    return townPopulation
+def findValueInLine(line, startString, endString):
+    return str(line)[str(line).find(startString)+len(startString):(str(line).find(endString))]
+
+def getTownName(content, zipCode):
+    startString = '<title>'
+    endString = ','
+    return findValueInContent(content, startString, endString)
+
+def getTownPopulation(content, zipCode):
+    startString = '<dt>Total population</dt><dd>'
+    endString = '<span class'
+    return findValueInContent(content, startString, endString)
 
 def getZipCode():
     prompt = "This program will provide the name and population of a town for a given zip code. Please provide a zip code!\n"
     zipCode = str(input(prompt))
     try:
-        print('The town name is: ' + getTownName(zipCode), 'The population is: ' + getTownPopulation(zipCode))        
+        content = getContent(getURL(zipCode))
+        print('The town name is: ' + getTownName(content, zipCode), 'The population is: ' + getTownPopulation(content, zipCode))        
     except:
-        print('Could not find town or maybe no Internet Connection?')
+        print('Something went wrong. 1) Could not find town 2) No internet connection? 3) ???')
 
-getZipCode()
+if __name__ == '__main__':
+    getZipCode()
