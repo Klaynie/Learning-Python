@@ -10,7 +10,7 @@ def getTownName(zipCode):
     content = getContent(getURL(zipCode))
     for line in content:
         if str(line).find('<title>') > 0:
-            townName = str(line)[9:(str(line).find(','))]
+            townName = str(line)[9:(str(line).find(','))] #Check to make 9 more dynamic
             break
     return townName
 
@@ -18,7 +18,7 @@ def getTownPopulation(zipCode):
     content = getContent(getURL(zipCode))
     for line in content:
         if str(line).find('<dt>Total population</dt>') > 0:
-            townPopulation = str(line)[str(line).find('<dt>Total population</dt>')+29:str(line).find('<span class')]
+            townPopulation = str(line)[str(line).find('<dt>Total population</dt>')+29:str(line).find('<span class')] #Check to make 29 more dynamic
             break
     return townPopulation
 
