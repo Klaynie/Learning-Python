@@ -8,11 +8,12 @@ def getContent(url):
 
 def findValueInContent(content, startString, endString):
     for line in content:
-        if str(line).find(startString) > 0:
-            return findValueInLine(line, startString, endString)
+        lineString = str(line)
+        if lineString.find(startString) > 0:
+            return findValueInLine(lineString, startString, endString)
 
-def findValueInLine(line, startString, endString):
-    return str(line)[str(line).find(startString)+len(startString):(str(line).find(endString))]
+def findValueInLine(lineString, startString, endString):
+    return lineString[lineString.find(startString)+len(startString):(lineString.find(endString))]
 
 def getTownName(content, zipCode):
     startString = '<title>'
