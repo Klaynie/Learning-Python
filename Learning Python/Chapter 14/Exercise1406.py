@@ -16,14 +16,10 @@ def findValueInLine(lineString, startString, endString):
     return lineString[lineString.find(startString)+len(startString):(lineString.find(endString))]
 
 def getTownName(content, zipCode):
-    startString = '<title>'
-    endString = ','
-    return findValueInContent(content, startString, endString)
+    return findValueInContent(content, startString = '<title>', endString = ',')
 
 def getTownPopulation(content, zipCode):
-    startString = '<dt>Total population</dt><dd>'
-    endString = '<span class'
-    return findValueInContent(content, startString, endString)
+    return findValueInContent(content, startString = '<dt>Total population</dt><dd>', endString = '<span class')
 
 def getZipCode():
     prompt = "This program will provide the name and population of a town for a given zip code. Please provide a zip code!\n"
