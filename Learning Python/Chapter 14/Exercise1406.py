@@ -15,10 +15,10 @@ def findValueInContent(content, startString, endString):
 def findValueInLine(lineString, startString, endString):
     return lineString[lineString.find(startString)+len(startString):(lineString.find(endString))]
 
-def getTownName(content, zipCode):
+def getTownName(content):
     return findValueInContent(content, startString = '<title>', endString = ',')
 
-def getTownPopulation(content, zipCode):
+def getTownPopulation(content):
     return findValueInContent(content, startString = '<dt>Total population</dt><dd>', endString = '<span class')
 
 def getZipCode():
@@ -26,7 +26,7 @@ def getZipCode():
     zipCode = str(input(prompt))
     try:
         content = getContent(getURL(zipCode))
-        print('The town name is: ' + getTownName(content, zipCode), 'The population is: ' + getTownPopulation(content, zipCode))        
+        print('The town name is: ' + getTownName(content), 'The population is: ' + getTownPopulation(content))        
     except:
         print('Something went wrong. 1) Could not find town 2) No internet connection? 3) ???')
 
