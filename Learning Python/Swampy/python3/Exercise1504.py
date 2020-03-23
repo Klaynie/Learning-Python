@@ -8,11 +8,29 @@ try:
 except ImportError:
     # otherwise see if the modules are on the PYTHONPATH
     from TurtleWorld import *
-    from mypolygon import *
     from World import *
+
+class Point(object):
+    """Represents a point in 2-D space."""
+
+class Rectangle(object):
+    """Represents a rectangle.
+    attributes: width, height, corner.
+    """
+
+def draw_rectangle(canvas, rect):
+    bbox = [[-rect.width/2,-rect.height/2], [rect.width/2, rect.height/2]]
+    canvas.rectangle(bbox, outline='black', width=2, fill='green4')
 
 world = World()
 canvas = world.ca(width=500, height=500, background='white')
-bbox = [[-150,-100], [150, 100]]
-canvas.rectangle(bbox, outline='black', width=2, fill='green4')
+
+box = Rectangle()
+box.corner = Point()
+box.width = 100.0
+box.height = 200.0
+box.corner.x = 0
+box.corner.y = 0
+
+draw_rectangle(canvas, box)
 world.mainloop()
