@@ -26,7 +26,7 @@ def getZipCode():
     zipCode = str(input(prompt))
     try:
         content = getContent(getURL(zipCode))
-        print('The town name is: ' + getTownName(content), 'The population is: ' + getTownPopulation(content))        
+        print('The town name is: %s The population is: %s' % (getTownName(content), getTownPopulation(content))) 
     except:
         print('Something went wrong. 1) Could not find town 2) No internet connection? 3) ???')
 
