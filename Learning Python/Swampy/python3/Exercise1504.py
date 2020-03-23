@@ -38,42 +38,10 @@ def draw_circle(canvas, circle):
 world = World()
 canvas = world.ca(width=500, height=500, background='white')
 
-box = Rectangle()
-box.corner = Point()
-box.width = 200.0
-box.height = 200.0
-box.corner.x = 0
-box.corner.y = 0
-box.color = 'blue1'
-
-box2 = Rectangle()
-box2.corner = Point()
-box2.width = 100.0
-box2.height = 200.0
-box2.corner.x = -100
-box2.corner.y = -200
-box2.color = 'green1'
-
-point = Point()
-point.x = 50
-point.y = 50
-point.color = 'red'
-
-point2 = Point()
-point2.x = -50
-point2.y = -50
-point2.color = 'yellow'
-
-circle = Circle()
-circle.center = Point()
-circle.radius = 100
-circle.center.x = 100
-circle.center.y = 100
-circle.color = 'snow'
-
-draw_rectangle(canvas, box)
-draw_rectangle(canvas, box2)
-draw_point(canvas, point)
-draw_point(canvas, point2)
-draw_circle(canvas, circle)
+points = [[0,0], [0, 200], [150, 100]]
+canvas.polygon(points, fill='blue')
+points = [[0,0], [150, 100], [300,100], [300,0]]
+canvas.polygon(points, fill='red')
+bbox = [[0,0], [300,200]]
+canvas.rectangle(bbox, outline='black', width=1, fill= None)
 world.mainloop()
