@@ -15,12 +15,12 @@ class Point(object):
 
 class Rectangle(object):
     """Represents a rectangle.
-    attributes: width, height, corner.
+    attributes: width, height, corner, color.
     """
 
 def draw_rectangle(canvas, rect):
     bbox = [[-rect.width/2,-rect.height/2], [rect.width/2, rect.height/2]]
-    canvas.rectangle(bbox, outline='black', width=2, fill='green4')
+    canvas.rectangle(bbox, outline='black', width=2, fill= box.color)
 
 world = World()
 canvas = world.ca(width=500, height=500, background='white')
@@ -31,6 +31,7 @@ box.width = 100.0
 box.height = 200.0
 box.corner.x = 0
 box.corner.y = 0
+box.color = 'blue1'
 
 draw_rectangle(canvas, box)
 world.mainloop()
