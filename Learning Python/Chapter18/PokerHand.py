@@ -136,15 +136,18 @@ class PokerHand(Hand):
         cardList.sort()
         listIndex = 0
         sequenceCounter = 0
-        while listIndex < len(cardList)-1:
-            if cardList[listIndex] + 1 == cardList[listIndex+1]:
-                sequenceCounter +=1
-            if cardList[listIndex] == 13 or cardList[listIndex+1] == 13:
+        while listIndex < len(cardList)-4:
+            if cardList[listIndex] + 1 == cardList[listIndex+1] and cardList[listIndex+1] + 1 == cardList[listIndex+2] and cardList[listIndex+2] + 1 == cardList[listIndex+3] and cardList[listIndex+3] + 1 == cardList[listIndex+4]:
+                return True
+            if 13 in cardList:
+                i = 0
                 for item in cardList:
                     if item == 1:
-                        sequenceCounter +=1
+                        cardList[i] = 14
+                        cardList.sort()
+                        listIndex = 0
+                    i += 1
             listIndex += 1
-        if sequenceCounter == 4 : return True
         return False
 
     def has_straight_flush(self):
@@ -158,19 +161,17 @@ class PokerHand(Hand):
         cardList.sort()
         listIndex = 0
         sequenceCounter = 0
-        while listIndex < len(cardList)-1:
-            if cardList[listIndex][0] + 1 == cardList[listIndex+1][0] and cardList[listIndex][1] == cardList[listIndex+1][1]:
-                sequenceCounter +=1
-            if cardList[listIndex][0] == 13:
+        while listIndex < len(cardList)-4:
+            if cardList[listIndex][0] + 1 == cardList[listIndex+1][0] and cardList[listIndex][1] == cardList[listIndex+1][1] and cardList[listIndex+1][0] + 1 == cardList[listIndex+2][0] and cardList[listIndex+1][1] == cardList[listIndex+2][1] and cardList[listIndex+2][0] + 1 == cardList[listIndex+3][0] and cardList[listIndex+2][1] == cardList[listIndex+3][1] and cardList[listIndex+3][0] + 1 == cardList[listIndex+4][0] and cardList[listIndex+3][1] == cardList[listIndex+4][1]:
+                return True
+            if (13, 1) in cardList or (13, 2) in cardList or (13, 3) in cardList or (13, 4) in cardList:
+                i = 0
                 for item in cardList:
                     if item[0] == 1 and item[1] == cardList[listIndex][1]:
-                        sequenceCounter +=1
-            if cardList[listIndex+1][0] == 13:
-                for item in cardList:
-                    if item[0] == 1 and item[1] == cardList[listIndex+1][1]:
-                        sequenceCounter +=1
+                        cardList[i] = (14, cardList[i][1])
+                        cardList.sort()
+                        listIndex = 0
             listIndex += 1
-        if sequenceCounter == 4 : return True
         return False
 
 def createShuffledDeck():
@@ -200,6 +201,7 @@ def calculate_probabilities(numberIterations, numberHands, numberCards):
     return handHistory
 
 if __name__ == '__main__':
+
     probabilities = calculate_probabilities(100000, 5, 7)
     checkSum = 0
     for key, value in probabilities.items():
