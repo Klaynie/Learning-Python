@@ -111,3 +111,6 @@ def koch_snowflake(t, length, n):
     for i in range(3):
         koch_line(t, length, n)
         rt(t, 120)
+
+if __name__ == '__main__':
+    snowflake(bob, 100, 5)
