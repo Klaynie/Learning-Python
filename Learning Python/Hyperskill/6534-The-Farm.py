@@ -54,10 +54,10 @@ elif money < pig:
     print(n_goat, ("goat" if n_goat == 1 else "goats"))
 elif money < cow:
     n_pig = money // pig
-    print(n_pig, ("pig" if n_goat == 1 else "pigs"))
+    print(n_pig, ("pig" if n_pig == 1 else "pigs"))
 elif money < sheep:
     n_cow = money // cow
-    print(n_cow, ("cow" if n_goat == 1 else "cows"))
+    print(n_cow, ("cow" if n_cow == 1 else "cows"))
 elif money >= sheep:
     n_sheep = money // sheep
     print(n_sheep, "sheep")
