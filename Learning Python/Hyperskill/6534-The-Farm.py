@@ -44,36 +44,27 @@ sheep = 6769
 
 user_money = int(input())
 
-if user_money < 23:
+if user_money < chicken:
     print("None")
-elif user_money >= 23:
-    if user_money // sheep == 0:
-        if user_money // cow == 0:
-            if user_money // pig == 0:
-                if user_money // goat == 0:
-                    if user_money // chicken == 1:
-                        print(user_money // chicken, "chicken")
-                    elif user_money // chicken > 1:
-                        print(user_money // chicken, "chickens")
-    if user_money // sheep == 0:
-        if user_money // cow == 0:
-            if user_money // pig == 0:
-                if user_money // goat == 1:
-                    print(user_money // goat, "goat")
-                elif user_money // goat > 1:
-                    print(user_money // goat, "goats")
-    if user_money // sheep == 0:
-        if user_money // cow == 0:
-            if user_money // pig == 1:
-                print(user_money // pig, "pig")
-            elif user_money // pig > 1:
-                print(user_money // pig, "pigs")
-    if user_money // sheep == 0:
-        if user_money // cow == 1:
-            print(user_money // cow, "cow")
-        elif user_money // cow > 1:
-            print(user_money // cow, "cows")
-    if user_money // sheep == 1:
-        print(user_money // sheep, "sheep")
-    elif user_money // sheep > 1:
-        print(user_money // sheep, "sheep")
+elif user_money >= chicken and user_money < goat:
+    if user_money // chicken == 1:
+        print(user_money // chicken, "chicken")
+    elif user_money // chicken > 1:
+        print(user_money // chicken, "chickens")
+elif user_money >= goat and user_money < cow:
+    if user_money // goat == 1:
+        print(user_money // goat, "goat")
+    elif user_money // goat > 1:
+        print(user_money // goat, "goats")
+elif user_money >= pig and user_money < cow:
+    if user_money // pig == 1:
+        print(user_money // pig, "pig")
+    elif user_money // pig > 1:
+        print(user_money // pig, "pigs")
+if user_money >= cow and user_money < sheep:
+    if user_money // cow == 1:
+        print(user_money // cow, "cow")
+    elif user_money // cow > 1:
+        print(user_money // cow, "cows")
+elif user_money > sheep:
+    print(user_money // sheep, "sheep")
