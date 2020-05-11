@@ -1,9 +1,10 @@
 column = int(input())
 row = int(input())
+edges = [1, 8]
 
-if 2 <= row <= 7 and 2 <= column <= 7:
+if (edges[0] < column < edges[1]) and (edges[0] < row < edges[1]):
     print(8)
-elif (row == 1 and (column == 1 or column == 8)) or (row == 8 and (column == 1 or column == 8)):
+elif column in edges and row in edges:
     print(3)
 else:
     print(5)
