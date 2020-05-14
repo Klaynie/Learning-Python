@@ -4,8 +4,8 @@ number_to_look_for = input()
 
 count_of_number_found = 0
 list_of_found_index = []
-for index in range(0, len(list_of_numbers)):
-    if list_of_numbers[index] == number_to_look_for:
+for index, value in enumerate(list_of_numbers):
+    if value == number_to_look_for:
         list_of_found_index.append(str(index))
         count_of_number_found += 1
 
