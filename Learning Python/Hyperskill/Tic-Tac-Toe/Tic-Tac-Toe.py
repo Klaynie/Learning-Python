@@ -27,24 +27,25 @@ def check_new_field_input_is_valid(new_field_input):
     else:
         cell_to_update = convert_user_input_to_cell(new_field_input)
         cell_content = return_cell_content(cell_to_update)
-        if check_if_cell_is_occupied(cell_content):
-            return False
-        else:
-            return True
+        return check_if_cell_is_empty(cell_content)
 
-def check_if_cell_is_occupied(cell_content):
+def check_if_cell_is_empty(cell_content):
     if cell_content != '_':
         print("This cell is occupied! Choose another one!")
-        return True
-    return False
+        return False
+    return True
 
 def update_cell_with_x(cell_to_update):
     global cells
-    cells = cells[:cell_to_update] + 'X' + cells[cell_to_update+1:]
+    update_cell_with_value(cell_to_update, 'X')
 
 def update_cell_with_o(cell_to_update):
     global cells
-    cells = cells[:cell_to_update] + 'O' + cells[cell_to_update+1:]
+    update_cell_with_value(cell_to_update, 'O')
+
+def update_cell_with_value(cell_to_update, value):
+    global cells
+    cells = cells[:cell_to_update] + value + cells[cell_to_update+1:]
 
 def print_field():
     global cells
@@ -131,7 +132,6 @@ def game_state():
     else:
         return game_final_states[2]
 
-print_field()
 def game_loop():
     global keep_going, turn_counter
     while keep_going:
@@ -145,7 +145,8 @@ def game_loop():
             turn_counter += 1
         print_field()
         print(game_state())
-        if game_state() in game_final_states or game_state() in game_error_states:
+        if game_state() not in game_continues_state:
             keep_going = False
 
+print_field()
 game_loop()
