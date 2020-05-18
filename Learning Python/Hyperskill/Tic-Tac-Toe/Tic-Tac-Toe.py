@@ -2,6 +2,7 @@ empty_cell = ' '
 cells = 9 * empty_cell
 symbol_for_x = 'X'
 symbol_for_o = 'O'
+game_scope = [1, 2, 3]
 win_condition_x = 3 * symbol_for_x
 win_condition_o = 3 * symbol_for_o
 count_x = 0
@@ -20,6 +21,14 @@ error_messages = ["Please provide the correct amount of fields!",
                   "This cell is occupied! Choose another one!"]
 keep_going = True
 
+def print_field():
+    global cells
+    print("---------")
+    print("| " + cells[0] + " " + cells[1] + " " + cells[2] + " |")
+    print("| " + cells[3] + " " + cells[4] + " " + cells[5] + " |")
+    print("| " + cells[6] + " " + cells[7] + " " + cells[8] + " |")
+    print("---------")
+
 def check_new_field_input_is_valid(new_field_input):
     global cells
     if len(new_field_input) != 2:
@@ -29,39 +38,20 @@ def check_new_field_input_is_valid(new_field_input):
             print(error_messages[1])
             return False
     new_field_input[0], new_field_input[1] = int(new_field_input[0]), int(new_field_input[1])
-    if new_field_input[0] < 1 or new_field_input[0] > 3 or new_field_input[1] < 1 or new_field_input[1] > 3:
+    if new_field_input[0] not in game_scope or new_field_input[1] not in game_scope:
         print(error_messages[2])
         return False
     else:
-        cell_to_update = convert_user_input_to_cell(new_field_input)
-        cell_content = return_cell_content(cell_to_update)
-        return check_if_cell_is_empty(cell_content)
+        return check_if_cell_is_empty(convert_user_input_to_cell(new_field_input))
 
-def check_if_cell_is_empty(cell_content):
-    if cell_content != empty_cell:
+def check_if_cell_is_empty(cell_number):
+    if return_cell_content(cell_number) != empty_cell:
         print(error_messages[3])
         return False
     return True
 
-def update_cell_with_x(cell_to_update):
-    global cells
-    update_cell_with_value(cell_to_update, symbol_for_x)
-
-def update_cell_with_o(cell_to_update):
-    global cells
-    update_cell_with_value(cell_to_update, symbol_for_o)
-
-def update_cell_with_value(cell_to_update, value):
-    global cells
-    cells = cells[:cell_to_update] + value + cells[cell_to_update+1:]
-
-def print_field():
-    global cells
-    print("---------")
-    print("| " + cells[0] + " " + cells[1] + " " + cells[2] + " |")
-    print("| " + cells[3] + " " + cells[4] + " " + cells[5] + " |")
-    print("| " + cells[6] + " " + cells[7] + " " + cells[8] + " |")
-    print("---------")
+def return_cell_content(cell_number):
+    return cells[cell_number]
 
 def convert_user_input_to_cell(new_field_input):
     if new_field_input == [1, 3]:
@@ -83,8 +73,17 @@ def convert_user_input_to_cell(new_field_input):
     elif new_field_input == [3, 1]:
         return 8
 
-def return_cell_content(cell_number):
-    return cells[cell_number]
+def update_cell_with_x(cell_to_update):
+    global cells
+    update_cell_with_value(cell_to_update, symbol_for_x)
+
+def update_cell_with_o(cell_to_update):
+    global cells
+    update_cell_with_value(cell_to_update, symbol_for_o)
+
+def update_cell_with_value(cell_to_update, value):
+    global cells
+    cells = cells[:cell_to_update] + value + cells[cell_to_update+1:]
 
 def convert_field_to_rows():
     return [cells[0]+cells[1]+cells[2], cells[3]+cells[4]+cells[5], cells[6]+cells[7]+cells[8]]
