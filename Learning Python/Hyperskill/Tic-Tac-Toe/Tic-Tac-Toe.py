@@ -114,9 +114,7 @@ def game_loop():
         keep_going = not check_new_field_input_is_valid(new_field_input)
         if not keep_going:
             update_cell_with_x(convert_user_input_to_cell(new_field_input))
-
 game_loop()
-
 print_field()
 #field_states = convert_field_to_states()
 
