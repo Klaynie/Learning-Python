@@ -25,7 +25,7 @@ maximum_protected_amount = 700000
 year_counter = 0
 interest_rate = 7.1
 while initial_investment_amount < maximum_protected_amount:
-      initial_investment_amount *= (1 + interest_rate/100)
-      year_counter += 1
+    initial_investment_amount *= (1 + interest_rate / 100)
+    year_counter += 1
 
 print(year_counter)
