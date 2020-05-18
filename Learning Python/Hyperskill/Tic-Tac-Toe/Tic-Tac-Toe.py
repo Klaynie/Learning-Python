@@ -1,28 +1,36 @@
-cells = '_________'
-win_condition_x = 'XXX'
-win_condition_o = 'OOO'
+empty_cell = ' '
+cells = 9 * empty_cell
+symbol_for_x = 'X'
+symbol_for_o = 'O'
+win_condition_x = 3 * symbol_for_x
+win_condition_o = 3 * symbol_for_o
 count_x = 0
 count_o = 0
 count_win_conditions = 0
 count_x_wins = 0
 count_o_wins = 0
 turn_counter = 0
+user_input_prompt = ["Enter the coordinates: "]
 game_error_states = ["Impossible"]
 game_continues_state = ["Game not finished"]
-game_final_states = ["X Wins", "O Wins", "Draw"]
+game_final_states = [symbol_for_x + " Wins", symbol_for_o + " Wins", "Draw"]
+error_messages = ["Please provide the correct amount of fields!",
+                  "You should enter numbers!",
+                  "Coordinates should be from 1 to 3!",
+                  "This cell is occupied! Choose another one!"]
 keep_going = True
 
 def check_new_field_input_is_valid(new_field_input):
     global cells
     if len(new_field_input) != 2:
-        print("Please provide the correct amount of fields!")
+        print(error_messages[0])
         return False
     elif not new_field_input[0].isdigit() or not new_field_input[1].isdigit():
-            print("You should enter numbers!")
+            print(error_messages[1])
             return False
     new_field_input[0], new_field_input[1] = int(new_field_input[0]), int(new_field_input[1])
     if new_field_input[0] < 1 or new_field_input[0] > 3 or new_field_input[1] < 1 or new_field_input[1] > 3:
-        print("Coordinates should be from 1 to 3!")
+        print(error_messages[2])
         return False
     else:
         cell_to_update = convert_user_input_to_cell(new_field_input)
@@ -30,18 +38,18 @@ def check_new_field_input_is_valid(new_field_input):
         return check_if_cell_is_empty(cell_content)
 
 def check_if_cell_is_empty(cell_content):
-    if cell_content != '_':
-        print("This cell is occupied! Choose another one!")
+    if cell_content != empty_cell:
+        print(error_messages[3])
         return False
     return True
 
 def update_cell_with_x(cell_to_update):
     global cells
-    update_cell_with_value(cell_to_update, 'X')
+    update_cell_with_value(cell_to_update, symbol_for_x)
 
 def update_cell_with_o(cell_to_update):
     global cells
-    update_cell_with_value(cell_to_update, 'O')
+    update_cell_with_value(cell_to_update, symbol_for_o)
 
 def update_cell_with_value(cell_to_update, value):
     global cells
@@ -97,9 +105,9 @@ def count_symbols_on_field():
     global count_x, count_o
     count_x, count_o = 0, 0
     for symbol in cells:
-        if symbol == 'X':
+        if symbol == symbol_for_x:
             count_x += 1
-        if symbol == 'O':
+        if symbol == symbol_for_o:
             count_o += 1
 
 def count_field_states(field_states):
@@ -127,15 +135,15 @@ def game_state():
         return game_final_states[0]
     elif count_o_wins == 1:
         return game_final_states[1]
-    elif '_' in cells:
+    elif empty_cell in cells:
         return game_continues_state[0]
     else:
         return game_final_states[2]
 
 def game_loop():
-    global keep_going, turn_counter
+    global keep_going, turn_counter, user_input_prompt
     while keep_going:
-        new_field_input = input("Enter the coordinates: ").split()
+        new_field_input = input(user_input_prompt[0]).split()
         valid_turn = check_new_field_input_is_valid(new_field_input)
         if valid_turn and turn_counter % 2 == 0:
             update_cell_with_x(convert_user_input_to_cell(new_field_input))
