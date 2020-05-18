@@ -1,23 +1,45 @@
-def check_new_field_input_is_valid():
-    global cells, new_field_input
-    if not new_field_input[0].isdigit() or not new_field_input[1].isdigit():
-        print("You should enter numbers!")
-        new_field_input = input("Enter the coordinates: ").split()
-        check_new_field_input_is_valid()
-    new_field_input[0] = int(new_field_input[0])
-    new_field_input[1] = int(new_field_input[1])
+cells = input("Enter cells:")
+win_condition_x = 'XXX'
+win_condition_o = 'OOO'
+count_x = 0
+count_o = 0
+count_win_conditions = 0
+count_x_wins = 0
+count_o_wins = 0
+error_game_states = ["Impossible"]
+game_continues_state = ["Game not finished"]
+game_final_states = ["X Wins", "O Wins", "Draw"]
+keep_going = True
+
+def check_new_field_input_is_valid(new_field_input):
+    global cells
+    if len(new_field_input) != 2:
+        print("Please provide the correct amount of fields!")
+        return False
+    elif not new_field_input[0].isdigit() or not new_field_input[1].isdigit():
+            print("You should enter numbers!")
+            return False
+    new_field_input[0], new_field_input[1] = int(new_field_input[0]), int(new_field_input[1])
     if new_field_input[0] < 1 or new_field_input[0] > 3 or new_field_input[1] < 1 or new_field_input[1] > 3:
         print("Coordinates should be from 1 to 3!")
-        new_field_input = input("Enter the coordinates: ").split()
-        check_new_field_input_is_valid()
+        return False
     else:
-        cell_to_update = convert_user_input_to_cell()
+        cell_to_update = convert_user_input_to_cell(new_field_input)
         cell_content = return_cell_content(cell_to_update)
         if check_if_cell_is_occupied(cell_content):
-            new_field_input = input("Enter the coordinates: ").split()
-            check_new_field_input_is_valid()
+            return False
         else:
-            cells = cells[:cell_to_update] + 'X' + cells[cell_to_update+1:]
+            return True
+
+def check_if_cell_is_occupied(cell_content):
+    if cell_content != '_':
+        print("This cell is occupied! Choose another one!")
+        return True
+    return False
+
+def update_cell_with_x(cell_to_update):
+    global cells
+    cells = cells[:cell_to_update] + 'X' + cells[cell_to_update+1:]
 
 def print_field():
     global cells
@@ -27,8 +49,7 @@ def print_field():
     print("| " + cells[6] + " " + cells[7] + " " + cells[8] + " |")
     print("---------")
 
-def convert_user_input_to_cell():
-    global new_field_input
+def convert_user_input_to_cell(new_field_input):
     if new_field_input == [1, 3]:
         return 0
     elif new_field_input == [1, 2]:
@@ -50,12 +71,6 @@ def convert_user_input_to_cell():
 
 def return_cell_content(cell_number):
     return cells[cell_number]
-
-def check_if_cell_is_occupied(cell_content):
-    if cell_content != '_':
-        print("This cell is occupied! Choose another one!")
-        return True
-    return False
 
 def convert_field_to_rows():
     return [cells[0]+cells[1]+cells[2], cells[3]+cells[4]+cells[5], cells[6]+cells[7]+cells[8]]
@@ -91,21 +106,19 @@ def count_field_states(field_states):
                 count_o_wins += 1
                 count_win_conditions += 1
 
-cells = input("Enter cells:")
 print_field()
-new_field_input = input("Enter the coordinates: ").split()
-check_new_field_input_is_valid()
+def game_loop():
+    global keep_going
+    while keep_going:
+        new_field_input = input("Enter the coordinates: ").split()
+        keep_going = not check_new_field_input_is_valid(new_field_input)
+        if not keep_going:
+            update_cell_with_x(convert_user_input_to_cell(new_field_input))
+
+game_loop()
+
 print_field()
 #field_states = convert_field_to_states()
-
-#win_condition_x = 'XXX'
-#win_condition_o = 'OOO'
-
-#count_x = 0
-#count_o = 0
-#count_win_conditions = 0
-#count_x_wins = 0
-#count_o_wins = 0
 
 #count_symbols_on_field()
 #count_field_states(field_states)
