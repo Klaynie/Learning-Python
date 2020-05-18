@@ -1,4 +1,4 @@
-cells = input("Enter cells:")
+cells = '_________'
 win_condition_x = 'XXX'
 win_condition_o = 'OOO'
 count_x = 0
@@ -6,7 +6,8 @@ count_o = 0
 count_win_conditions = 0
 count_x_wins = 0
 count_o_wins = 0
-error_game_states = ["Impossible"]
+turn_counter = 0
+game_error_states = ["Impossible"]
 game_continues_state = ["Game not finished"]
 game_final_states = ["X Wins", "O Wins", "Draw"]
 keep_going = True
@@ -40,6 +41,10 @@ def check_if_cell_is_occupied(cell_content):
 def update_cell_with_x(cell_to_update):
     global cells
     cells = cells[:cell_to_update] + 'X' + cells[cell_to_update+1:]
+
+def update_cell_with_o(cell_to_update):
+    global cells
+    cells = cells[:cell_to_update] + 'O' + cells[cell_to_update+1:]
 
 def print_field():
     global cells
@@ -89,6 +94,7 @@ def convert_field_to_states():
 
 def count_symbols_on_field():
     global count_x, count_o
+    count_x, count_o = 0, 0
     for symbol in cells:
         if symbol == 'X':
             count_x += 1
@@ -97,6 +103,7 @@ def count_symbols_on_field():
 
 def count_field_states(field_states):
     global count_win_conditions, count_x_wins, count_o_wins
+    count_win_conditions, count_x_wins, count_o_wins = 0, 0, 0
     for lists in field_states:
         for items in lists:
             if items == win_condition_x:
@@ -106,32 +113,39 @@ def count_field_states(field_states):
                 count_o_wins += 1
                 count_win_conditions += 1
 
+def game_state():
+    global cells, count_x, count_o, count_win_conditions, count_x_wins, count_o_wins, game_error_states, game_continues_state, game_final_states
+    count_symbols_on_field()
+    field_states = convert_field_to_states()
+    count_field_states(field_states)
+    if count_win_conditions > 1:
+        return game_error_states[0]
+    elif count_o > count_x + 1 or count_x > count_o + 1:
+        return game_error_states[0]
+    elif count_x_wins == 1:
+        return game_final_states[0]
+    elif count_o_wins == 1:
+        return game_final_states[1]
+    elif '_' in cells:
+        return game_continues_state[0]
+    else:
+        return game_final_states[2]
+
 print_field()
 def game_loop():
-    global keep_going
+    global keep_going, turn_counter
     while keep_going:
         new_field_input = input("Enter the coordinates: ").split()
-        keep_going = not check_new_field_input_is_valid(new_field_input)
-        if not keep_going:
+        valid_turn = check_new_field_input_is_valid(new_field_input)
+        if valid_turn and turn_counter % 2 == 0:
             update_cell_with_x(convert_user_input_to_cell(new_field_input))
+            turn_counter += 1
+        elif valid_turn and turn_counter % 2 != 0:
+            update_cell_with_o(convert_user_input_to_cell(new_field_input))
+            turn_counter += 1
+        print_field()
+        print(game_state())
+        if game_state() in game_final_states or game_state() in game_error_states:
+            keep_going = False
+
 game_loop()
-print_field()
-#field_states = convert_field_to_states()
-
-#count_symbols_on_field()
-#count_field_states(field_states)
-
-#if count_win_conditions > 1:
-    #print("Impossible")
-#elif count_o > count_x + 1 or count_x > count_o + 1:
-    #print("Impossible")
-#elif cells == '_________':
-    #print("New Game")
-#elif count_x_wins == 1:
-    #print("X wins")
-#elif count_o_wins == 1:
-    #print("O wins")
-#elif '_' in cells:
-    #print('Game not finished')
-#else:
-    #print("Draw")
