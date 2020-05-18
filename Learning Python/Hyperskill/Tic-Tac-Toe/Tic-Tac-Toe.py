@@ -29,7 +29,7 @@ def print_field():
     print("| " + cells[6] + " " + cells[7] + " " + cells[8] + " |")
     print("---------")
 
-def check_new_field_input_is_valid(new_field_input):
+def check_new_field_input(new_field_input):
     global cells
     if len(new_field_input) != 2:
         print(error_messages[0])
@@ -42,7 +42,7 @@ def check_new_field_input_is_valid(new_field_input):
         print(error_messages[2])
         return False
     else:
-        return check_if_cell_is_empty(convert_user_input_to_cell(new_field_input))
+        return check_if_cell_is_empty(convert_new_field_input_to_cell(new_field_input))
 
 def check_if_cell_is_empty(cell_number):
     if return_cell_content(cell_number) != empty_cell:
@@ -53,7 +53,7 @@ def check_if_cell_is_empty(cell_number):
 def return_cell_content(cell_number):
     return cells[cell_number]
 
-def convert_user_input_to_cell(new_field_input):
+def convert_new_field_input_to_cell(new_field_input):
     if new_field_input == [1, 3]:
         return 0
     elif new_field_input == [1, 2]:
@@ -143,12 +143,12 @@ def game_loop():
     global keep_going, turn_counter, user_input_prompt
     while keep_going:
         new_field_input = input(user_input_prompt[0]).split()
-        valid_turn = check_new_field_input_is_valid(new_field_input)
+        valid_turn = check_new_field_input(new_field_input)
         if valid_turn and turn_counter % 2 == 0:
-            update_cell_with_x(convert_user_input_to_cell(new_field_input))
+            update_cell_with_x(convert_new_field_input_to_cell(new_field_input))
             turn_counter += 1
         elif valid_turn and turn_counter % 2 != 0:
-            update_cell_with_o(convert_user_input_to_cell(new_field_input))
+            update_cell_with_o(convert_new_field_input_to_cell(new_field_input))
             turn_counter += 1
         print_field()
         print(game_state())
