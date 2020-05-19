@@ -14,7 +14,7 @@ turn_counter = 0
 user_input_prompt = ["Enter the coordinates: "]
 game_error_states = ["Impossible"]
 game_continues_state = ["Game not finished"]
-game_final_states = [symbol_for_x + " Wins", symbol_for_o + " Wins", "Draw"]
+game_final_states = [symbol_for_x + " wins", symbol_for_o + " wins", "Draw"]
 error_messages = ["Please provide the correct amount of fields!",
                   "You should enter numbers!",
                   "Coordinates should be from 1 to 3!",
