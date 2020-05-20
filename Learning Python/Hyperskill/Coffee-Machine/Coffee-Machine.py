@@ -3,8 +3,8 @@ user_prompts = [    "Write how many cups of coffee you will need:",
                     "Write how many ml of water the coffee machine has:",
                     "Write how many ml of milk the coffee machine has:",
                     "Write how many grams of coffee beans the coffee machine has:",
-                    "Write action (buy, fill, take):",
-                    "What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:",
+                    "Write action (buy, fill, take, remaining, exit):",
+                    "What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:",
                     "Write how many cups of coffee you will need:",
                     "Write how many ml of water do you want to add:",
                     "Write how many ml of milk do you want to add:",
@@ -17,10 +17,17 @@ output_messages = [ "Starting to make a coffee",
                     "Pouring coffee into the cup",
                     "Pouring some milk into the cup",
                     "Coffee is ready!"]
-actions = ["buy", "fill", "take"]
+actions = ["buy", "fill", "take", "remaining", "exit"]
+buy_actions = ["back"]
+buy_messages = ["I have enough resources, making you a coffee!", 
+                "Sorry, not enough water!",
+                "Sorry, not enough milk!",
+                "Sorry, not enough coffee beans!",
+                "Sorry, not enough disposable cups"]
 coffee_machine_capacity = [550, 400, 540, 120, 9]
 ingredient_amount = [200, 50, 15]
 menu = [['espresso',[4, 250, 0, 16, 1]], ['latte',[7, 350, 75, 20, 1]], ['cappucino',[6, 200, 100, 12, 1]]]
+keep_going = True
 
 def print_coffee_machine_content():
     global coffee_machine_capacity
@@ -29,7 +36,7 @@ def print_coffee_machine_content():
     print(f"{coffee_machine_capacity[2]} of milk")
     print(f"{coffee_machine_capacity[3]} of coffee beans")
     print(f"{coffee_machine_capacity[4]} of disposable cups")
-    print(f"{coffee_machine_capacity[0]} of money")
+    print(f"${coffee_machine_capacity[0]} of money")
 
 def print_ingredient_messages(cups_of_coffee, amount_water, amount_milk, amount_coffee_beans):
     print(f"For {cups_of_coffee} cups of coffee you will need:")
@@ -54,14 +61,6 @@ def check_coffee_amount(cups_of_coffee, capacity):
 def calculate_ingredient_amount(cups_of_coffee):
     return cups_of_coffee * ingredient_amount[0], cups_of_coffee * ingredient_amount[1], cups_of_coffee * ingredient_amount[2]
 
-def buy_item(menu_number):
-    capacity_delta = menu[menu_number - 1][1]
-    for i in range(len(coffee_machine_capacity)):
-        if i == 0:
-            coffee_machine_capacity[i] += capacity_delta[i]
-        else:
-            coffee_machine_capacity[i] -= capacity_delta[i]
-
 def action_to_prompt(action):
     global coffee_machine_capacity
     if action == actions[0]:
@@ -70,10 +69,39 @@ def action_to_prompt(action):
         action_fill()
     elif action == actions[2]:
         action_take()
+    elif action == actions[3]:
+        print_coffee_machine_content()
+    elif action == actions[4]:
+        action_exit()
+
+def check_capcity(menu_number):
+    capacity_delta = get_capacity_delta(menu_number)
+    for i in range(1, len(coffee_machine_capacity)):
+        if coffee_machine_capacity[i] - capacity_delta[i] < 0:
+            print(buy_messages[i])
+            return False
+    return True
+
+def get_capacity_delta(menu_number):
+    return menu[menu_number - 1][1]
+
+def buy_item(menu_number):
+    capacity_delta = get_capacity_delta(menu_number)
+    for i in range(len(coffee_machine_capacity)):
+        if i == 0:
+            coffee_machine_capacity[i] += capacity_delta[i]
+        else:
+            coffee_machine_capacity[i] -= capacity_delta[i]
 
 def action_buy():
-    menu_number = int(input(user_prompts[5]))
-    buy_item(menu_number)
+    buy_action = input(user_prompts[5])
+    if buy_action == buy_actions[0]:
+        return None
+    else:
+        menu_number = int(buy_action)
+        if check_capcity(menu_number):
+            print(buy_messages[0])
+            buy_item(menu_number)
 
 def action_fill():
     capacity_water =  int(input(user_prompts[7])) 
@@ -90,6 +118,15 @@ def action_take():
     coffee_machine_capacity[0] = 0
     print(f"I gave you ${take_amount}")
 
+def action_exit():
+    global keep_going
+    keep_going = False
+
+def coffee_machine_loop():
+    global keep_going
+    while keep_going:
+        action_to_prompt(input(user_prompts[4]))
+
 #amount_water, amount_milk, amount_coffee_beans = calculate_ingredient_amount(cups_of_coffee)
 #print_ingredient_messages(cups_of_coffee, amount_water, amount_milk, amount_coffee_beans)
 
@@ -98,6 +135,4 @@ def action_take():
 #capacity = calculate_amount_of_cups_capacity(capacity_water, capacity_milk, capacity_coffee_beans)
 #check_coffee_amount(cups_of_coffee, capacity)
 
-print_coffee_machine_content() 
-action_to_prompt(input(user_prompts[4]))
-print_coffee_machine_content()
+coffee_machine_loop()
