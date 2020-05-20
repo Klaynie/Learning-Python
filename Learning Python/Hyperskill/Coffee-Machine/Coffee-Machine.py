@@ -24,6 +24,12 @@ buy_messages = ["I have enough resources, making you a coffee!",
                 "Sorry, not enough milk!",
                 "Sorry, not enough coffee beans!",
                 "Sorry, not enough disposable cups"]
+coffee_machine_messages = [ "The coffee machine has",
+                            "{} of water",
+                            "{} of milk",
+                            "{} of coffee beans",
+                            "{} of disposable cups",
+                            "${} of money"]                
 coffee_machine_capacity = [550, 400, 540, 120, 9]
 ingredient_amount = [200, 50, 15]
 menu = [['espresso',[4, 250, 0, 16, 1]], ['latte',[7, 350, 75, 20, 1]], ['cappucino',[6, 200, 100, 12, 1]]]
@@ -31,11 +37,11 @@ keep_going = True
 
 def print_coffee_machine_content():
     global coffee_machine_capacity
-    print("The coffee machine has")
-    print(f"{coffee_machine_capacity[1]} of water")
-    print(f"{coffee_machine_capacity[2]} of milk")
-    print(f"{coffee_machine_capacity[3]} of coffee beans")
-    print(f"{coffee_machine_capacity[4]} of disposable cups")
+    for i in range(len(coffee_machine_capacity)):
+        if i == 0:
+            print(coffee_machine_messages[i])
+        else:
+            print(coffee_machine_messages[i].format(coffee_machine_capacity[i]))
     print(f"${coffee_machine_capacity[0]} of money")
 
 def print_ingredient_messages(cups_of_coffee, amount_water, amount_milk, amount_coffee_beans):
