@@ -1,10 +1,9 @@
 def heading(header, level=1):
     if level < 1:
         return heading(header, level=1)
-    elif level > 6:
+    if level > 6:
         return heading(header, level=6)
-    else:
-        return f'{"#" * level} {header}'
+    return f'{"#" * level} {header}'
 
 print(heading("A"))      # Returns "# A"
 print(heading("A", 3))   # Returns "### A"
