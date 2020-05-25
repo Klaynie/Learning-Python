@@ -8,26 +8,11 @@ class CoffeeMachine:
         self.beans = beans
         self.cups = cups
 
-    def switch_state(self, new_state):
+    def set_state(self, new_state):
         self.state = new_state
 
     def set_state_initial(self):
-        self.switch_state("initial")
-
-    def set_state_buy(self):
-        self.switch_state("buy")
-
-    def set_state_fill(self):
-        self.switch_state("fill")
-
-    def set_state_take(self):
-        self.switch_state("take")
-
-    def set_state_remaining(self):
-        self.switch_state("remaining")
-
-    def set_state_exit(self):
-        self.switch_state("exit")
+        self.set_state(states[0])
 
     def __str__(self):
         return "The coffee machine has\n" \
@@ -38,24 +23,19 @@ class CoffeeMachine:
                 f"${self.money} of money"
 
     def user_interaction(self):
-        global keep_going
-        if self.state == "buy":
-            print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:")
+        if self.state == states[1]:
             self.action_buy()
-        elif self.state == "fill":
+        elif self.state == states[2]:
             self.action_fill()
-        elif self.state == "take":
-            print(f"I gave you ${self.money}")
-            self.money = 0
-            self.set_state_initial()
-        elif self.state == "remaining":
-            print(self)
-            self.set_state_initial()
-        elif self.state == "exit":
-            self.set_state_exit()
+        elif self.state == states[3]:
+            self.action_take()
+        elif self.state == states[4]:
+            self.action_remaining()
+        elif self.state == states[5]:
+            self.action_exit()
 
     def action_buy(self):
-        buy_action = input()
+        buy_action = input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:")
         if buy_action == "back":
             self.set_state_initial()
         else:
@@ -64,6 +44,26 @@ class CoffeeMachine:
                 print(buy_messages[0])
                 self.buy_item(menu_number)
                 self.set_state_initial()
+
+    def action_fill(self):
+        self.water += int(input("Write how many ml of water do you want to add:"))
+        self.milk += int(input("Write how many ml of milk do you want to add:"))
+        self.beans += int(input("Write how many grams of coffee beans do you want to add:"))
+        self.cups += int(input("Write how many disposable cups of coffee do you want to add:"))
+        self.set_state_initial()
+
+    def action_take(self):
+        print(f"I gave you ${self.money}")
+        self.money = 0
+        self.set_state_initial()
+
+    def action_remaining(self):
+        print(self)
+        self.set_state_initial()
+
+    def action_exit(self):
+        global keep_going
+        keep_going = False
 
     def check_capcity(self, menu_number):
         capacity_delta = get_capacity_delta(menu_number)
@@ -89,35 +89,17 @@ class CoffeeMachine:
         self.beans -= capacity_delta[3]
         self.cups -= capacity_delta[4]
 
-    def action_fill(self):
-        self.water += int(input("Write how many ml of water do you want to add:"))
-        self.milk += int(input("Write how many ml of milk do you want to add:"))
-        self.beans += int(input("Write how many grams of coffee beans do you want to add:"))
-        self.cups += int(input("Write how many disposable cups of coffee do you want to add:"))
-        self.set_state_initial()
-
+states = ["initial", "buy", "fill", "take", "remaining", "exit"]
 buy_messages = ["I have enough resources, making you a coffee!", 
                 "Sorry, not enough water!",
                 "Sorry, not enough milk!",
                 "Sorry, not enough coffee beans!",
                 "Sorry, not enough disposable cups"]
-
 menu = [['espresso',[4, 250, 0, 16, 1]], ['latte',[7, 350, 75, 20, 1]], ['cappucino',[6, 200, 100, 12, 1]]]
 keep_going = True
 
 def action_to_prompt(instance, action):
-    global keep_going
-    if action == "buy":
-        instance.set_state_buy()
-    elif action == "fill":
-        instance.set_state_fill()
-    elif action == "take":
-        instance.set_state_take()
-    elif action == "remaining":
-        instance.set_state_remaining()
-    elif action == "exit":
-        instance.set_state_exit()
-        keep_going = False
+    instance.set_state(action)
     coffee_machine.user_interaction()
     return None
 
