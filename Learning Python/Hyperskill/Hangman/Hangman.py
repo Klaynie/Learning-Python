@@ -10,6 +10,7 @@ placeholder_character = '-'
 max_lives = 8
 strikes = 0
 correctly_guessed_letters = set()
+guessed_letters = set()
 keep_going = True
 
 def set_word_to_guess():
@@ -20,21 +21,22 @@ def is_letter_in_word_to_guess(input_):
     return input_ in word_to_guess_set
 
 def input_guardian(input_):
-    global ascii_letters
+    global ascii_letters, guessed_letters
     if len(input_) != 1:
         print(guardian_messages[0])
         return False
     if input_ not in ascii_letters:
         print(guardian_messages[1])
         return False
-    if is_letter_in_word_to_guess(input_) and input_ in correctly_guessed_letters:
+    if input_ in guessed_letters:
         print(guardian_messages[2])
         return False
     return True
 
 def input_handler(input_):
-    global user_output_word, correctly_guessed_letters, strikes
+    global user_output_word, guessed_letters, correctly_guessed_letters, strikes
     if input_guardian(input_):
+        add_letter_to_guessed_letters(input_)
         if is_letter_in_word_to_guess(input_) and input_ not in correctly_guessed_letters:
             add_letter_to_corretcly_guessed_letters(input_)
             generate_user_output_word()
@@ -49,6 +51,9 @@ def input_handler(input_):
 
 def add_letter_to_corretcly_guessed_letters(letter):
     correctly_guessed_letters.add(letter)
+
+def add_letter_to_guessed_letters(letter):
+    guessed_letters.add(letter)
 
 def convert_list_to_string(list_):
     return ''.join(list_)
