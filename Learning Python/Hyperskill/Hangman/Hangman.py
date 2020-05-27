@@ -6,7 +6,7 @@ outcome_messages = ['No such letter in the word', 'You survived!', 'You are hang
 word_list = ['python', 'java', 'kotlin', 'javascript']
 placeholder_character = '-'
 max_tries = 8
-current_tries = 0
+current_try = 1
 correctly_guessed_letters = set()
 
 def set_word_to_guess():
@@ -47,12 +47,13 @@ def generate_word_to_guess_set():
     return set(word_to_guess)
 
 def game_loop():
-    global max_tries, current_tries, user_output_word
-    while current_tries <= max_tries:
+    global max_tries, current_try, user_output_word
+    while current_try <= max_tries:
         print('\n')
         print(user_output_word)
         input_handler(input(user_messages[0]))
-        current_tries += 1
+        current_try += 1
+    print('\n')
     print(user_messages[1])
 
 #Setup Game Session Variables
