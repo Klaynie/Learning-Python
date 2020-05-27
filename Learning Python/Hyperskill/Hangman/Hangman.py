@@ -1,29 +1,33 @@
 import random
 
 title = 'H A N G M A N'
-user_messages = ['Input a letter: ', 'Thanks for playing!\nWe\'ll see how well you did in the next stage']
-outcome_messages = ['No such letter in the word', 'You survived!', 'You are hanged!']
+user_messages = ['Input a letter: ']
+outcome_messages = ['No improvements', 'No such letter in the word','You guessed the word!', 'You survived!', 'You are hanged!']
 word_list = ['python', 'java', 'kotlin', 'javascript']
 placeholder_character = '-'
-max_tries = 8
-current_try = 1
+max_lives = 8
+strikes = 0
 correctly_guessed_letters = set()
+keep_going = True
 
 def set_word_to_guess():
     global word_list
     return random.choice(word_list)
 
-def is_letter_in_input(input_):
-    word_to_guess_set
+def is_letter_in_word_to_guess(input_):
     return input_ in word_to_guess_set
 
 def input_handler(input_):
-    global user_output_word, correctly_guessed_letters
-    if is_letter_in_input(input_):
+    global user_output_word, correctly_guessed_letters, strikes
+    if is_letter_in_word_to_guess(input_) and input_ not in correctly_guessed_letters:
         add_letter_to_corretcly_guessed_letters(input_)
         generate_user_output_word()
-    else:
+    elif is_letter_in_word_to_guess(input_) and input_ in correctly_guessed_letters:
+        strikes += 1
         print(outcome_messages[0])
+    else:
+        strikes += 1
+        print(outcome_messages[1])
 
 def add_letter_to_corretcly_guessed_letters(letter):
     correctly_guessed_letters.add(letter)
@@ -47,14 +51,18 @@ def generate_word_to_guess_set():
     return set(word_to_guess)
 
 def game_loop():
-    global max_tries, current_try, user_output_word
-    while current_try <= max_tries:
+    global max_lives, strikes, user_output_word, keep_going
+    while keep_going:
         print('\n')
         print(user_output_word)
         input_handler(input(user_messages[0]))
-        current_try += 1
-    print('\n')
-    print(user_messages[1])
+        if strikes == max_lives:
+            keep_going = False
+            print(outcome_messages[4])
+        elif word_to_guess == user_output_word:
+            keep_going = False
+            print(outcome_messages[2])
+            print(outcome_messages[3])
 
 #Setup Game Session Variables
 word_to_guess = set_word_to_guess()
