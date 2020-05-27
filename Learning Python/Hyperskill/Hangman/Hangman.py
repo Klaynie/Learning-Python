@@ -1,7 +1,9 @@
 import random
 
 title = 'H A N G M A N'
-user_messages = ['Input a letter: ']
+user_messages = ['Input a letter: ', 'Type "play" to play the game, "exit" to quit:']
+play_keyword = 'play'
+exit_keyword = 'exit'
 outcome_messages = ['No improvements', 'No such letter in the word','You guessed the word!', 'You survived!', 'You are hanged!']
 guardian_messages = ['You should input a single letter', 'It is not an ASCII lowercase letter', 'You already typed this letter']
 ascii_letters = 'abcdefghijklmnopqrstuvwxyz'
@@ -11,7 +13,6 @@ max_lives = 8
 strikes = 0
 correctly_guessed_letters = set()
 guessed_letters = set()
-keep_going = True
 
 def set_word_to_guess():
     global word_list
@@ -74,18 +75,27 @@ def generate_word_to_guess_set():
     return set(word_to_guess)
 
 def game_loop():
-    global max_lives, strikes, user_output_word, keep_going
-    while keep_going:
-        print('\n')
-        print(user_output_word)
-        input_handler(input(user_messages[0]))
-        if strikes == max_lives:
-            keep_going = False
-            print(outcome_messages[4])
-        elif word_to_guess == user_output_word:
-            keep_going = False
-            print(outcome_messages[2])
-            print(outcome_messages[3])
+    global max_lives, strikes, user_output_word
+    stay_in_game = True
+    while stay_in_game:
+        start_or_stop = input(user_messages[1])
+        if start_or_stop == play_keyword:
+            stay_in_session = True
+            while stay_in_session:
+                print('\n')
+                print(user_output_word)
+                input_handler(input(user_messages[0]))
+                if strikes == max_lives:
+                    stay_in_session = False
+                    print(outcome_messages[4])
+                    print('\n')
+                elif word_to_guess == user_output_word:
+                    stay_in_session = False
+                    print(outcome_messages[2])
+                    print(outcome_messages[3])
+                    print('\n')
+        elif start_or_stop == exit_keyword:
+            stay_in_game = False
 
 #Setup Game Session Variables
 word_to_guess = set_word_to_guess()
