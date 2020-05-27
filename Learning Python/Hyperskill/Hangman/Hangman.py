@@ -3,6 +3,8 @@ import random
 title = 'H A N G M A N'
 user_messages = ['Input a letter: ']
 outcome_messages = ['No improvements', 'No such letter in the word','You guessed the word!', 'You survived!', 'You are hanged!']
+guardian_messages = ['You should input a single letter', 'It is not an ASCII lowercase letter', 'You already typed this letter']
+ascii_letters = 'abcdefghijklmnopqrstuvwxyz'
 word_list = ['python', 'java', 'kotlin', 'javascript']
 placeholder_character = '-'
 max_lives = 8
@@ -17,17 +19,33 @@ def set_word_to_guess():
 def is_letter_in_word_to_guess(input_):
     return input_ in word_to_guess_set
 
+def input_guardian(input_):
+    global ascii_letters
+    if len(input_) != 1:
+        print(guardian_messages[0])
+        return False
+    if input_ not in ascii_letters:
+        print(guardian_messages[1])
+        return False
+    if is_letter_in_word_to_guess(input_) and input_ in correctly_guessed_letters:
+        print(guardian_messages[2])
+        return False
+    return True
+
 def input_handler(input_):
     global user_output_word, correctly_guessed_letters, strikes
-    if is_letter_in_word_to_guess(input_) and input_ not in correctly_guessed_letters:
-        add_letter_to_corretcly_guessed_letters(input_)
-        generate_user_output_word()
-    elif is_letter_in_word_to_guess(input_) and input_ in correctly_guessed_letters:
-        strikes += 1
-        print(outcome_messages[0])
+    if input_guardian(input_):
+        if is_letter_in_word_to_guess(input_) and input_ not in correctly_guessed_letters:
+            add_letter_to_corretcly_guessed_letters(input_)
+            generate_user_output_word()
+        elif is_letter_in_word_to_guess(input_) and input_ in correctly_guessed_letters:
+            strikes += 1
+            print(outcome_messages[0])
+        else:
+            strikes += 1
+            print(outcome_messages[1])
     else:
-        strikes += 1
-        print(outcome_messages[1])
+        return None
 
 def add_letter_to_corretcly_guessed_letters(letter):
     correctly_guessed_letters.add(letter)
