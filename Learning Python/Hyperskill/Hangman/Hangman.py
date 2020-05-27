@@ -41,9 +41,6 @@ def input_handler(input_):
         if is_letter_in_word_to_guess(input_) and input_ not in correctly_guessed_letters:
             add_letter_to_corretcly_guessed_letters(input_)
             generate_user_output_word()
-        elif is_letter_in_word_to_guess(input_) and input_ in correctly_guessed_letters:
-            strikes += 1
-            print(outcome_messages[0])
         else:
             strikes += 1
             print(outcome_messages[1])
