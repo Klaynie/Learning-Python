@@ -2,6 +2,7 @@ keep_going = True
 while keep_going:
     input_ = input()
     if input_ == '/exit':
+        print('Bye!')
         keep_going = False
     elif input_ == '':
         pass
