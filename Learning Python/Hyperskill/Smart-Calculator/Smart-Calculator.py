@@ -1,20 +1,34 @@
 commands = ['/exit','/help']
 user_outputs = ['Bye!','The program calculates the sum of numbers']
+keep_going = True
 
-def input_handler(input_):
+def is_empty_line(input_):
+    return input_ == ''
+
+def is_single_number(input_):
+    return ' ' not in input_
+
+def sum_(input_):
     return sum([int(number) for number in input_.split()])
 
-keep_going = True
-while keep_going:
-    input_ = input()
+def input_handler(input_):
+    global keep_going
     if input_ == commands[0]:
         print(user_outputs[0])
         keep_going = False
     elif input_ == commands[1]:
         print(user_outputs[1])
-    elif input_ == '':
+    elif is_empty_line(input_):
         pass
-    elif ' ' not in input_:
+    elif is_single_number(input_):
         print(input_)
     else:
-        print(input_handler(input_))        
+        print(sum_(input_))
+
+def calculator_loop():
+    global keep_going
+    while keep_going:
+        input_ = input()
+        input_handler(input_)
+
+calculator_loop()
