@@ -56,6 +56,7 @@ def add_letter_to_corretcly_guessed_letters(letter):
     correctly_guessed_letters.add(letter)
 
 def add_letter_to_guessed_letters(letter):
+    global guessed_letters
     guessed_letters.add(letter)
 
 def convert_list_to_string(list_):
