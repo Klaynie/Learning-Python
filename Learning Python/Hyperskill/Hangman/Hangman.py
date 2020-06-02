@@ -42,7 +42,7 @@ def input_handler(input_):
     global user_output_word, guessed_letters, correctly_guessed_letters, strikes
     if input_guardian(input_):
         add_letter_to_guessed_letters(input_)
-        if is_letter_in_word_to_guess(input_) and input_ not in correctly_guessed_letters:
+        if is_letter_in_word_to_guess(input_):
             add_letter_to_corretcly_guessed_letters(input_)
             generate_user_output_word()
         else:
