@@ -92,6 +92,8 @@ def input_guardian(input_):
         return True
     if input_.isdigit():
         return True
+    if is_empty_line(input_):
+        return True
     if input_.endswith(operator_symbols[0]):
         return False
     if input_.endswith(operator_symbols[1]):
