@@ -10,6 +10,11 @@ def is_empty_line(input_):
 def is_single_number(input_):
     return ' ' not in input_
 
+def convert_single_number(input_):
+    if input_.startswith(operator_symbols[0]):
+        return input_.replace(operator_symbols[0], '')
+    return input_
+
 def convert_numbers_and_operators(start, end, numbers, operators, output_list):
     """ Converts numbers and operators list into one list of signed numbers
     
@@ -116,7 +121,7 @@ def input_handler(input_):
         elif is_empty_line(input_):
             pass
         elif is_single_number(input_):
-            print(input_)
+            print(convert_single_number(input_))
         else:        
             print(sum(convert_input(input_)))
     if not input_guardian(input_):
