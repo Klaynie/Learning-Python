@@ -14,4 +14,4 @@ while card_coutner < 6:
     sum_card_value(card)
     card_coutner += 1
 
-print(hand_value/card_coutner)
+print(hand_value / card_coutner)
