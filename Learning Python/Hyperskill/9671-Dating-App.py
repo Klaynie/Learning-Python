@@ -12,7 +12,7 @@ potential_dates = [{"name": "Julia", "gender": "female", "age": 29,
 def select_dates(list_):
     name_list = []
     for matches in list_:
-        if check_date_list_item(matches) != None:
+        if check_date_list_item(matches) is not None:
             name_list.append(check_date_list_item(matches))
     return ', '.join(name_list)
 
