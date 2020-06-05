@@ -169,6 +169,7 @@ def convert_input(input_):
         input_ = input_.replace(operator_symbols[1], operator_symbols[1] + ' ', 1)
     items = [item for item in input_.split()]
     numbers = []
+    operators = []
     for item in items:
         if item.isdigit():
             numbers.append(int(item))
@@ -176,10 +177,9 @@ def convert_input(input_):
             try:
                 variables_dict[item]
             except KeyError:
-                pass
+                operators.append(convert_operator_string(item))
             else:
                 numbers.append(variables_dict[item])
-    operators = [convert_operator_string(item) for item in items if item in operator_symbols]
     return generate_output_list(numbers, operators)
 
 def convert_operator_string(operator_string):
