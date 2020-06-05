@@ -1,5 +1,8 @@
 commands = ['/exit','/help']
-user_outputs = ['Bye!','The program calculates the sum and difference of numbers', 'Unknown command', 'Invalid expression']
+user_outputs = ['Bye!',
+                'The program calculates the sum and difference of numbers, you can store numbers in variables', 
+                'Unknown command',
+                'Invalid expression']
 command_start_symbol = '/'
 operator_symbols = ['+', '-']
 keep_going = True
@@ -11,9 +14,18 @@ def is_single_number(input_):
     return ' ' not in input_
 
 def convert_single_number(input_):
-    if input_.startswith(operator_symbols[0]):
-        return input_.replace(operator_symbols[0], '')
-    return input_
+    global operator_symbols
+    operator_string = ''
+    number = ''
+    for item in input_:
+        if item in operator_symbols:
+            operator_string += item
+        elif item.isdigit():
+            number += item
+    sign = convert_operator_string(operator_string)
+    if sign == operator_symbols[0]:
+        sign = ''
+    return sign+number
 
 def convert_numbers_and_operators(start, end, numbers, operators, output_list):
     """ Converts numbers and operators list into one list of signed numbers
@@ -47,11 +59,14 @@ def convert_input(input_):
     
     The user input needs to be converted into operators and numbers
     """
-    if input_.startswith('-'):
-        input_ = input_.replace("-", "- ", 1)
+    if input_.startswith(operator_symbols[0]):
+        input_ = input_.replace(operator_symbols[0], operator_symbols[0] + ' ', 1)
+    elif input_.startswith(operator_symbols[1]):
+        input_ = input_.replace(operator_symbols[1], operator_symbols[1] + ' ', 1)
     items = [item for item in input_.split()]
     numbers = [int(item) for item in items if item.isdigit()]
     operators = [convert_operator_string(item) for item in items if not item.isdigit()]
+    print(items, numbers, operators)
     return generate_output_list(numbers, operators)
 
 def convert_operator_string(operator_string):
@@ -59,17 +74,17 @@ def convert_operator_string(operator_string):
     
     The number of minus signs defines the algebraic sign of the number
     """
-    if '-' not in operator_string:
-        return '+'
+    if operator_symbols[1] not in operator_string:
+        return operator_symbols[0]
     else:
         count_minus_sign = 0
         for sign in operator_string:
-            if sign == '-':
+            if sign == operator_symbols[1]:
                 count_minus_sign += 1
         if count_minus_sign % 2 == 0:
-            return '+'
+            return operator_symbols[0]
         else:
-            return '-'
+            return operator_symbols[1]
 
 def command_handler(input_):
     """ Checks if the command is in the list of commands
@@ -134,12 +149,3 @@ def calculator_loop():
         input_handler(input_)
 
 calculator_loop()
-
-#print(input_guardian('11'))
-#print(input_guardian('8 + 7 - 4'))
-#print(input_guardian('abc'))
-#print(input_guardian('+15'))
-#print(input_guardian('18 22'))
-#print(input_guardian('-22'))
-#print(input_guardian('22-'))
-#print(input_guardian('/go'))
