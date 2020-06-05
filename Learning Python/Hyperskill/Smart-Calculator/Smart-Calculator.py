@@ -1,10 +1,16 @@
+import string
+
 commands = ['/exit','/help']
 user_outputs = ['Bye!',
                 'The program calculates the sum and difference of numbers, you can store numbers in variables', 
                 'Unknown command',
-                'Invalid expression']
+                'Invalid expression',
+                'Invalid identifier',
+                'Unknown variable',
+                'Invalid assignment']
 command_start_symbol = '/'
-operator_symbols = ['+', '-']
+operator_symbols = ['+', '-', '=']
+variables_dict = {}
 keep_going = True
 
 def is_empty_line(input_):
@@ -12,6 +18,57 @@ def is_empty_line(input_):
 
 def is_single_number(input_):
     return ' ' not in input_
+
+def assign_variable(input_):
+    global user_outputs, variables_dict
+    input_ = input_.replace(' ', '')
+    try:
+        key, value = input_.split('=')
+    except ValueError:
+        print(user_outputs[6])
+    else:
+        if not check_valid_variable_name(key):
+            print(user_outputs[4])
+        elif check_valid_variable_name(key) and check_valid_content(key, value):
+            if value.isdigit():
+                variables_dict[key] = int(value)
+            else:
+                variables_dict[key] = variables_dict[value]
+        elif value not in variables_dict.values():
+            print(user_outputs[5])
+        elif not check_valid_content(key, value):
+            print(user_outputs[6])
+        else:
+            print(user_outputs[6])
+
+def check_valid_variable_name(input_):
+    for letter in input_:
+        if letter not in string.ascii_letters:
+            return False
+    return True
+
+def check_valid_content(key, value):
+    global variables_dict
+    if value.isdigit():
+        return True
+    if check_valid_variable_name(key):
+        return value in variables_dict
+    return False
+
+def check_for_variables(input_):
+    for letter in input_:
+        if letter in string.ascii_letters:
+            return True
+    return False
+
+def print_variable_content(input_):
+    global variables_dict
+    if input_ in variables_dict:
+        print(variables_dict[input_])
+    elif not check_valid_variable_name(input_):
+        print(user_outputs[4])
+    else:
+        print(user_outputs[5])
 
 def convert_single_number(input_):
     global operator_symbols
@@ -55,6 +112,7 @@ def generate_output_list(numbers, operators):
     return output_list
 
 def convert_input(input_):
+    global operator_symbols, variables_dict
     """ Converts the user input to be usable for calculations
     
     The user input needs to be converted into operators and numbers
@@ -64,9 +122,18 @@ def convert_input(input_):
     elif input_.startswith(operator_symbols[1]):
         input_ = input_.replace(operator_symbols[1], operator_symbols[1] + ' ', 1)
     items = [item for item in input_.split()]
-    numbers = [int(item) for item in items if item.isdigit()]
-    operators = [convert_operator_string(item) for item in items if not item.isdigit()]
-    print(items, numbers, operators)
+    numbers = []
+    for item in items:
+        if item.isdigit():
+            numbers.append(int(item))
+        else:
+            try:
+                variables_dict[item]
+            except KeyError:
+                pass
+            else:
+                numbers.append(variables_dict[item])
+    operators = [convert_operator_string(item) for item in items if item in operator_symbols]
     return generate_output_list(numbers, operators)
 
 def convert_operator_string(operator_string):
@@ -118,8 +185,6 @@ def input_guardian(input_):
         return False
     if input_.endswith(operator_symbols[1]):
         return False
-    if (operator_symbols[0] not in input_) and (operator_symbols[1] not in input_):
-        return False
     return True
 
 def input_handler(input_):
@@ -135,6 +200,10 @@ def input_handler(input_):
             command_handler(input_)
         elif is_empty_line(input_):
             pass
+        elif check_for_variables(input_) and operator_symbols[0] not in input_ and operator_symbols[1] not in input_ and operator_symbols[2] not in input_:
+            print_variable_content(input_)
+        elif operator_symbols[2] in input_:
+            assign_variable(input_)
         elif is_single_number(input_):
             print(convert_single_number(input_))
         else:        
