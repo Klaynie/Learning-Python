@@ -40,15 +40,17 @@ def variable_assignment(input_):
 
 def assign_variable(key, value):
     global variables_dict
-    if value.isdigit():
-            variables_dict[key] = int(value)
-    else:
+    try:
+        int(convert_single_number(value))
+    except ValueError:
         try:
             variables_dict[value]
         except KeyError:
             print(user_outputs[5]) # Variable on right side of assignment is not defined
         else:
             variables_dict[key] = variables_dict[value]
+    else:
+        variables_dict[key] = int(convert_single_number(value))
 
 def check_assignment(key, value):
     """ Will if the assignment can be performed, otherwise inform the user what went wrong.
@@ -82,9 +84,22 @@ def check_valid_content(key, value):
     global variables_dict
     if value.isdigit():
         return True
+    if try_conversion(value):
+        return True
     if check_valid_variable_name(value):
         return True
     return False
+
+def try_conversion(value):
+    for item in value:
+        if item in string.ascii_letters:
+            return False
+    try:
+        convert_single_number(value)
+    except Exception:
+        return False
+    else:
+        return True
 
 def check_for_variables(input_):
     for letter in input_:
