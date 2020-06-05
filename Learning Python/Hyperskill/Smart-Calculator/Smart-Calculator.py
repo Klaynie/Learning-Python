@@ -19,34 +19,57 @@ def is_empty_line(input_):
 def is_single_number(input_):
     return ' ' not in input_
 
-def assign_variable(input_):
-    global user_outputs, variables_dict
+def split_input_into_assignment(input_):
     input_ = input_.replace(' ', '')
     try:
         key, value = input_.split(operator_symbols[2])
     except ValueError:
         print(user_outputs[6])
     else:
-        if not check_valid_variable_name(key):
-            print(user_outputs[4])
-        elif check_assignment(key, value):
-            if value.isdigit():
-                variables_dict[key] = int(value)
-            else:
-                try:
-                    variables_dict[value]
-                except KeyError:
-                    print(user_outputs[5])
-                else:
-                    variables_dict[key] = variables_dict[value]
-        elif not check_valid_content(key, value):
-            print(user_outputs[6])
-        elif value not in variables_dict.values():
-            print(user_outputs[5])
+        return key, value
+
+def variable_assignment(input_):
+    global user_outputs, variables_dict
+    try:
+        key, value = split_input_into_assignment(input_)
+    except TypeError:
+        pass
+    else:
+        if check_assignment(key, value):
+            assign_variable(key, value)
+
+def assign_variable(key, value):
+    global variables_dict
+    if value.isdigit():
+            variables_dict[key] = int(value)
+    else:
+        try:
+            variables_dict[value]
+        except KeyError:
+            print(user_outputs[5]) # Variable on right side of assignment is not defined
         else:
-            print(user_outputs[6])
+            variables_dict[key] = variables_dict[value]
 
 def check_assignment(key, value):
+    """ Will if the assignment can be performed, otherwise inform the user what went wrong.
+
+    key, value are derived from user input via split_input_into_assignment(input_) and need to be checked for validity
+    """
+    if check_assignment_validity(key, value):
+        return True
+    if not check_valid_variable_name(key):
+        print(user_outputs[4]) # Variable name is not valid
+        return False
+    if not check_valid_content(key, value):
+        print(user_outputs[6]) # Assignment is not valid
+        return False
+    if value not in variables_dict.values():
+        print(user_outputs[5]) # Variable on right side of assignment is not defined
+        return False
+    print(user_outputs[6]) # Fallback
+    return False
+
+def check_assignment_validity(key, value):
     return check_valid_variable_name(key) and check_valid_content(key, value)
 
 def check_valid_variable_name(input_):
@@ -74,9 +97,9 @@ def print_variable_content(input_):
     if input_ in variables_dict:
         print(variables_dict[input_])
     elif not check_valid_variable_name(input_):
-        print(user_outputs[4])
+        print(user_outputs[4]) # Invalid identifier
     else:
-        print(user_outputs[5])
+        print(user_outputs[5]) # Unknown variable
 
 def convert_single_number(input_):
     global operator_symbols
@@ -211,7 +234,7 @@ def input_handler(input_):
         elif check_for_variables(input_) and operator_symbols[0] not in input_ and operator_symbols[1] not in input_ and operator_symbols[2] not in input_:
             print_variable_content(input_)
         elif operator_symbols[2] in input_:
-            assign_variable(input_)
+            variable_assignment(input_)
         elif is_single_number(input_):
             print(convert_single_number(input_))
         else:        
