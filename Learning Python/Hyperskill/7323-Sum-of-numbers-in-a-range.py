@@ -20,15 +20,13 @@ Sample Output 2:
 9
 """
 
-def range_sum(numbers, a, b):
-    a, b = int(a), int(b)
+def range_sum(values, minimum, maximum):
     total = 0
-    for num in numbers:
-        num = int(num)
-        if a <= num <= b:
-            total += num
+    for number in values:
+        if minimum <= number <= maximum:
+            total += number
     return total
 
-numbers = input().split()
-a, b = input().split()
+numbers = [int(item) for item in input().split()]
+a, b = [int(item) for item in input().split()]
 print(range_sum(numbers, a, b))
