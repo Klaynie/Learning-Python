@@ -23,23 +23,31 @@ def assign_variable(input_):
     global user_outputs, variables_dict
     input_ = input_.replace(' ', '')
     try:
-        key, value = input_.split('=')
+        key, value = input_.split(operator_symbols[2])
     except ValueError:
         print(user_outputs[6])
     else:
         if not check_valid_variable_name(key):
             print(user_outputs[4])
-        elif check_valid_variable_name(key) and check_valid_content(key, value):
+        elif check_assignment(key, value):
             if value.isdigit():
                 variables_dict[key] = int(value)
             else:
-                variables_dict[key] = variables_dict[value]
-        elif value not in variables_dict.values():
-            print(user_outputs[5])
+                try:
+                    variables_dict[value]
+                except KeyError:
+                    print(user_outputs[5])
+                else:
+                    variables_dict[key] = variables_dict[value]
         elif not check_valid_content(key, value):
             print(user_outputs[6])
+        elif value not in variables_dict.values():
+            print(user_outputs[5])
         else:
             print(user_outputs[6])
+
+def check_assignment(key, value):
+    return check_valid_variable_name(key) and check_valid_content(key, value)
 
 def check_valid_variable_name(input_):
     for letter in input_:
@@ -51,8 +59,8 @@ def check_valid_content(key, value):
     global variables_dict
     if value.isdigit():
         return True
-    if check_valid_variable_name(key):
-        return value in variables_dict
+    if check_valid_variable_name(value):
+        return True
     return False
 
 def check_for_variables(input_):
