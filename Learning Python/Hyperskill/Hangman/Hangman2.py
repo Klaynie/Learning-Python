@@ -8,9 +8,21 @@ class GameSession():
         self.strikes = 0
         self.correctly_guessed_letters = set()
         self.guessed_letters = set()
-        self.word_to_guess = set_word_to_guess()
-        self.word_to_guess_set = generate_word_to_guess_set(self.word_to_guess)
+        self.word_to_guess = set_word_to_guess(word_list)
+        self.word_to_guess_set = set(self.word_to_guess)
         self.user_output_word = len(self.word_to_guess) * placeholder_character
+
+    def add_letter_to_guessed_letters(self, letter):
+        self.guessed_letters.add(letter)
+
+    def add_letter_to_corretcly_guessed_letters(self, letter):
+        self.correctly_guessed_letters.add(letter)
+
+    def is_letter_in_word_to_guess(self, letter):
+        return letter in self.word_to_guess_set
+
+    def update_user_output_word(self, word):
+        self.user_output_word = word
 
 class UserMessage(IntEnum):
     INPUT_LETTER = 0
@@ -22,7 +34,7 @@ class Keyword(IntEnum):
 
 class OutcomeMessage(IntEnum):
     NO_SUCH_LETTER = 0
-    YOU_GUESSED_RIGHT = 1
+    GUESSED_RIGHT = 1
     SURVIVED = 2
     HANGED = 3
 
@@ -41,19 +53,13 @@ word_list = ['python', 'java', 'kotlin', 'javascript']
 placeholder_character = '-'
 max_lives = 8
 
-
-def set_word_to_guess():
-    global word_list
+def set_word_to_guess(word_list):
     return random.choice(word_list)
-
-def is_letter_in_word_to_guess(input_, game_session):
-    return input_ in game_session.word_to_guess_set
 
 def has_more_than_one_letter(input_):
     return len(input_) != 1
 
 def input_guardian(input_, game_session):
-    global ascii_letters
     result = False
 
     if has_more_than_one_letter(input_):
@@ -69,30 +75,19 @@ def input_guardian(input_, game_session):
 
 def input_handler(input_, game_session):
     if input_guardian(input_, game_session):
-        add_letter_to_guessed_letters(input_, game_session)
-        if is_letter_in_word_to_guess(input_, game_session):
-            add_letter_to_corretcly_guessed_letters(input_, game_session)
-            update_user_output_word(generate_user_output_word(game_session), game_session)
+        game_session.add_letter_to_guessed_letters(input_)
+        if game_session.is_letter_in_word_to_guess(input_):
+            game_session.add_letter_to_corretcly_guessed_letters(input_)
+            game_session.update_user_output_word(generate_user_output_word(game_session))
         else:
             game_session.strikes += 1
             print(outcome_messages[OutcomeMessage.NO_SUCH_LETTER])
     else:
         return None
 
-def add_letter_to_corretcly_guessed_letters(letter, game_session):
-    game_session.correctly_guessed_letters.add(letter)
-
-def add_letter_to_guessed_letters(letter, game_session):
-    game_session.guessed_letters.add(letter)
-
-def update_user_output_word(word, game_session):
-    game_session.user_output_word = word
-
 def generate_user_output_word(game_session):
     regular_expr = get_regular_expression_for_user_output(game_session.user_output_word, game_session.correctly_guessed_letters)
-    result = re.sub(regular_expr, placeholder_character, game_session.word_to_guess)
-    game_session.user_output_word = result
-    return result
+    return re.sub(regular_expr, placeholder_character, game_session.word_to_guess)
 
 def get_regular_expression_for_user_output(user_output_word, correctly_guessed_letters):
     result = '[' + ascii_letters + ']'
@@ -100,23 +95,32 @@ def get_regular_expression_for_user_output(user_output_word, correctly_guessed_l
         result = result.replace(letter, '')
     return result
 
-def generate_word_to_guess_set(word_to_guess):
-    return set(word_to_guess)
-
 def output_loss():
+    print('\n')
     print(outcome_messages[OutcomeMessage.HANGED])
     print('\n')
 
-def output_win(game_session):
+def output_win():
     print('\n')
-    print(game_session.word_to_guess)
-    print(outcome_messages[OutcomeMessage.YOU_GUESSED_RIGHT])
+    print(outcome_messages[OutcomeMessage.GUESSED_RIGHT])
     print(outcome_messages[OutcomeMessage.SURVIVED])
     print('\n')
 
-def print_user_output_word(game_session):
+def print_session_close(game_session):
     print('\n')
     print(game_session.user_output_word)
+    if game_session.strikes == max_lives:
+        output_loss()
+    elif game_session.user_output_word == game_session.word_to_guess:
+        output_win()
+
+def session_over_condition(game_session):
+    result = False
+    if game_session.strikes == max_lives:
+        result = True
+    elif game_session.user_output_word == game_session.word_to_guess:
+        result = True
+    return result
 
 def session_loop():
     game_session = GameSession()
@@ -125,11 +129,8 @@ def session_loop():
         print('\n')
         print(game_session.user_output_word)
         input_handler(input(user_messages[UserMessage.INPUT_LETTER]), game_session)
-        if game_session.strikes == max_lives:
-            output_loss()
-            stay_in_session = False
-        elif game_session.user_output_word == game_session.word_to_guess:
-            output_win(game_session)
+        if session_over_condition(game_session):
+            print_session_close(game_session)
             stay_in_session = False
 
 def main_loop():
