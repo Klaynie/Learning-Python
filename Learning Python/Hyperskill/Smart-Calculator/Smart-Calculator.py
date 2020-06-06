@@ -25,6 +25,10 @@ class CommandKeyword(IntEnum):
     EXIT = 0
     HELP = 1
 
+class BracketSymbol(IntEnum):
+    OPEN = 0
+    CLOSE = 1
+
 commands = ['/exit','/help']
 user_outputs = ['Bye!',
                 'The program calculates the sum and difference of numbers, you can store numbers in variables', 
@@ -190,9 +194,6 @@ def generate_output_list(numbers, operators):
         convert_numbers_and_operators(start=1, end=len(numbers), numbers=numbers, operators=operators, output_list=output_list)
     return output_list
 
-def contains_plus_or_minus(string):
-    return operator_symbols[OperatorSymbol.PLUS] in string or operator_symbols[OperatorSymbol.MINUS] in string
-
 def convert_input(input_):
     global operator_symbols, variables_dict
     """ Converts the user input to be usable for calculations
@@ -221,9 +222,7 @@ def convert_input(input_):
                 numbers.append(variables_dict[item])
     return generate_output_list(numbers, operators)
 
-def convert_input2(input_):
-    global operator_symbols, bracket_symbols
-    postfix_stack = deque()
+def analyse_input(input_):
     analysis = []
     for item in input_:
         if item.isdigit():
@@ -236,23 +235,72 @@ def convert_input2(input_):
             analysis.append('letter')
         elif item == ' ':
             analysis.append('space')
+    return analysis
+
+def convert_input_to_list(analysis, input_):
+    input_list = []
     i = 0
     while i < len(input_) - 1:
         temp_item = ''
         if analysis[i] != analysis[i + 1] and input_[i] != ' ':
-            postfix_stack.append(input_[i])
+            input_list.append(input_[i])
         elif analysis[i] == analysis[i + 1]:
             temp_item += input_[i]
             while analysis[i] == analysis[i + 1] and i < len(input_) - 2:
                 i += 1
                 temp_item += input_[i]
-                print(i)
             if i == len(input_) - 2:
                 temp_item += input_[i + 1]
-            postfix_stack.append(temp_item)
-        if i == len(input_) - 2 and analysis[i] != analysis[i + 1] and input_[i] != ' ':
-            postfix_stack.append(input_[i + 1])
+            input_list.append(temp_item)
         i += 1
+    return input_list
+
+def compare_operator_precedence(item1, item2):
+    item1_priority = set_priority(item1)
+    item2_priority = set_priority(item2)
+    return item1_priority >= item2_priority
+
+def set_priority(operator):
+    priority = 0
+    if contains_plus_or_minus(operator):
+        priority = 1
+    elif contains_multiplication_or_division(operator):
+        priority = 2
+    elif operator == operator_symbols[OperatorSymbol.POWER]:
+        priority = 3
+    return priority
+
+def convert_input2(input_):
+    global operator_symbols, bracket_symbols
+    postfix_stack = deque()
+    operators_stack = deque()
+    input_list = convert_input_to_list(analyse_input(input_), input_)
+    for item in input_list:
+        if not contains_brackets(item) and not contains_operator_symbols(item):
+            postfix_stack.append(item)
+        elif contains_operator_symbols(item):
+            if contains_plus_or_minus(item) and contains_multiplication_or_division(item):
+                print(user_outputs[UserOutput.INVALID_EXPRESSION])
+            elif contains_multiplication_or_division(item) and len(item) > 1:
+                print(user_outputs[UserOutput.INVALID_EXPRESSION])
+            elif contains_plus_or_minus(item):
+                item = convert_operator_string(item)
+            if len(operators_stack) == 0 or operators_stack[-1] == bracket_symbols[BracketSymbol.OPEN]:
+                operators_stack.append(item)
+            elif compare_operator_precedence(item, operators_stack[-1]):
+                operators_stack.append(item)
+            elif not compare_operator_precedence(item, operators_stack[-1]):
+                postfix_stack.append(operators_stack.pop())
+                operators_stack.append(item)
+        elif item == bracket_symbols[BracketSymbol.OPEN]:
+            operators_stack.append(item)
+        elif item == bracket_symbols[BracketSymbol.CLOSE]:
+            while operators_stack[-1] != bracket_symbols[BracketSymbol.OPEN]:
+                postfix_stack.append(operators_stack.pop())
+            operators_stack.pop()
+    #for _ in range(len(operators_stack)):
+        #postfix_stack.append(operators_stack.pop())
+        #print(postfix_stack, operators_stack)
     return postfix_stack
 
 def check_postfix_stack(stack):
@@ -314,19 +362,28 @@ def input_guardian(input_):
 
     return result
 
-def contains_operator_symbols(input_):
+def contains_brackets(string):
+    return bracket_symbols[BracketSymbol.OPEN] in string or bracket_symbols[BracketSymbol.CLOSE] in string
+
+def contains_plus_or_minus(string):
+    return operator_symbols[OperatorSymbol.PLUS] in string or operator_symbols[OperatorSymbol.MINUS] in string
+
+def contains_multiplication_or_division(string):
+    return operator_symbols[OperatorSymbol.TIMES] in string or operator_symbols[OperatorSymbol.DIVISION] in string
+
+def contains_operator_symbols(string):
     global operator_symbols
     result = False
 
-    if operator_symbols[OperatorSymbol.PLUS] in input_:
+    if operator_symbols[OperatorSymbol.PLUS] in string:
         result = True
-    elif operator_symbols[OperatorSymbol.MINUS] in input_:
+    elif operator_symbols[OperatorSymbol.MINUS] in string:
         result = True
-    elif operator_symbols[OperatorSymbol.TIMES] in input_:
+    elif operator_symbols[OperatorSymbol.TIMES] in string:
         result = True
-    elif operator_symbols[OperatorSymbol.DIVISION] in input_:
+    elif operator_symbols[OperatorSymbol.DIVISION] in string:
         result = True
-    elif operator_symbols[OperatorSymbol.POWER] in input_:
+    elif operator_symbols[OperatorSymbol.POWER] in string:
         result = True
     
     return result
@@ -351,7 +408,7 @@ def input_handler(input_):
         elif is_single_number(input_):
             print(convert_single_number(input_))
         else:        
-            print(sum(convert_input(input_)))
+            convert_input2(input_)
     elif not input_guardian(input_):
         print(user_outputs[UserOutput.INVALID_EXPRESSION])
 
@@ -361,6 +418,12 @@ def calculator_loop():
         input_ = input()
         input_handler(input_)
 
-calculator_loop()
+#calculator_loop()
 
-#print(convert_input2('888*3+-+12*(4-2)+BIG'))
+#print(convert_input2('8*3+12*(4-2)'))
+print(analyse_input('888*3+12*(4-2)'))
+print(convert_input_to_list(analyse_input('888*3+12*(4-2)'), '888*3+12*(4-2)'))
+print(analyse_input('3 + 2 * 4'))
+print(convert_input_to_list(analyse_input('3 + 2 * 4'), '3 + 2 * 4'))
+#print(convert_input2('3 + 2 * 4'))
+#print(convert_input2('2 * (3 + 4) + 1'))
