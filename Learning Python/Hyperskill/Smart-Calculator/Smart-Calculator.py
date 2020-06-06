@@ -1,4 +1,5 @@
 import string
+from collections import deque
 
 commands = ['/exit','/help']
 user_outputs = ['Bye!',
@@ -9,7 +10,8 @@ user_outputs = ['Bye!',
                 'Unknown variable',
                 'Invalid assignment']
 command_start_symbol = '/'
-operator_symbols = ['+', '-', '=']
+operator_symbols = ['+', '-', '=', '*', '/', '^']
+bracket_symbols = ['(', ')']
 variables_dict = {}
 keep_going = True
 
@@ -182,6 +184,43 @@ def convert_input(input_):
                 numbers.append(variables_dict[item])
     return generate_output_list(numbers, operators)
 
+def convert_input2(input_):
+    global operator_symbols, bracket_symbols
+    postfix_stack = deque()
+    analysis = []
+    for item in input_:
+        if item.isdigit():
+            analysis.append('digit')
+        elif item in operator_symbols:
+            analysis.append('operator')
+        elif item in bracket_symbols:
+            analysis.append('bracket')
+        elif item in string.ascii_letters:
+            analysis.append('letter')
+        elif item == ' ':
+            analysis.append('space')
+    i = 0
+    while i < len(input_) - 1:
+        temp_item = ''
+        if analysis[i] != analysis[i + 1] and input_[i] != ' ':
+            postfix_stack.append(input_[i])
+        elif analysis[i] == analysis[i + 1]:
+            temp_item += input_[i]
+            while analysis[i] == analysis[i + 1] and i < len(input_) - 2:
+                i += 1
+                temp_item += input_[i]
+                print(i)
+            if i == len(input_) - 2:
+                temp_item += input_[i + 1]
+            postfix_stack.append(temp_item)
+        if i == len(input_) - 2 and analysis[i] != analysis[i + 1] and input_[i] != ' ':
+            postfix_stack.append(input_[i + 1])
+        i += 1
+    return postfix_stack
+
+def check_postfix_stack(stack):
+    pass
+
 def convert_operator_string(operator_string):
     """ Converts the multiple addition and subtraction sings into one sign
     
@@ -264,3 +303,5 @@ def calculator_loop():
         input_handler(input_)
 
 calculator_loop()
+
+#print(convert_input2('888*3+-+12*(4-2)+BIG'))
