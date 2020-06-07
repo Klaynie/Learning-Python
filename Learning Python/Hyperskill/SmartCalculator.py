@@ -406,37 +406,38 @@ def check_for_matching_brackets(input_):
         result = True
     return result
 
-def contains_brackets(string):
-    return bracket_symbols[BracketSymbol.OPEN] in string or bracket_symbols[BracketSymbol.CLOSE] in string
+def contains_brackets(input_):
+    return bracket_symbols[BracketSymbol.OPEN] in input_ or bracket_symbols[BracketSymbol.CLOSE] in input_
 
-def contains_plus_or_minus(string):
-    return operator_symbols[OperatorSymbol.PLUS] in string or operator_symbols[OperatorSymbol.MINUS] in string
+def contains_plus_or_minus(input_):
+    return operator_symbols[OperatorSymbol.PLUS] in input_ or operator_symbols[OperatorSymbol.MINUS] in input_
 
-def contains_multiplication_or_division(string):
-    return operator_symbols[OperatorSymbol.TIMES] in string or operator_symbols[OperatorSymbol.DIVISION] in string
+def contains_multiplication_or_division(input_):
+    return operator_symbols[OperatorSymbol.TIMES] in input_ or operator_symbols[OperatorSymbol.DIVISION] in input_
 
-def contains_operator_symbols(string):
+def contains_operator_symbols(input_):
     result = False
 
-    if operator_symbols[OperatorSymbol.PLUS] in string:
+    if operator_symbols[OperatorSymbol.PLUS] in input_:
         result = True
-    elif operator_symbols[OperatorSymbol.MINUS] in string:
+    elif operator_symbols[OperatorSymbol.MINUS] in input_:
         result = True
-    elif operator_symbols[OperatorSymbol.TIMES] in string:
+    elif operator_symbols[OperatorSymbol.TIMES] in input_:
         result = True
-    elif operator_symbols[OperatorSymbol.DIVISION] in string:
+    elif operator_symbols[OperatorSymbol.DIVISION] in input_:
         result = True
-    elif operator_symbols[OperatorSymbol.POWER] in string:
+    elif operator_symbols[OperatorSymbol.POWER] in input_:
         result = True
     
     return result
 
-def is_variable(string):
-    result = False
+def is_variable(input_):
+    result = True
+    all_letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-    for item in string.ascii_letters:
-        if item in string:
-            result = True
+    for letter in input_:
+        if letter not in all_letters:
+            result = False
     
     return result
 
@@ -474,4 +475,4 @@ def calculator_loop():
 #check_all_variables_declared(input_)
 #check_for_valid_math(input_)
 #check_for_matching_brackets(input_)
-#is_variable(string)
+print(is_variable('a'))
