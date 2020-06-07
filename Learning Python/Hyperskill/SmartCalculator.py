@@ -320,7 +320,7 @@ def postfix_calculation(postfix_stack):
             calculation_second_number = calculation_stack.pop() # Number on top of the stack is the second number for calculation
             calculation_first_number = calculation_stack.pop() # Second number in the stack is the first number for calculation
             calculation_stack.append(perform_postfix_calculation(calculation_first_number, item, calculation_second_number))
-    result = int(calculation_stack.pop())
+    result = calculation_stack.pop()
     return result
 
 def perform_postfix_calculation(first_number, operator, second_number):
@@ -340,7 +340,12 @@ def perform_postfix_calculation(first_number, operator, second_number):
     elif operator == operator_symbols[OperatorSymbol.POWER]:
         result = first_number ** second_number
     elif operator == operator_symbols[OperatorSymbol.DIVISION]:
-        result = first_number / second_number
+        try:
+            first_number / second_number
+        except ZeroDivisionError:
+            result = 'NaN'
+        else:
+            result = first_number / second_number
     return result
 
 def get_variable_value(variable):
