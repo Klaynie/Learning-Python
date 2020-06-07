@@ -253,6 +253,8 @@ def convert_input_to_list(analysis, input_):
                 temp_item += input_[i + 1]
             input_list.append(temp_item)
         i += 1
+        if i == len(input_) - 1 and analysis[i - 1] != analysis[i] and input_[i] != ' ':
+            input_list.append(input_[i])
     return input_list
 
 def compare_operator_precedence(item1, item2):
@@ -421,9 +423,5 @@ def calculator_loop():
 #calculator_loop()
 
 #print(convert_input2('8*3+12*(4-2)'))
-print(analyse_input('888*3+12*(4-2)'))
-print(convert_input_to_list(analyse_input('888*3+12*(4-2)'), '888*3+12*(4-2)'))
-print(analyse_input('3 + 2 * 4'))
-print(convert_input_to_list(analyse_input('3 + 2 * 4'), '3 + 2 * 4'))
 #print(convert_input2('3 + 2 * 4'))
 #print(convert_input2('2 * (3 + 4) + 1'))
