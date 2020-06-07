@@ -300,9 +300,8 @@ def convert_input2(input_):
             while operators_stack[-1] != bracket_symbols[BracketSymbol.OPEN]:
                 postfix_stack.append(operators_stack.pop())
             operators_stack.pop()
-    #for _ in range(len(operators_stack)):
-        #postfix_stack.append(operators_stack.pop())
-        #print(postfix_stack, operators_stack)
+    for _ in range(len(operators_stack)):
+        postfix_stack.append(operators_stack.pop())
     return postfix_stack
 
 def check_postfix_stack(stack):
@@ -422,6 +421,7 @@ def calculator_loop():
 
 #calculator_loop()
 
-#print(convert_input2('8*3+12*(4-2)'))
+print(convert_input_to_list(analyse_input('8*3+12*(4-2)'), '8*3+12*(4-2)'))
+print(convert_input2('8*3+12*(4-2)'))
 #print(convert_input2('3 + 2 * 4'))
 #print(convert_input2('2 * (3 + 4) + 1'))
