@@ -181,3 +181,23 @@ class CheckPostfixCalculation(unittest.TestCase):
         def test_postfix_calculation_9(self):
             string = '3 + 8 * ((4 + 3) * 2 + 1) - 6 / (2 + 1)'
             self.assertTrue(postfix_calculation(convert_input(string)) == 121)
+
+        def test_postfix_calculation_10(self):
+            string = '-2+3'
+            self.assertTrue(postfix_calculation(convert_input(string)) == 1)
+
+        def test_postfix_calculation_11(self):
+            string = '-(2+3)'
+            self.assertTrue(postfix_calculation(convert_input(string)) == -5)
+
+        def test_postfix_calculation_12(self):
+            string = '+2+3'
+            self.assertTrue(postfix_calculation(convert_input(string)) == 5)
+
+        def test_postfix_calculation_13(self):
+            string = '(2+3)'
+            self.assertTrue(postfix_calculation(convert_input(string)) == 5)
+
+        def test_postfix_calculation_14(self):
+            string = '(2+3)-(2+3)'
+            self.assertTrue(postfix_calculation(convert_input(string)) == 0)

@@ -253,6 +253,7 @@ def convert_input(input_):
        see a left parenthesis. Discard the pair of parentheses.
     7) At the end of the expression, pop the stack and add all operators to the result.
     """
+    # Find Algorithm to solve issue with expressions that start with '-'
     global operator_symbols, bracket_symbols
     postfix_stack = deque()
     operators_stack = deque()
@@ -311,18 +312,28 @@ def postfix_calculation(postfix_stack):
     """
     # ToDo: Bugfixing for expressions that start with '-'
     calculation_stack = deque()
+    postfix_stack = convert_postfix_stack_for_calculation(postfix_stack)
     for item in postfix_stack:
-        if not contains_operator_symbols(item):
-            if item.isdigit():
-                calculation_stack.append(int(item))
-            else:
-                calculation_stack.append(get_variable_value(item))
-        if contains_operator_symbols(item):
+        if type(item) == int:
+            calculation_stack.append(item)
+        else:
             calculation_second_number = calculation_stack.pop() # Number on top of the stack is the second number for calculation
             calculation_first_number = calculation_stack.pop() # Second number in the stack is the first number for calculation
             calculation_stack.append(perform_postfix_calculation(calculation_first_number, item, calculation_second_number))
     result = calculation_stack.pop()
     return result
+
+def convert_postfix_stack_for_calculation(postfix_stack):
+    converted_postfix_stack = deque()
+    for item in postfix_stack:
+        if not contains_operator_symbols(item):
+            if item.isdigit():
+                converted_postfix_stack.append(int(item))
+            else:
+                converted_postfix_stack.append(get_variable_value(item))
+        else:
+            converted_postfix_stack.append(item)
+    return converted_postfix_stack
 
 def perform_postfix_calculation(first_number, operator, second_number):
     """ Decodes the operator string and performs the required calculation
@@ -519,4 +530,6 @@ def calculator_loop():
         input_handler(input_)
 
 if __name__ == "__main__":
-    calculator_loop()
+    #calculator_loop()
+    #print(postfix_calculation(convert_input('-(2+3)')))
+    print(postfix_calculation(convert_input('-2+3')))
