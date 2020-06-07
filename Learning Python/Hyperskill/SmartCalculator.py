@@ -309,6 +309,7 @@ def postfix_calculation(postfix_stack):
     3) If the incoming element is an operator, then pop twice to get two numbers and perform the operation; push the result on the stack.
     4) When the expression ends, the number on the top of the stack is a final result.
     """
+    # ToDo: Bugfixing for expressions that start with '-'
     calculation_stack = deque()
     for item in postfix_stack:
         if not contains_operator_symbols(item):
