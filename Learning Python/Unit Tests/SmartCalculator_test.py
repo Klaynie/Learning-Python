@@ -152,28 +152,32 @@ class CheckIsSingleNumberTestCases(unittest.TestCase):
 class CheckPostfixCalculation(unittest.TestCase):
         def test_postfix_calculation_1(self):
             string = '2 + 2'
-            self.assertTrue(postfix_calculation(convert_input2(string)) == 4)
+            self.assertTrue(postfix_calculation(convert_input(string)) == 4)
 
         def test_postfix_calculation_2(self):
             string = '2+2'
-            self.assertTrue(postfix_calculation(convert_input2(string)) == 4)
+            self.assertTrue(postfix_calculation(convert_input(string)) == 4)
 
         def test_postfix_calculation_3(self):
             string = '2^2'
-            self.assertTrue(postfix_calculation(convert_input2(string)) == 4)
+            self.assertTrue(postfix_calculation(convert_input(string)) == 4)
 
         def test_postfix_calculation_4(self):
             string = '2*2^3'
-            self.assertTrue(postfix_calculation(convert_input2(string)) == 16)
+            self.assertTrue(postfix_calculation(convert_input(string)) == 16)
 
         def test_postfix_calculation_5(self):
             string = '8 * 3 + 12 * (4 - 2)'
-            self.assertTrue(postfix_calculation(convert_input2(string)) == 48)
+            self.assertTrue(postfix_calculation(convert_input(string)) == 48)
 
         def test_postfix_calculation_7(self):
             string = '1 +++ 2 * 3 -- 4'
-            self.assertTrue(postfix_calculation(convert_input2(string)) == 11)
+            self.assertTrue(postfix_calculation(convert_input(string)) == 11)
 
         def test_postfix_calculation_8(self):
             string = '2 - 2 + 3'
-            self.assertTrue(postfix_calculation(convert_input2(string)) == 3)
+            self.assertTrue(postfix_calculation(convert_input(string)) == 3)
+
+        def test_postfix_calculation_9(self):
+            string = '3 + 8 * ((4 + 3) * 2 + 1) - 6 / (2 + 1)'
+            self.assertTrue(postfix_calculation(convert_input(string)) == 121)

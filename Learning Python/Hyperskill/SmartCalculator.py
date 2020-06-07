@@ -174,60 +174,6 @@ def convert_single_number(input_):
         sign = ''
     return sign+number
 
-def convert_numbers_and_operators(start, end, numbers, operators, output_list):
-    """ Converts numbers and operators list into one list of signed numbers
-    
-    numbers and operators list can be of different length so operators index value has to be shifted
-    """
-    for list_iterator in range(start, end):
-        output_list.append(numbers[list_iterator] * int(operators[list_iterator - start] + '1'))
-    return output_list
-
-def generate_output_list(numbers, operators):
-    """ Combines numbers and operators list into one list
-
-    The numbers and operators are combined intto a list of signed values
-    to use the built in sum method to perfom addition and subtraction with of
-    all user provided numbers.
-
-    numbers: list containing only numbers
-    operators: list containing mathematical operator symbol
-    """
-    output_list = []
-    if len(numbers) == len(operators):
-        convert_numbers_and_operators(start=0, end=len(numbers), numbers=numbers, operators=operators, output_list=output_list)
-    elif len(numbers) != len(operators):
-        output_list.append(numbers[0])
-        convert_numbers_and_operators(start=1, end=len(numbers), numbers=numbers, operators=operators, output_list=output_list)
-    return output_list
-
-def convert_input(input_):
-    """ Converts the user input to be usable for calculations
-    
-    The user input needs to be converted into operators and numbers
-    """
-    if input_.startswith(operator_symbols[OperatorSymbol.PLUS]):
-        input_ = input_.replace(operator_symbols[OperatorSymbol.PLUS], operator_symbols[OperatorSymbol.PLUS] + ' ', 1)
-    elif input_.startswith(operator_symbols[OperatorSymbol.MINUS]):
-        input_ = input_.replace(operator_symbols[OperatorSymbol.MINUS], operator_symbols[OperatorSymbol.MINUS] + ' ', 1)
-    items = [item for item in input_.split()]
-    numbers = []
-    operators = []
-    for item in items:
-        if item.isdigit():
-            numbers.append(int(item))
-        else:
-            try:
-                variables_dict[item]
-            except KeyError:
-                if contains_plus_or_minus(item):
-                    operators.append(convert_operator_string(item))
-                else:
-                    print(user_outputs[UserOutput.UNKNOW_VARIABLE])
-            else:
-                numbers.append(variables_dict[item])
-    return generate_output_list(numbers, operators)
-
 def analyse_input(input_):
     analysis = []
     for item in input_:
@@ -251,11 +197,11 @@ def convert_input_to_list(analysis, input_):
     elif len(input_) > 1:
         while i < len(input_) - 1:
             temp_item = ''
-            if analysis[i] != analysis[i + 1] and input_[i] != ' ':
+            if analysis[i] != analysis[i + 1] and input_[i] != ' ' or analysis[i] == 'bracket':
                 input_list.append(input_[i])
-            elif analysis[i] == analysis[i + 1]:
+            elif analysis[i] == analysis[i + 1] and analysis[i] != 'bracket':
                 temp_item += input_[i]
-                while analysis[i] == analysis[i + 1] and i < len(input_) - 2:
+                while analysis[i] == analysis[i + 1] and analysis[i] != 'bracket' and i < len(input_) - 2:
                     i += 1
                     temp_item += input_[i]
                 if i == len(input_) - 2:
@@ -282,7 +228,7 @@ def set_priority(operator):
         priority = 3
     return priority
 
-def convert_input2(input_):
+def convert_input(input_):
     global operator_symbols, bracket_symbols
     postfix_stack = deque()
     operators_stack = deque()
@@ -525,7 +471,7 @@ def input_handler(input_):
         elif check_for_variables(input_) and not contains_operator_symbols(input_):
             print_variable_content(input_)
         else:        
-            print(postfix_calculation(convert_input2(input_)))
+            print(postfix_calculation(convert_input(input_)))
     elif not input_guardian(input_):
         print(user_outputs[UserOutput.INVALID_EXPRESSION])
 
@@ -536,4 +482,5 @@ def calculator_loop():
         input_handler(input_)
 
 if __name__ == "__main__":
-    calculator_loop()
+    #calculator_loop()
+    convert_input('3 + 8 * ((4 + 3) * 2 + 1) - 6 / (2 + 1)')
