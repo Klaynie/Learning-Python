@@ -1,5 +1,5 @@
 import sys  
-sys.path.append('Hyperskill\Smart-Calculator')
+sys.path.append('Hyperskill')
 from SmartCalculator import *
 import unittest
 
