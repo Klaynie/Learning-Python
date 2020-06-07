@@ -112,46 +112,47 @@ def check_assignment(key, value):
         result = False
     else:
         print(user_outputs[UserOutput.INVALID_ASSIGNMENT])
-    
     return result
 
 def check_assignment_validity(key, value):
     return check_valid_variable_name(key) and check_valid_content(key, value)
 
 def check_valid_variable_name(input_):
+    result = True
     for letter in input_:
         if letter not in all_letters:
-            return False
-    return True
+            result = False
+    return result
 
 def check_valid_content(key, value):
     result = False
-
     if value.isdigit():
         result = True
     elif try_conversion(value):
         result = True
     elif check_valid_variable_name(value):
         result = True
-
     return result
 
 def try_conversion(value):
+    result = True
     for item in value:
         if item in all_letters:
-            return False
+            result = False
     try:
         convert_single_number(value)
     except Exception:
-        return False
+        result = False
     else:
-        return True
+        result = True
+    return result
 
 def check_for_variables(input_):
+    result = False
     for letter in input_:
         if letter in all_letters:
-            return True
-    return False
+            result = True
+    return result
 
 def print_variable_content(input_):
     if input_ in variables_dict:
@@ -172,33 +173,34 @@ def convert_single_number(input_):
     sign = convert_operator_string(operator_string)
     if sign == operator_symbols[OperatorSymbol.PLUS]:
         sign = ''
-    return sign+number
+    result = sign+number
+    return result
 
 def analyse_input(input_):
-    analysis = []
+    result = []
     for item in input_:
         if item.isdigit():
-            analysis.append('digit')
+            result.append('digit')
         elif item in operator_symbols:
-            analysis.append('operator')
+            result.append('operator')
         elif item in bracket_symbols:
-            analysis.append('bracket')
+            result.append('bracket')
         elif item in all_letters:
-            analysis.append('letter')
+            result.append('letter')
         elif item == ' ':
-            analysis.append('space')
-    return analysis
+            result.append('space')
+    return result
 
 def convert_input_to_list(analysis, input_):
-    input_list = []
+    result = []
     i = 0
     if len(input_) == 1:
-        input_list.append(input_[i])
+        result.append(input_[i])
     elif len(input_) > 1:
         while i < len(input_) - 1:
             temp_item = ''
             if analysis[i] != analysis[i + 1] and input_[i] != ' ' or analysis[i] == 'bracket':
-                input_list.append(input_[i])
+                result.append(input_[i])
             elif analysis[i] == analysis[i + 1] and analysis[i] != 'bracket':
                 temp_item += input_[i]
                 while analysis[i] == analysis[i + 1] and analysis[i] != 'bracket' and i < len(input_) - 2:
@@ -206,34 +208,30 @@ def convert_input_to_list(analysis, input_):
                     temp_item += input_[i]
                 if i == len(input_) - 2:
                     temp_item += input_[i + 1]
-                input_list.append(temp_item)
+                result.append(temp_item)
             i += 1
             if i == len(input_) - 1 and analysis[i - 1] != analysis[i] and input_[i] != ' ':
-                input_list.append(input_[i])
-    
-    return input_list
+                result.append(input_[i])
+    return result
 
 def compare_operator_precedence(item1, item2):
-    item1_priority = set_priority(item1)
-    item2_priority = set_priority(item2)
-    return item1_priority > item2_priority
+    return set_priority(item1) > set_priority(item2)
 
 def set_priority(operator):
-    priority = 0
+    result = 0
     if contains_plus_or_minus(operator):
-        priority = 1
+        result = 1
     elif contains_multiplication_or_division(operator):
-        priority = 2
+        result = 2
     elif operator == operator_symbols[OperatorSymbol.POWER]:
-        priority = 3
-    return priority
+        result = 3
+    return result
 
 def convert_input(input_):
     global operator_symbols, bracket_symbols
     postfix_stack = deque()
     operators_stack = deque()
     input_list = convert_input_to_list(analyse_input(input_), input_)
-
     for item in input_list:
         if not contains_brackets(item) and not contains_operator_symbols(item):
             postfix_stack.append(item)
@@ -255,7 +253,6 @@ def convert_input(input_):
             operators_stack.pop()
     for _ in range(len(operators_stack)):
         postfix_stack.append(operators_stack.pop())
-
     return postfix_stack
 
 def convert_operator_string(operator_string):
@@ -263,23 +260,24 @@ def convert_operator_string(operator_string):
     
     The number of minus signs defines the algebraic sign of the number
     """
+    result = ''
     if not contains_plus_or_minus(operator_string):
-        return operator_string
+        result = operator_string
     elif operator_symbols[OperatorSymbol.MINUS] not in operator_string:
-        return operator_symbols[OperatorSymbol.PLUS]
+        result = operator_symbols[OperatorSymbol.PLUS]
     else:
         count_minus_sign = 0
         for sign in operator_string:
             if sign == operator_symbols[OperatorSymbol.MINUS]:
                 count_minus_sign += 1
         if count_minus_sign % 2 == 0:
-            return operator_symbols[OperatorSymbol.PLUS]
+            result = operator_symbols[OperatorSymbol.PLUS]
         else:
-            return operator_symbols[OperatorSymbol.MINUS]
+            result = operator_symbols[OperatorSymbol.MINUS]
+    return result
 
 def postfix_calculation(postfix_stack):
     calculation_stack = deque()
-
     for item in postfix_stack:
         if not contains_operator_symbols(item):
             if item.isdigit():
@@ -288,14 +286,11 @@ def postfix_calculation(postfix_stack):
                 calculation_stack.append(get_variable_value(item))
         if contains_operator_symbols(item):
             calculation_stack.append(perform_postfix_calculation(calculation_stack.pop(), item, calculation_stack.pop()))
-    
     result = int(calculation_stack.pop())
-
     return result
 
 def perform_postfix_calculation(second_number, operator, first_number):
     result = 0
-
     if operator == operator_symbols[OperatorSymbol.PLUS]:
        result = first_number + second_number
     elif operator == operator_symbols[OperatorSymbol.MINUS]:
@@ -306,7 +301,6 @@ def perform_postfix_calculation(second_number, operator, first_number):
         result = first_number ** second_number
     elif operator == operator_symbols[OperatorSymbol.DIVISION]:
         result = first_number / second_number
-    
     return result
 
 def get_variable_value(variable):
@@ -370,14 +364,12 @@ def input_guardian(input_):
 def check_all_variables_declared(input_):
     result = True
     input_list = convert_input_to_list(analyse_input(input_), input_)
-
     for item in input_list:
         if is_variable(item):
             try:
                 variables_dict[item]
             except KeyError:
                 result = False
-
     return result
 
 def check_for_valid_math(input_):
@@ -396,14 +388,12 @@ def check_for_valid_math(input_):
                 result = False
             elif contains_multiplication_or_division(item) and len(item) > 1:
                 result = False
-
     return result
 
 def check_for_matching_brackets(input_):
     result = False
     stack = []
     error_counter = 0
-
     for symbol in input_:
         if symbol == bracket_symbols[BracketSymbol.OPEN]:
             stack.append(symbol)
@@ -412,10 +402,8 @@ def check_for_matching_brackets(input_):
                 stack.pop()
             except IndexError:
                 error_counter += 1
-
     if len(stack) == 0 and error_counter == 0:
         result = True
-
     return result
 
 def contains_brackets(input_):
@@ -429,7 +417,6 @@ def contains_multiplication_or_division(input_):
 
 def contains_operator_symbols(input_):
     result = False
-
     if operator_symbols[OperatorSymbol.PLUS] in input_:
         result = True
     elif operator_symbols[OperatorSymbol.MINUS] in input_:
@@ -440,16 +427,13 @@ def contains_operator_symbols(input_):
         result = True
     elif operator_symbols[OperatorSymbol.POWER] in input_:
         result = True
-    
     return result
 
 def is_variable(input_):
     result = True
-
     for letter in input_:
         if letter not in all_letters:
             result = False
-    
     return result
 
 def input_handler(input_):
