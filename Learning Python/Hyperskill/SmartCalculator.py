@@ -233,6 +233,7 @@ def convert_input(input_):
     postfix_stack = deque()
     operators_stack = deque()
     input_list = convert_input_to_list(analyse_input(input_), input_)
+
     for item in input_list:
         if not contains_brackets(item) and not contains_operator_symbols(item):
             postfix_stack.append(item)
@@ -254,6 +255,7 @@ def convert_input(input_):
             operators_stack.pop()
     for _ in range(len(operators_stack)):
         postfix_stack.append(operators_stack.pop())
+
     return postfix_stack
 
 def convert_operator_string(operator_string):
@@ -286,8 +288,10 @@ def postfix_calculation(postfix_stack):
                 calculation_stack.append(get_variable_value(item))
         if contains_operator_symbols(item):
             calculation_stack.append(perform_postfix_calculation(calculation_stack.pop(), item, calculation_stack.pop()))
+    
+    result = int(calculation_stack.pop())
 
-    return calculation_stack.pop()
+    return result
 
 def perform_postfix_calculation(second_number, operator, first_number):
     result = 0
