@@ -163,6 +163,10 @@ def print_variable_content(input_):
         print(user_outputs[UserOutput.UNKNOW_VARIABLE])
 
 def convert_single_number(input_):
+    """ Prepare single numbers for printing
+    
+    Single input numbers can contain multiple operator plus or minus signs in front of them
+    """
     operator_string = ''
     number = ''
     for item in input_:
@@ -177,6 +181,14 @@ def convert_single_number(input_):
     return result
 
 def analyse_input(input_):
+    """ Dividing user input into categories for later usage
+    
+    numerical values: 'digit'
+    operators: 'operator'
+    brackets: 'bracket'
+    ASCII-letters: 'letter'
+    Whitespace: 'space'
+    """
     result = []
     for item in input_:
         if item.isdigit():
@@ -228,6 +240,19 @@ def set_priority(operator):
     return result
 
 def convert_input(input_):
+    """ Converts the input into Postfix Notation via the following algorithm
+    
+    1) Add operands (numbers and variables) to the result (postfix notation) as they arrive.
+    2) If the stack is empty or contains a left parenthesis on top, push the incoming operator on the stack.
+    3) If the incoming operator has higher precedence than the top of the stack, push it on the stack.
+    4) If the incoming operator has lower or equal precedence than or to the top of the stack, pop the stack and
+       add operators to the result until you see an operator that has a smaller precedence or a left parenthesis 
+       on the top of the stack; then add the incoming operator to the stack.
+    5) If the incoming element is a left parenthesis, push it on the stack.
+    6) If the incoming element is a right parenthesis, pop the stack and add operators to the result until you 
+       see a left parenthesis. Discard the pair of parentheses.
+    7) At the end of the expression, pop the stack and add all operators to the result.
+    """
     global operator_symbols, bracket_symbols
     postfix_stack = deque()
     operators_stack = deque()
@@ -277,6 +302,13 @@ def convert_operator_string(operator_string):
     return result
 
 def postfix_calculation(postfix_stack):
+    """ Performs mathematical calculation with the postfix notation algorithm
+    
+    1) If the incoming element is a number, push it into the stack (the whole number, not a single digit!).
+    2) If the incoming element is the name of a variable, push its value into the stack.
+    3) If the incoming element is an operator, then pop twice to get two numbers and perform the operation; push the result on the stack.
+    4) When the expression ends, the number on the top of the stack is a final result.
+    """
     calculation_stack = deque()
     for item in postfix_stack:
         if not contains_operator_symbols(item):
@@ -285,11 +317,19 @@ def postfix_calculation(postfix_stack):
             else:
                 calculation_stack.append(get_variable_value(item))
         if contains_operator_symbols(item):
-            calculation_stack.append(perform_postfix_calculation(calculation_stack.pop(), item, calculation_stack.pop()))
+            calculation_second_number = calculation_stack.pop() # Number on top of the stack is the second number for calculation
+            calculation_first_number = calculation_stack.pop() # Second number in the stack is the first number for calculation
+            calculation_stack.append(perform_postfix_calculation(calculation_first_number, item, calculation_second_number))
     result = int(calculation_stack.pop())
     return result
 
-def perform_postfix_calculation(second_number, operator, first_number):
+def perform_postfix_calculation(first_number, operator, second_number):
+    """ Decodes the operator string and performs the required calculation
+
+    first_number: integer
+    operator: string
+    second_number: integer
+    """
     result = 0
     if operator == operator_symbols[OperatorSymbol.PLUS]:
        result = first_number + second_number
@@ -358,7 +398,6 @@ def input_guardian(input_):
             result = False
         elif not check_all_variables_declared(input_):
             result = False
-    
     return result
 
 def check_all_variables_declared(input_):
@@ -382,7 +421,6 @@ def check_for_valid_math(input_):
         if contains_brackets(input_):
             if not check_for_matching_brackets(input_):
                 result = False
-    
         for item in input_list:
             if contains_plus_or_minus(item) and contains_multiplication_or_division(item):
                 result = False
@@ -391,6 +429,10 @@ def check_for_valid_math(input_):
     return result
 
 def check_for_matching_brackets(input_):
+    """ The number of opening brackets should match the number of closing brackets
+
+    If there is a closing bracket before an opening bracket the function should return False
+    """
     result = False
     stack = []
     error_counter = 0
@@ -439,9 +481,11 @@ def is_variable(input_):
 def input_handler(input_):
     """ Checks the user input and passes it to the correct function
     
-    The guardian will check if the input format is
+    The guardian will check if the input format is technically correct and contains no undeclared variables
     input that starts with "/" has to go to the command function
-    If there is no empty space in the input it will be printed as is, otherwise the sum of all items is calculated
+    input lines only containing the variable name should print the variable content
+    input lines only containing a single number should print that number
+    other input will be calculated
     """
     if input_guardian(input_):
         if input_.startswith(command_start_symbol):
