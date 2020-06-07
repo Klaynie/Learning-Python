@@ -60,7 +60,6 @@ def split_input_into_assignment(input_):
         return key, value
 
 def variable_assignment(input_):
-    global user_outputs, variables_dict
     try:
         key, value = split_input_into_assignment(input_)
     except TypeError:
@@ -70,7 +69,6 @@ def variable_assignment(input_):
             assign_variable(key, value)
 
 def assign_variable(key, value):
-    global variables_dict
     try:
         int(convert_single_number(value))
     except ValueError:
@@ -115,7 +113,6 @@ def check_valid_variable_name(input_):
     return True
 
 def check_valid_content(key, value):
-    global variables_dict
     result = False
 
     if value.isdigit():
@@ -145,7 +142,6 @@ def check_for_variables(input_):
     return False
 
 def print_variable_content(input_):
-    global variables_dict
     if input_ in variables_dict:
         print(variables_dict[input_])
     elif not check_valid_variable_name(input_):
@@ -154,7 +150,6 @@ def print_variable_content(input_):
         print(user_outputs[UserOutput.UNKNOW_VARIABLE])
 
 def convert_single_number(input_):
-    global operator_symbols
     operator_string = ''
     number = ''
     for item in input_:
@@ -195,7 +190,6 @@ def generate_output_list(numbers, operators):
     return output_list
 
 def convert_input(input_):
-    global operator_symbols, variables_dict
     """ Converts the user input to be usable for calculations
     
     The user input needs to be converted into operators and numbers
@@ -281,11 +275,7 @@ def convert_input2(input_):
         if not contains_brackets(item) and not contains_operator_symbols(item):
             postfix_stack.append(item)
         elif contains_operator_symbols(item):
-            if contains_plus_or_minus(item) and contains_multiplication_or_division(item):
-                print(user_outputs[UserOutput.INVALID_EXPRESSION])
-            elif contains_multiplication_or_division(item) and len(item) > 1:
-                print(user_outputs[UserOutput.INVALID_EXPRESSION])
-            elif contains_plus_or_minus(item):
+            if contains_plus_or_minus(item):
                 item = convert_operator_string(item)
             if len(operators_stack) == 0 or operators_stack[-1] == bracket_symbols[BracketSymbol.OPEN]:
                 operators_stack.append(item)
@@ -303,9 +293,6 @@ def convert_input2(input_):
     for _ in range(len(operators_stack)):
         postfix_stack.append(operators_stack.pop())
     return postfix_stack
-
-def check_postfix_stack(stack):
-    pass
 
 def convert_operator_string(operator_string):
     """ Converts the multiple addition and subtraction sings into one sign
@@ -331,7 +318,7 @@ def command_handler(input_):
 
     Returns the command description if available, otherwise will let the user know that know that command is unkown
     """
-    global keep_going, commands
+    global keep_going
     if input_ not in commands:
         print(user_outputs[UserOutput.UNKNOW_COMMAND])
     if input_ == commands[CommandKeyword.EXIT]:
@@ -360,7 +347,63 @@ def input_guardian(input_):
         result = False
     elif input_.endswith(operator_symbols[OperatorSymbol.MINUS]):
         result = False
+    elif contains_operator_symbols(input_) or contains_brackets(input_):
+        if not check_for_valid_math(input_):
+            result = False
+    elif equality_symbols[EqualitySymbol.EQUAL] in input_:
+        if not check_all_variables_declared(input_):
+            result = False
+    
+    return result
 
+def check_all_variables_declared(input_):
+    result = True
+    input_list = convert_input_to_list(analyse_input(input_), input_)
+
+    for item in input_list:
+        if is_variable(item):
+            try:
+                variables_dict[item]
+            except KeyError:
+                result = False
+
+    return result
+
+def check_for_valid_math(input_):
+    result = True
+    try:
+        input_list = convert_input_to_list(analyse_input(input_), input_)
+    except Exception:
+        result = False
+    else:
+        if contains_brackets(input_):
+            if not check_for_matching_brackets(input_):
+                result = False
+    
+        for item in input_list:
+            if contains_plus_or_minus(item) and contains_multiplication_or_division(item):
+                result = False
+            elif contains_multiplication_or_division(item) and len(item) > 1:
+                result = False
+
+    if result == False:
+        print(user_outputs[UserOutput.INVALID_EXPRESSION])
+
+    return result
+
+def check_for_matching_brackets(input_):
+    result = False
+    stack = []
+    for letter in input_:
+        if letter == bracket_symbols[BracketSymbol.OPEN]:
+            stack.append(letter)
+        if letter == bracket_symbols[BracketSymbol.CLOSE]:
+            try:
+                stack.pop()
+            except IndexError:
+                result = False
+    if len(stack) == 0:
+        result = True
     return result
 
 def contains_brackets(string):
@@ -373,7 +416,6 @@ def contains_multiplication_or_division(string):
     return operator_symbols[OperatorSymbol.TIMES] in string or operator_symbols[OperatorSymbol.DIVISION] in string
 
 def contains_operator_symbols(string):
-    global operator_symbols
     result = False
 
     if operator_symbols[OperatorSymbol.PLUS] in string:
@@ -389,6 +431,15 @@ def contains_operator_symbols(string):
     
     return result
 
+def is_variable(string):
+    result = False
+
+    for item in string.ascii_letters:
+        if item in string:
+            result = True
+    
+    return result
+
 def input_handler(input_):
     """ Checks the user input and passes it to the correct function
     
@@ -396,7 +447,6 @@ def input_handler(input_):
     input that starts with "/" has to go to the command function
     If there is no empty space in the input it will be printed as is, otherwise the sum of all items is calculated
     """
-    global keep_going
     if input_guardian(input_):
         if input_.startswith(command_start_symbol):
             command_handler(input_)
@@ -409,19 +459,19 @@ def input_handler(input_):
         elif is_single_number(input_):
             print(convert_single_number(input_))
         else:        
-            convert_input2(input_)
+            print(sum(convert_input(input_)))
     elif not input_guardian(input_):
         print(user_outputs[UserOutput.INVALID_EXPRESSION])
 
 def calculator_loop():
-    global keep_going
+    global keep_going, operator_symbols, commands, user_outputs, variables_dict
     while keep_going:
         input_ = input()
         input_handler(input_)
 
 #calculator_loop()
 
-print(convert_input_to_list(analyse_input('8*3+12*(4-2)'), '8*3+12*(4-2)'))
-print(convert_input2('8*3+12*(4-2)'))
-#print(convert_input2('3 + 2 * 4'))
-#print(convert_input2('2 * (3 + 4) + 1'))
+#check_all_variables_declared(input_)
+#check_for_valid_math(input_)
+#check_for_matching_brackets(input_)
+#is_variable(string)
