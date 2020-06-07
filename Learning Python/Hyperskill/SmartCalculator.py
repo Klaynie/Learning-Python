@@ -357,8 +357,6 @@ def input_guardian(input_):
         result = False
     elif input_.startswith(operator_symbols[OperatorSymbol.POWER]):
         result = False
-    elif input_.startswith(operator_symbols[OperatorSymbol.DIVISION]):
-        result = False
     elif input_.startswith(bracket_symbols[BracketSymbol.CLOSE]):
         result = False
     elif contains_operator_symbols(input_) or contains_brackets(input_):
