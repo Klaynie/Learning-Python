@@ -1,4 +1,3 @@
-import string
 from enum import IntEnum
 from collections import deque
 
@@ -31,12 +30,13 @@ class BracketSymbol(IntEnum):
 
 commands = ['/exit','/help']
 user_outputs = ['Bye!',
-                'The program calculates the sum and difference of numbers, you can store numbers in variables', 
+                'The program calculates the result of your expression, use "+", "-", "*", "/" or "^", you can store numbers in variables', 
                 'Unknown command',
                 'Invalid expression',
                 'Invalid identifier',
                 'Unknown variable',
                 'Invalid assignment']
+all_letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 command_start_symbol = '/'
 equality_symbols = ['=']
 operator_symbols = ['+', '-', '*', '/', '^']
@@ -108,7 +108,7 @@ def check_assignment_validity(key, value):
 
 def check_valid_variable_name(input_):
     for letter in input_:
-        if letter not in string.ascii_letters:
+        if letter not in all_letters:
             return False
     return True
 
@@ -126,7 +126,7 @@ def check_valid_content(key, value):
 
 def try_conversion(value):
     for item in value:
-        if item in string.ascii_letters:
+        if item in all_letters:
             return False
     try:
         convert_single_number(value)
@@ -137,7 +137,7 @@ def try_conversion(value):
 
 def check_for_variables(input_):
     for letter in input_:
-        if letter in string.ascii_letters:
+        if letter in all_letters:
             return True
     return False
 
@@ -225,7 +225,7 @@ def analyse_input(input_):
             analysis.append('operator')
         elif item in bracket_symbols:
             analysis.append('bracket')
-        elif item in string.ascii_letters:
+        elif item in all_letters:
             analysis.append('letter')
         elif item == ' ':
             analysis.append('space')
@@ -313,6 +313,39 @@ def convert_operator_string(operator_string):
         else:
             return operator_symbols[OperatorSymbol.MINUS]
 
+def postfix_calculation(postfix_stack):
+    calculation_stack = deque()
+
+    for item in postfix_stack:
+        if not contains_operator_symbols(item):
+            if item.isdigit():
+                calculation_stack.append(int(item))
+            else:
+                calculation_stack.append(get_variable_value(item))
+        if contains_operator_symbols(item):
+            calculation_stack.append(perform_postfix_calculation(calculation_stack.pop(), item, calculation_stack.pop()))
+
+    return calculation_stack.pop()
+
+def perform_postfix_calculation(second_number, operator, first_number):
+    result = 0
+
+    if operator == operator_symbols[OperatorSymbol.PLUS]:
+       result = first_number + second_number
+    elif operator == operator_symbols[OperatorSymbol.MINUS]:
+        result = first_number - second_number
+    elif operator == operator_symbols[OperatorSymbol.TIMES]:
+        result = first_number * second_number
+    elif operator == operator_symbols[OperatorSymbol.POWER]:
+        result = first_number ** second_number
+    elif operator == operator_symbols[OperatorSymbol.DIVISION]:
+        result = first_number / second_number
+    
+    return result
+
+def get_variable_value(variable):
+    return variables_dict[variable]
+
 def command_handler(input_):
     """ Checks if the command is in the list of commands
 
@@ -350,7 +383,7 @@ def input_guardian(input_):
     elif contains_operator_symbols(input_) or contains_brackets(input_):
         if not check_for_valid_math(input_):
             result = False
-    elif equality_symbols[EqualitySymbol.EQUAL] in input_:
+    elif equality_symbols[EqualitySymbol.EQUAL] not in input_:
         if not check_all_variables_declared(input_):
             result = False
     
@@ -394,16 +427,21 @@ def check_for_valid_math(input_):
 def check_for_matching_brackets(input_):
     result = False
     stack = []
-    for letter in input_:
-        if letter == bracket_symbols[BracketSymbol.OPEN]:
-            stack.append(letter)
-        if letter == bracket_symbols[BracketSymbol.CLOSE]:
+    error_counter = 0
+
+    for symbol in input_:
+        print(symbol)
+        if symbol == bracket_symbols[BracketSymbol.OPEN]:
+            stack.append(symbol)
+        if symbol == bracket_symbols[BracketSymbol.CLOSE]:
             try:
                 stack.pop()
             except IndexError:
-                result = False
-    if len(stack) == 0:
+                error_counter += 1
+
+    if len(stack) == 0 and error_counter == 0:
         result = True
+
     return result
 
 def contains_brackets(input_):
@@ -433,7 +471,6 @@ def contains_operator_symbols(input_):
 
 def is_variable(input_):
     result = True
-    all_letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     for letter in input_:
         if letter not in all_letters:
@@ -460,19 +497,14 @@ def input_handler(input_):
         elif is_single_number(input_):
             print(convert_single_number(input_))
         else:        
-            print(sum(convert_input(input_)))
+            print(postfix_calculation(convert_input2(input_)))
     elif not input_guardian(input_):
         print(user_outputs[UserOutput.INVALID_EXPRESSION])
 
 def calculator_loop():
-    global keep_going, operator_symbols, commands, user_outputs, variables_dict
+    global keep_going, operator_symbols, commands, user_outputs, variables_dict, all_letters
     while keep_going:
         input_ = input()
         input_handler(input_)
 
-#calculator_loop()
-
-#check_all_variables_declared(input_)
-#check_for_valid_math(input_)
-#check_for_matching_brackets(input_)
-print(is_variable('a'))
+calculator_loop()
