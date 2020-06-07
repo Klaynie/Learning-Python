@@ -335,7 +335,6 @@ def input_guardian(input_):
     Otherwise there should be at least one of the operator symbols in the input
     """
     result = True
-
     if input_.startswith(command_start_symbol):
         result = True
     elif input_.isdigit():
@@ -365,8 +364,7 @@ def input_guardian(input_):
     elif contains_operator_symbols(input_) or contains_brackets(input_):
         if not check_for_valid_math(input_):
             result = False
-    elif equality_symbols[EqualitySymbol.EQUAL] not in input_:
-        if not check_all_variables_declared(input_):
+        elif not check_all_variables_declared(input_):
             result = False
     
     return result
@@ -477,7 +475,10 @@ def input_handler(input_):
         else:        
             print(postfix_calculation(convert_input(input_)))
     elif not input_guardian(input_):
-        print(user_outputs[UserOutput.INVALID_EXPRESSION])
+        if not check_all_variables_declared(input_):
+            print(user_outputs[UserOutput.UNKNOW_VARIABLE])
+        else:
+            print(user_outputs[UserOutput.INVALID_EXPRESSION])
 
 def calculator_loop():
     global keep_going, operator_symbols, commands, user_outputs, variables_dict, all_letters
