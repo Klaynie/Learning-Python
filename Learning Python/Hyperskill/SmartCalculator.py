@@ -482,5 +482,4 @@ def calculator_loop():
         input_handler(input_)
 
 if __name__ == "__main__":
-    #calculator_loop()
-    convert_input('3 + 8 * ((4 + 3) * 2 + 1) - 6 / (2 + 1)')
+    calculator_loop()
