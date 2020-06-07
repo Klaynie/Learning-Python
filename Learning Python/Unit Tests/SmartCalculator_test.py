@@ -112,11 +112,68 @@ class CheckMatchingBracketsTestCases(unittest.TestCase):
 
 class CheckVariablesDeclaredTestCases(unittest.TestCase):
     def test_variables_declared_1(self):
-        variables_dict = {'a': 4, 'b': 5, 'c': 6}
-        string = 'a*2+b*3+c*(2+3)'
-        self.assertTrue(check_all_variables_declared(string))
-
-    def test_variables_declared_2(self):
         variables_dict = {'a': 4, 'b': 5}
         string = 'a*2+b*3+c*(2+3)'
         self.assertFalse(check_all_variables_declared(string))
+
+class CheckIsSingleNumberTestCases(unittest.TestCase):
+    def test_is_single_number_1(self):
+        string = '1'
+        self.assertTrue(is_single_number(string))
+
+    def test_is_single_number_2(self):
+        string = '-1'
+        self.assertTrue(is_single_number(string))
+
+    def test_is_single_number_3(self):
+        string = '10'
+        self.assertTrue(is_single_number(string))
+
+    def test_is_single_number_4(self):
+        string = '-10'
+        self.assertTrue(is_single_number(string))
+
+    def test_is_single_number_5(self):
+        string = '100'
+        self.assertTrue(is_single_number(string))
+
+    def test_is_single_number_6(self):
+        string = '-100'
+        self.assertTrue(is_single_number(string))
+
+    def test_is_single_number_7(self):
+        string = 'a'
+        self.assertFalse(is_single_number(string))
+
+    def test_is_single_number_8(self):
+        string = '-a'
+        self.assertFalse(is_single_number(string))
+
+class CheckPostfixCalculation(unittest.TestCase):
+        def test_postfix_calculation_1(self):
+            string = '2 + 2'
+            self.assertTrue(postfix_calculation(convert_input2(string)) == 4)
+
+        def test_postfix_calculation_2(self):
+            string = '2+2'
+            self.assertTrue(postfix_calculation(convert_input2(string)) == 4)
+
+        def test_postfix_calculation_3(self):
+            string = '2^2'
+            self.assertTrue(postfix_calculation(convert_input2(string)) == 4)
+
+        def test_postfix_calculation_4(self):
+            string = '2*2^3'
+            self.assertTrue(postfix_calculation(convert_input2(string)) == 16)
+
+        def test_postfix_calculation_5(self):
+            string = '8 * 3 + 12 * (4 - 2)'
+            self.assertTrue(postfix_calculation(convert_input2(string)) == 48)
+
+        def test_postfix_calculation_7(self):
+            string = '1 +++ 2 * 3 -- 4'
+            self.assertTrue(postfix_calculation(convert_input2(string)) == 11)
+
+        def test_postfix_calculation_8(self):
+            string = '2 - 2 + 3'
+            self.assertTrue(postfix_calculation(convert_input2(string)) == 3)

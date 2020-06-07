@@ -48,7 +48,19 @@ def is_empty_line(input_):
     return input_ == ''
 
 def is_single_number(input_):
-    return ' ' not in input_
+    result = True
+    input_list = convert_input_to_list(analyse_input(input_), input_)
+    if len(input_list) == 1:
+        if not input_list[0].isdigit():
+            result = False
+    elif len(input_list) == 2:
+        if not input_list[1].isdigit():
+            result = False
+        elif not contains_plus_or_minus(input_list[0]):
+            result = False
+    elif len(input_list) > 2:
+        result = False
+    return result
 
 def split_input_into_assignment(input_):
     input_ = input_.replace(' ', '')
@@ -234,27 +246,31 @@ def analyse_input(input_):
 def convert_input_to_list(analysis, input_):
     input_list = []
     i = 0
-    while i < len(input_) - 1:
-        temp_item = ''
-        if analysis[i] != analysis[i + 1] and input_[i] != ' ':
-            input_list.append(input_[i])
-        elif analysis[i] == analysis[i + 1]:
-            temp_item += input_[i]
-            while analysis[i] == analysis[i + 1] and i < len(input_) - 2:
-                i += 1
+    if len(input_) == 1:
+        input_list.append(input_[i])
+    elif len(input_) > 1:
+        while i < len(input_) - 1:
+            temp_item = ''
+            if analysis[i] != analysis[i + 1] and input_[i] != ' ':
+                input_list.append(input_[i])
+            elif analysis[i] == analysis[i + 1]:
                 temp_item += input_[i]
-            if i == len(input_) - 2:
-                temp_item += input_[i + 1]
-            input_list.append(temp_item)
-        i += 1
-        if i == len(input_) - 1 and analysis[i - 1] != analysis[i] and input_[i] != ' ':
-            input_list.append(input_[i])
+                while analysis[i] == analysis[i + 1] and i < len(input_) - 2:
+                    i += 1
+                    temp_item += input_[i]
+                if i == len(input_) - 2:
+                    temp_item += input_[i + 1]
+                input_list.append(temp_item)
+            i += 1
+            if i == len(input_) - 1 and analysis[i - 1] != analysis[i] and input_[i] != ' ':
+                input_list.append(input_[i])
+    
     return input_list
 
 def compare_operator_precedence(item1, item2):
     item1_priority = set_priority(item1)
     item2_priority = set_priority(item2)
-    return item1_priority >= item2_priority
+    return item1_priority > item2_priority
 
 def set_priority(operator):
     priority = 0
@@ -380,6 +396,22 @@ def input_guardian(input_):
         result = False
     elif input_.endswith(operator_symbols[OperatorSymbol.MINUS]):
         result = False
+    elif input_.endswith(operator_symbols[OperatorSymbol.TIMES]):
+        result = False
+    elif input_.endswith(operator_symbols[OperatorSymbol.POWER]):
+        result = False
+    elif input_.endswith(operator_symbols[OperatorSymbol.DIVISION]):
+        result = False
+    elif input_.endswith(bracket_symbols[BracketSymbol.OPEN]):
+        result = False
+    elif input_.startswith(operator_symbols[OperatorSymbol.TIMES]):
+        result = False
+    elif input_.startswith(operator_symbols[OperatorSymbol.POWER]):
+        result = False
+    elif input_.startswith(operator_symbols[OperatorSymbol.DIVISION]):
+        result = False
+    elif input_.startswith(bracket_symbols[BracketSymbol.CLOSE]):
+        result = False
     elif contains_operator_symbols(input_) or contains_brackets(input_):
         if not check_for_valid_math(input_):
             result = False
@@ -419,9 +451,6 @@ def check_for_valid_math(input_):
             elif contains_multiplication_or_division(item) and len(item) > 1:
                 result = False
 
-    if result == False:
-        print(user_outputs[UserOutput.INVALID_EXPRESSION])
-
     return result
 
 def check_for_matching_brackets(input_):
@@ -430,7 +459,6 @@ def check_for_matching_brackets(input_):
     error_counter = 0
 
     for symbol in input_:
-        print(symbol)
         if symbol == bracket_symbols[BracketSymbol.OPEN]:
             stack.append(symbol)
         if symbol == bracket_symbols[BracketSymbol.CLOSE]:
@@ -490,12 +518,12 @@ def input_handler(input_):
             command_handler(input_)
         elif is_empty_line(input_):
             pass
+        elif equality_symbols[EqualitySymbol.EQUAL] not in input_ and is_single_number(input_):
+            print(convert_single_number(input_))
         elif equality_symbols[EqualitySymbol.EQUAL] in input_:
             variable_assignment(input_)
         elif check_for_variables(input_) and not contains_operator_symbols(input_):
             print_variable_content(input_)
-        elif is_single_number(input_):
-            print(convert_single_number(input_))
         else:        
             print(postfix_calculation(convert_input2(input_)))
     elif not input_guardian(input_):
@@ -507,4 +535,5 @@ def calculator_loop():
         input_ = input()
         input_handler(input_)
 
-calculator_loop()
+if __name__ == "__main__":
+    calculator_loop()
