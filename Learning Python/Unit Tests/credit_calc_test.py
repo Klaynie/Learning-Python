@@ -1,6 +1,4 @@
-import sys  
-sys.path.append('Hyperskill')
-from CreditCalculator import *
+from Hyperskill.credit_calc import *
 import unittest
 
 class GetNumberCases(unittest.TestCase):
