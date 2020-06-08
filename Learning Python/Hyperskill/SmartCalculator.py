@@ -310,7 +310,7 @@ def postfix_calculation(postfix_stack):
     3) If the incoming element is an operator, then pop twice to get two numbers and perform the operation; push the result on the stack.
     4) When the expression ends, the number on the top of the stack is a final result.
     """
-    # ToDo: Bugfixing for expressions that start with '-'
+    # ToDo: Bugfixing for expressions that start with '-' Try to convert numbers to int
     calculation_stack = deque()
     postfix_stack = convert_postfix_stack_for_calculation(postfix_stack)
     for item in postfix_stack:
@@ -530,6 +530,6 @@ def calculator_loop():
         input_handler(input_)
 
 if __name__ == "__main__":
-    #calculator_loop()
+    calculator_loop()
     #print(postfix_calculation(convert_input('-(2+3)')))
-    print(postfix_calculation(convert_input('-2+3')))
+    #print(postfix_calculation(convert_input('-2+3')))
