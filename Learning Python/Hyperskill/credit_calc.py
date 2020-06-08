@@ -1,5 +1,7 @@
 from enum import IntEnum
 import math
+import sys
+import argparse
 
 class UserPrompt(IntEnum):
     KEYWORD = 0
@@ -13,6 +15,10 @@ class Keyword(IntEnum):
     PAYMENT = 1
     PRINCIPAL = 2
 
+class CommandLineKeyword(IntEnum):
+    ANNUITY = 0
+    DIFFERANTIATE = 1
+
 class PaydownText(IntEnum):
     ONE_YEAR = 0
     N_YEARS = 1
@@ -20,7 +26,11 @@ class PaydownText(IntEnum):
     N_MONTHS = 3
     CONCATENATION = 4
 
+class GuardianText(IntEnum):
+    INCORRECT_PARAMETERS = 0
+
 keywords = ['n', 'a', 'p']
+command_line_keywords = ['annuity', 'diff']
 user_prompts = [f'What do you want to calculate?\n\
 type "{keywords[Keyword.MONTHS]}" - for count of months,\n\
 type "{keywords[Keyword.PAYMENT]}" - for monthly payment:\n\
@@ -30,6 +40,7 @@ type  "{keywords[Keyword.PRINCIPAL]}" - for credit principal:',
 'Enter count of periods:',\
 'Enter credit interest:'
 ]
+guardian_texts = ['Incorrect parameters']
 
 def get_value(prompt):
     return input(prompt + '\n')
@@ -78,6 +89,9 @@ def convert_user_input_months(user_input):
     else:
         result = int(user_input)
     return result
+
+def calculate_overpayment():
+    return 1
 
 def generate_paydown_time_text(years, months):
     paydown_time_texts = [f'{years} year',\
@@ -134,7 +148,7 @@ def paydown_time_calculator():
     return result
 
 def calculate_principal(monthly_payment, months, interest):
-    result = round(monthly_payment / ((interest * (1 + interest) ** months) / ((1 + interest) ** months - 1)))
+    result = math.floor(monthly_payment / ((interest * (1 + interest) ** months) / ((1 + interest) ** months - 1)))
     return result
 
 def convert_principal_input(monthly_payment, months, interest):
@@ -210,5 +224,47 @@ def calculator_loop():
         print_result(result)
         keep_going = False
 
+def get_guardian_message():
+    global guardian_texts
+    result = guardian_texts[GuardianText.INCORRECT_PARAMETERS]
+    return result
+
+def command_line_guardian(user_input):
+    result = True
+    return result
+
+def check_calculation_type(calculation_type):
+    result = True
+    if calculation_type not in [command_line_keywords[CommandLineKeyword.ANNUITY], command_line_keywords[CommandLineKeyword.DIFFERANTIATE]]:
+        result = False
+    return result
+
+def check_command_line_input(user_input):
+    result = True
+    if not command_line_guardian(user_input):
+        result = False
+    elif not check_calculation_type(user_input.type):
+        result = False
+    return result
+
+def get_command_line_input():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--type', help='specify calculation type ("annuity" or "diff")')
+    parser.add_argument('--principal', help='amount of money lent')
+    parser.add_argument('--periods', help='duration of credit in months')
+    parser.add_argument('--interest', help='interest rate in percantage (5 = 5%, 100 = 100%)')
+    parser.add_argument('--payment', help='monthly annuity payment amount')
+    result = parser.parse_args()
+    return result
+
+def command_line_handler():
+    user_input = get_command_line_input()
+    if not check_command_line_input(user_input):
+        result = get_guardian_message()
+    else:
+        result = '1'
+    return result
+
 if __name__ == "__main__":
-    calculator_loop()
+    result = command_line_handler()
+    print(result)

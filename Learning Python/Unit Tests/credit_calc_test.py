@@ -16,6 +16,12 @@ class CalculatePaydownTimeCases(unittest.TestCase):
         interest = 10 / 100 / 12
         self.assertEqual(calculate_paydown_time(principal, monthly_payment, interest), 98)
 
+    def test_calculate_paydown_time_1(self):
+        principal = 500000
+        monthly_payment = 23000
+        interest = 7.8 / 100 / 12
+        self.assertEqual(calculate_paydown_time(principal, monthly_payment, interest), 24)
+
 class CalculateAnnuityPaymentCases(unittest.TestCase):
     def test_calculate_annuity_payment_1(self):
         principal = 1000000
@@ -29,6 +35,12 @@ class CalculateCreditPrincipalCases(unittest.TestCase):
         months = 120
         interest = 5.6 / 100 / 12
         self.assertEqual(calculate_principal(monthly_payment, months, interest), 800000)
+
+    def test_calculate_credit_pricipal_2(self):
+        monthly_payment = 8722
+        months = 120
+        interest = 5.6 / 100 / 12
+        self.assertEqual(calculate_principal(monthly_payment, months, interest), 800018)
 
 class ConvertPaydowmTimeCases(unittest.TestCase):
     def test_convert_paydown_time(self):
@@ -83,3 +95,29 @@ class PrintCreditPrincipalCases(unittest.TestCase):
         number = 2
         variable = 800000
         self.assertEqual(generate_message(number, variable), 'Your credit principal = 800000!')
+
+class CalculateOverpaymentCases(unittest.TestCase):
+
+    def test_overpayment_1(self):
+        principal = 1000000
+        periods = 60
+        interest = 10 / 100 / 12
+        self.assertEqual(calculate_overpayment(), 274880)
+
+    def test_overpayment_2(self):
+        principal = 500000
+        periods = 8
+        interest = 7.8 / 100 / 12
+        self.assertEqual(calculate_overpayment(), 14628)
+
+    def test_overpayment_3(self):
+        payment = 8722
+        periods = 120
+        interest = 5.6 / 100 / 12
+        self.assertEqual(calculate_overpayment(), 246622)
+
+    def test_overpayment_4(self):
+        payment = 500000
+        periods = 23000
+        interest = 7.8 / 100 / 12
+        self.assertEqual(calculate_overpayment(), 52000)
