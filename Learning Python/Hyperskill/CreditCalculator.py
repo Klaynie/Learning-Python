@@ -13,7 +13,14 @@ class Keyword(IntEnum):
     PAYMENT = 1
     PRINCIPAL = 2
 
-keywords = ['m', 'a', 'p']
+class PaydownText(IntEnum):
+    ONE_YEAR = 0
+    N_YEARS = 1
+    ONE_MONTH = 2
+    N_MONTHS = 3
+    CONCATENATION = 4
+
+keywords = ['n', 'a', 'p']
 user_prompts = [f'What do you want to calculate?\n\
 type "{keywords[Keyword.MONTHS]}" - for count of months,\n\
 type "{keywords[Keyword.PAYMENT]}" - for monthly payment:\n\
@@ -60,7 +67,7 @@ def convert_user_input_interest(user_input):
     except Exception:
         result = 10
     else:
-        result = float(user_input) / 100
+        result = float(user_input) / 100 / 12
     return result
 
 def convert_user_input_months(user_input):
@@ -72,8 +79,39 @@ def convert_user_input_months(user_input):
         result = int(user_input)
     return result
 
+def generate_paydown_time_text(years, months):
+    paydown_time_texts = [f'{years} year',\
+             f'{years} years',\
+             f'{months} month',\
+             f'{months} months',\
+             ' and '
+            ]
+    if years == 0:
+        year_text = ''
+    elif years == 1:
+        year_text = paydown_time_texts[PaydownText.ONE_YEAR]
+    elif years > 1:
+        year_text = paydown_time_texts[PaydownText.N_YEARS]
+    if months == 0:
+        month_text = ''
+    elif months == 1:
+        month_text = paydown_time_texts[PaydownText.ONE_MONTH]
+    elif months > 1:
+        month_text = paydown_time_texts[PaydownText.N_MONTHS]
+    if year_text == '' or month_text == '':
+        concatenation = ''
+    elif year_text != '' and month_text != '':
+        concatenation = paydown_time_texts[PaydownText.CONCATENATION]
+    result = year_text + concatenation + month_text
+    return result
+
+def convert_paydown_time_to_years_and_months(paydown_time):
+    years, months = paydown_time // 12, paydown_time % 12
+    return years, months
+
 def calculate_paydown_time(principal, monthly_payment, interest):
-    return 1
+    result = math.ceil(math.log(monthly_payment / (monthly_payment - interest * principal) , (1 + interest)))
+    return result
 
 def convert_paydowm_time_input(principal, monthly_payment, interest):
     converted_principal = convert_user_input_principal(principal)
@@ -90,11 +128,14 @@ def get_paydowm_time_input():
 def paydown_time_calculator():
     principal, monthly_payment, interest = get_paydowm_time_input()
     converted_principal, converted_monthly_payment, converted_interest = convert_paydowm_time_input(principal, monthly_payment, interest)
-    result = calculate_paydown_time(converted_principal, converted_monthly_payment, converted_interest)
+    paydown_time = calculate_paydown_time(converted_principal, converted_monthly_payment, converted_interest)
+    years, months = convert_paydown_time_to_years_and_months(paydown_time)
+    result = generate_paydown_time_text(years, months)
     return result
 
 def calculate_principal(monthly_payment, months, interest):
-    return 1
+    result = round(monthly_payment / ((interest * (1 + interest) ** months) / ((1 + interest) ** months - 1)))
+    return result
 
 def convert_principal_input(monthly_payment, months, interest):
     converted_monthly_payment = convert_user_input_monthly_payment(monthly_payment)
@@ -115,8 +156,8 @@ def principal_calculator():
     return result
 
 def calculate_monthly_payment(principal, months, interest):
-    monthly_payment = 1
-    return monthly_payment
+    result = math.ceil(principal * (interest * (1 + interest) ** months) / ((1 + interest) ** months - 1))
+    return result
 
 def convert_monthly_payment_input(principal, months, interest):
     converted_principal = convert_user_input_principal(principal)
@@ -156,7 +197,6 @@ def get_number(keyword):
     return result
 
 def print_result(result):
-    print('\n')
     print(result)
 
 def calculator_loop():
