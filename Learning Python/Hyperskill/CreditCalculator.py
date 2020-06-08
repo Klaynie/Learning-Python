@@ -36,35 +36,104 @@ def generate_message(number, variable):
     result = messages[number]
     return result
 
+def convert_user_input_principal(user_input):
+    try:
+        float(user_input)
+    except Exception:
+        result = 1000000
+    else:
+        result = float(user_input)
+    return result
+
+def convert_user_input_monthly_payment(user_input):
+    try:
+        float(user_input)
+    except Exception:
+        result = 15000
+    else:
+        result = float(user_input)
+    return result
+
+def convert_user_input_interest(user_input):
+    try:
+        float(user_input)
+    except Exception:
+        result = 10
+    else:
+        result = float(user_input) / 100
+    return result
+
+def convert_user_input_months(user_input):
+    try:
+        int(user_input)
+    except Exception:
+        result = 12
+    else:
+        result = int(user_input)
+    return result
+
 def calculate_paydown_time(principal, monthly_payment, interest):
     return 1
 
-def paydown_time_calculator(principal, monthly_payment, interest):
+def convert_paydowm_time_input(principal, monthly_payment, interest):
+    converted_principal = convert_user_input_principal(principal)
+    converted_monthly_payment = convert_user_input_monthly_payment(monthly_payment)
+    converted_interest = convert_user_input_interest(interest)
+    return converted_principal, converted_monthly_payment, converted_interest
+
+def get_paydowm_time_input():
     principal = get_value(user_prompts[UserPrompt.PRINCIPAL])
     monthly_payment = get_value(user_prompts[UserPrompt.MONTHLY_PAYMENT])
     interest = get_value(user_prompts[UserPrompt.INTEREST])
-    result = calculate_paydown_time(principal, monthly_payment, interest)
+    return principal, monthly_payment, interest
+
+def paydown_time_calculator():
+    principal, monthly_payment, interest = get_paydowm_time_input()
+    converted_principal, converted_monthly_payment, converted_interest = convert_paydowm_time_input(principal, monthly_payment, interest)
+    result = calculate_paydown_time(converted_principal, converted_monthly_payment, converted_interest)
     return result
 
 def calculate_principal(monthly_payment, months, interest):
     return 1
 
-def principal_calculator():
+def convert_principal_input(monthly_payment, months, interest):
+    converted_monthly_payment = convert_user_input_monthly_payment(monthly_payment)
+    converted_months = convert_user_input_months(months)
+    converted_interest = convert_user_input_interest(interest)
+    return converted_monthly_payment, converted_months, converted_interest
+
+def get_principal_input():
     monthly_payment = get_value(user_prompts[UserPrompt.MONTHLY_PAYMENT])
     months = get_value(user_prompts[UserPrompt.MONTHS])
     interest = get_value(user_prompts[UserPrompt.INTEREST])
-    result = calculate_principal(monthly_payment, months, interest)
+    return monthly_payment, months, interest
+
+def principal_calculator():
+    monthly_payment, months, interest = get_principal_input()
+    converted_monthly_payment, converted_months, converted_interest = convert_principal_input(monthly_payment, months, interest)
+    result = calculate_principal(converted_monthly_payment, converted_months, converted_interest)
     return result
 
 def calculate_monthly_payment(principal, months, interest):
     monthly_payment = 1
     return monthly_payment
 
-def monthly_payment_calculator():
+def convert_monthly_payment_input(principal, months, interest):
+    converted_principal = convert_user_input_principal(principal)
+    converted_months = convert_user_input_months(months)
+    converted_interest = convert_user_input_interest(interest)
+    return converted_principal, converted_months, converted_interest
+
+def get_monthly_payment_input():
     principal = get_value(user_prompts[UserPrompt.PRINCIPAL])
     months = get_value(user_prompts[UserPrompt.MONTHS])
     interest = get_value(user_prompts[UserPrompt.INTEREST])
-    result = calculate_monthly_payment(principal, months, interest)
+    return principal, months, interest
+
+def monthly_payment_calculator():
+    principal, months, interest = get_monthly_payment_input()
+    converted_principal, converted_months, converted_interest = convert_monthly_payment_input(principal, months, interest)
+    result = calculate_monthly_payment(converted_principal, converted_months, converted_interest)
     return result
 
 def get_output_value(keyword):
