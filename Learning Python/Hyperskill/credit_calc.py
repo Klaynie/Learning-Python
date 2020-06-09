@@ -344,20 +344,42 @@ def get_command_line_input():
     result = parser.parse_args()
     return result
 
+def calculate_actual_payment_diff(user_input):
+    result = 0
+    month = 1
+    while month <= user_input.periods:
+        result += calculate_diff_payment(user_input, month)
+        month += 1
+    return result
+
+def is_direct_actual_payment_annuity_calculation(user_input):
+    return user_input.periods != None and user_input.payment != None
+
+def is_missing_payment_amount_for_actual_payment_annuity_calculation(user_input):
+    return user_input.periods != None and user_input.payment == None
+
+def is_missing_periods_for_actual_payment_annuity_calculation(user_input):
+    return user_input.periods == None and user_input.payment != None
+
+def calculate_actual_payment_annuity(user_input):
+    result = 0
+    if is_direct_actual_payment_annuity_calculation(user_input):
+        result = user_input.periods \
+                 * user_input.payment
+    elif is_missing_payment_amount_for_actual_payment_annuity_calculation(user_input):
+        result = user_input.periods \
+                 * calculate_missing_value(user_input)
+    elif is_missing_periods_for_actual_payment_annuity_calculation(user_input):
+        result = calculate_missing_value(user_input) \
+                 * user_input.payment
+    return result
+
 def calculate_actual_payment(user_input):
     result = 0
     if user_input.type == command_line_keywords[CommandLineKeyword.DIFFERANTIATE]:
-        month = 1
-        while month <= user_input.periods:
-            result += calculate_diff_payment(user_input, month)
-            month += 1
+        result = calculate_actual_payment_diff(user_input)
     elif user_input.type == command_line_keywords[CommandLineKeyword.ANNUITY]:
-        if user_input.periods != None and user_input.payment != None:
-            result = user_input.periods * user_input.payment
-        elif user_input.periods != None and user_input.payment == None:
-            result = user_input.periods * calculate_missing_value(user_input)
-        elif user_input.periods == None and user_input.payment != None:
-            result = calculate_missing_value(user_input) * user_input.payment
+        result = calculate_actual_payment_annuity(user_input)
     return result
 
 def calculate_payment(user_input):
