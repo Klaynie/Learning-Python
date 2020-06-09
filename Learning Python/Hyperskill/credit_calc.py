@@ -253,17 +253,17 @@ def get_guardian_message():
     result = guardian_texts[GuardianText.INCORRECT_PARAMETERS]
     return result
 
-def count_none_values(user_input):
+def count_values(user_input):
     result = 0
-    if user_input.type == None:
+    if user_input.type != None:
         result += 1
-    if user_input.principal == None:
+    if user_input.principal != None:
         result += 1
-    if user_input.periods == None:
+    if user_input.periods != None:
         result += 1
-    if user_input.interest == None:
+    if user_input.interest != None:
         result += 1
-    if user_input.payment == None:
+    if user_input.payment != None:
         result += 1
     return result
 
@@ -305,9 +305,9 @@ def can_convert(user_input):
 
 def command_line_guardian(user_input):
     result = True
-    if count_none_values(user_input) < 4:
+    if count_values(user_input) < 4:
         result = False
-    elif count_none_values(user_input) == 5:
+    elif count_values(user_input) == 5:
         result = False
     if not can_convert(user_input):
         result = False
@@ -315,8 +315,10 @@ def command_line_guardian(user_input):
 
 def is_conflicting_calculation_type_and_parameters(user_input):
     result = False
-    if user_input.calculation_type == command_line_keywords[CommandLineKeyword.DIFFERANTIATE]:
+    if user_input.type == command_line_keywords[CommandLineKeyword.DIFFERANTIATE]:
         if user_input.payment != None:
+            result = True
+    if user_input.interest == None:
             result = True
     return result
 
@@ -332,7 +334,9 @@ def check_command_line_input(user_input):
     result = True
     if not command_line_guardian(user_input):
         result = False
-    elif not is_valid_calculation_type(user_input.type):
+    if not is_valid_calculation_type(user_input.type):
+        result = False
+    if is_conflicting_calculation_type_and_parameters(user_input):
         result = False
     return result
 
@@ -346,11 +350,33 @@ def get_command_line_input():
     result = parser.parse_args()
     return result
 
+def overpayment_calculation(user_input):
+    result = '1'
+    return result
+
+def annuity_calculation(user_input):
+    result = '1'
+    return result
+
+def diff_calculation(user_input):
+    result = '1'
+    return result
+
+def start_calculation(user_input):
+    result = 'Text'
+    if user_input.type == command_line_keywords[CommandLineKeyword.ANNUITY]:
+        result = annuity_calculation(user_input)
+    elif user_input.type == command_line_keywords[CommandLineKeyword.DIFFERANTIATE]:
+        result = diff_calculation(user_input)
+    result += overpayment_calculation(user_input)
+    return result
+
 def command_line_handler():
     user_input = get_command_line_input()
     if not check_command_line_input(user_input):
         result = get_guardian_message()
     else:
+        result = start_calculation(user_input)
         result = '1'
     return result
 
