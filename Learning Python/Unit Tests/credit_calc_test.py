@@ -91,25 +91,33 @@ class PrintCreditPrincipalCases(unittest.TestCase):
 
 class CalculateOverpaymentCases(unittest.TestCase):
     def test_overpayment_1(self):
-        principal = 1000000
-        periods = 60
-        interest = 10 / 100 / 12
-        self.assertEqual(calculate_overpayment(), 274880)
+        user_input = UserInput()
+        user_input.type = 'annuity'
+        user_input.principal = 1000000
+        user_input.periods = 60
+        user_input.interest = 10 / 100 / 12
+        self.assertEqual(calculate_overpayment(user_input), 274880)
     def test_overpayment_2(self):
-        principal = 500000
-        periods = 8
-        interest = 7.8 / 100 / 12
-        self.assertEqual(calculate_overpayment(), 14628)
+        user_input = UserInput()
+        user_input.type = 'diff'
+        user_input.principal = 500000
+        user_input.periods = 8
+        user_input.interest = 7.8 / 100 / 12
+        self.assertEqual(calculate_overpayment(user_input), 14628)
     def test_overpayment_3(self):
-        payment = 8722
-        periods = 120
-        interest = 5.6 / 100 / 12
-        self.assertEqual(calculate_overpayment(), 246622)
+        user_input = UserInput()
+        user_input.type = 'annuity'
+        user_input.payment = 8722
+        user_input.periods = 120
+        user_input.interest = 5.6 / 100 / 12
+        self.assertEqual(calculate_overpayment(user_input), 246622)
     def test_overpayment_4(self):
-        payment = 500000
-        periods = 23000
-        interest = 7.8 / 100 / 12
-        self.assertEqual(calculate_overpayment(), 52000)
+        user_input = UserInput()
+        user_input.type = 'annuity'
+        user_input.principal = 500000
+        user_input.payment = 23000
+        user_input.interest = 7.8 / 100 / 12
+        self.assertEqual(calculate_overpayment(user_input), 52000)
 class CalculateDiffCases(unittest.TestCase):
     def test_diff_1(self):
         user_input = UserInput()

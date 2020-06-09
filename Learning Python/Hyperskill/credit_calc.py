@@ -344,11 +344,39 @@ def get_command_line_input():
     result = parser.parse_args()
     return result
 
-def calculate_overpayment():
-    return 1
+def calculate_actual_payment(user_input):
+    result = 0
+    if user_input.type == command_line_keywords[CommandLineKeyword.DIFFERANTIATE]:
+        month = 1
+        while month <= user_input.periods:
+            result += calculate_diff_payment(user_input, month)
+            month += 1
+    elif user_input.type == command_line_keywords[CommandLineKeyword.ANNUITY]:
+        if user_input.periods != None and user_input.payment != None:
+            result = user_input.periods * user_input.payment
+        elif user_input.periods != None and user_input.payment == None:
+            result = user_input.periods * calculate_missing_value(user_input)
+        elif user_input.periods == None and user_input.payment != None:
+            result = calculate_missing_value(user_input) * user_input.payment
+    return result
+
+def calculate_payment(user_input):
+    result = 0
+    if user_input.principal != None:
+        result = user_input.principal
+    else:
+        result = calculate_missing_value(user_input)
+    return result
+
+def calculate_overpayment(user_input):
+    result = 0
+    actual_payment = calculate_actual_payment(user_input)
+    payment = calculate_payment(user_input)
+    result = round(actual_payment - payment)
+    return result
 
 def overpayment_calculation(user_input):
-    result = '\n'
+    result = f"\nOverpayment = {calculate_overpayment(user_input)}"
     return result
 
 def needs_variable_conversion(user_input):
