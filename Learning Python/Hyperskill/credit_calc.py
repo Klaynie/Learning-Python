@@ -54,8 +54,11 @@ guardian_texts = ['Incorrect parameters']
 def get_value(prompt):
     return input(prompt + '\n')
 
-def generate_message(number, variable):
+def generate_message(number, variable, convert_variable=False):
     result = ''
+    if convert_variable == True:
+        years, months = convert_paydown_time_to_years_and_months(variable)
+        variable = generate_paydown_time_text(years, months)
     messages = [f'You need {variable} to repay this credit!',\
                 f'Your annuity payment = {variable}!',\
                 f'Your credit principal = {variable}!'
@@ -98,9 +101,6 @@ def convert_user_input_months(user_input):
     else:
         result = int(user_input)
     return result
-
-def calculate_overpayment():
-    return 1
 
 def generate_paydown_time_text(years, months):
     paydown_time_texts = [f'{years} year',\
@@ -156,12 +156,6 @@ def paydown_time_calculator():
     result = generate_paydown_time_text(years, months)
     return result
 
-def cli_paydown_time_calculator(principal, monthly_payment, interest):
-    paydown_time = calculate_paydown_time(principal, monthly_payment, interest)
-    years, months = convert_paydown_time_to_years_and_months(paydown_time)
-    result = generate_paydown_time_text(years, months)
-    return result
-
 def calculate_principal(monthly_payment, months, interest):
     result = math.floor(monthly_payment / ((interest * (1 + interest) ** months) / ((1 + interest) ** months - 1)))
     return result
@@ -180,11 +174,6 @@ def get_principal_input():
 
 def principal_calculator():
     monthly_payment, months, interest = get_principal_input()
-    converted_monthly_payment, converted_months, converted_interest = convert_principal_input(monthly_payment, months, interest)
-    result = calculate_principal(converted_monthly_payment, converted_months, converted_interest)
-    return result
-
-def cli_principal_calculator(monthly_payment, months, interest):
     converted_monthly_payment, converted_months, converted_interest = convert_principal_input(monthly_payment, months, interest)
     result = calculate_principal(converted_monthly_payment, converted_months, converted_interest)
     return result
@@ -211,11 +200,6 @@ def monthly_payment_calculator():
     result = calculate_monthly_payment(converted_principal, converted_months, converted_interest)
     return result
 
-def cli_monthly_payment_calculator(principal, months, interest):
-    converted_principal, converted_months, converted_interest = convert_monthly_payment_input(principal, months, interest)
-    result = calculate_monthly_payment(converted_principal, converted_months, converted_interest)
-    return result
-
 def get_output_value(keyword):
     if keyword == keywords[Keyword.MONTHS]:
         result = paydown_time_calculator()
@@ -232,6 +216,16 @@ def get_number(keyword):
         result = Keyword.PAYMENT
     elif keyword == keywords[Keyword.PRINCIPAL]:
         result = Keyword.PRINCIPAL
+    return result
+
+def cli_get_number(user_input):
+    result = 0
+    if user_input.principal == None:
+        result = Keyword.PRINCIPAL
+    if user_input.payment == None:
+        result = Keyword.PAYMENT
+    if user_input.periods == None:
+        result = Keyword.MONTHS
     return result
 
 def print_result(result):
@@ -350,19 +344,43 @@ def get_command_line_input():
     result = parser.parse_args()
     return result
 
+def calculate_overpayment():
+    return 1
+
 def overpayment_calculation(user_input):
     result = '\n'
     return result
 
-def annuity_calculation(user_input):
-    result = 'annuity result'
+def needs_variable_conversion(user_input):
+    result = False
+    if user_input.periods == None:
+        result = True
     return result
 
-def diff_calculation(user_input):
+def annuity_calculation(user_input):
     result = ''
-    month = 1
-    while month <= user_input.periods:
-        payment = user_input.principal \
+    convert_variable = needs_variable_conversion(user_input)
+    value = calculate_missing_value(user_input)
+    number = cli_get_number(user_input)
+    result = generate_message(number, value, convert_variable)
+    return result
+
+def calculate_missing_value(user_input):
+    result = 0
+    if user_input.principal == None:
+        result = calculate_principal(user_input.payment, user_input.periods, user_input.interest)
+    if user_input.payment == None:
+        result = calculate_monthly_payment(user_input.principal, user_input.periods, user_input.interest)
+    if user_input.periods == None:
+        result = calculate_paydown_time(user_input.principal, user_input.payment, user_input.interest)
+    return result
+
+def generate_diff_message(month, payment):
+    result = f'Month {month}: paid out {payment}\n'
+    return result
+
+def calculate_diff_payment(user_input, month):
+    result = user_input.principal \
                   / user_input.periods \
                   + user_input.interest \
                     * (user_input.principal \
@@ -373,14 +391,19 @@ def diff_calculation(user_input):
                           / user_input.periods
                           )
                       )
-        payment = math.ceil(payment)
-        message = f'Month {month}: paid out {payment}\n'
-        result += message
+    result = math.ceil(result)
+    return result
+
+def diff_calculation(user_input):
+    result = ''
+    month = 1
+    while month <= user_input.periods:
+        result += generate_diff_message(month, calculate_diff_payment(user_input, month))
         month += 1
     return result
 
 def start_calculation(user_input):
-    result = 'Text'
+    result = ''
     if user_input.type == command_line_keywords[CommandLineKeyword.ANNUITY]:
         result = annuity_calculation(user_input)
     elif user_input.type == command_line_keywords[CommandLineKeyword.DIFFERANTIATE]:
@@ -388,19 +411,27 @@ def start_calculation(user_input):
     result += overpayment_calculation(user_input)
     return result
 
+def convert_user_input_for_calculation(user_input):
+    result = UserInput()
+    result.type = user_input.type
+    if user_input.principal != None:
+        result.principal = convert_user_input_principal(user_input.principal)
+    if user_input.payment != None:
+        result.payment = convert_user_input_monthly_payment(user_input.payment)
+    if user_input.periods != None:
+        result.periods = convert_user_input_months(user_input.periods)
+    if user_input.interest != None:
+        result.interest = convert_user_input_interest(user_input.interest)
+    return result
+
 def command_line_handler():
     user_input = get_command_line_input()
     if not check_command_line_input(user_input):
         result = get_guardian_message()
     else:
-        result = start_calculation(user_input)
+        result = start_calculation(convert_user_input_for_calculation(user_input))
     return result
 
 if __name__ == "__main__":
-    #result = command_line_handler()
-    user_input = UserInput()
-    user_input.principal = 1000000
-    user_input.periods = 10
-    user_input.interest = 10 / 100 / 12
-    result = diff_calculation(user_input)
+    result = command_line_handler()
     print(result)
