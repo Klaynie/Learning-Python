@@ -3,6 +3,15 @@ import math
 import sys
 import argparse
 
+class UserInput(object):
+
+    def __init__(self):
+        self.type = None
+        self.principal = None
+        self.periods = None
+        self.interest = None
+        self.payment = None
+
 class UserPrompt(IntEnum):
     KEYWORD = 0
     PRINCIPAL = 1
@@ -147,6 +156,12 @@ def paydown_time_calculator():
     result = generate_paydown_time_text(years, months)
     return result
 
+def cli_paydown_time_calculator(principal, monthly_payment, interest):
+    paydown_time = calculate_paydown_time(principal, monthly_payment, interest)
+    years, months = convert_paydown_time_to_years_and_months(paydown_time)
+    result = generate_paydown_time_text(years, months)
+    return result
+
 def calculate_principal(monthly_payment, months, interest):
     result = math.floor(monthly_payment / ((interest * (1 + interest) ** months) / ((1 + interest) ** months - 1)))
     return result
@@ -165,6 +180,11 @@ def get_principal_input():
 
 def principal_calculator():
     monthly_payment, months, interest = get_principal_input()
+    converted_monthly_payment, converted_months, converted_interest = convert_principal_input(monthly_payment, months, interest)
+    result = calculate_principal(converted_monthly_payment, converted_months, converted_interest)
+    return result
+
+def cli_principal_calculator(monthly_payment, months, interest):
     converted_monthly_payment, converted_months, converted_interest = convert_principal_input(monthly_payment, months, interest)
     result = calculate_principal(converted_monthly_payment, converted_months, converted_interest)
     return result
@@ -191,8 +211,12 @@ def monthly_payment_calculator():
     result = calculate_monthly_payment(converted_principal, converted_months, converted_interest)
     return result
 
+def cli_monthly_payment_calculator(principal, months, interest):
+    converted_principal, converted_months, converted_interest = convert_monthly_payment_input(principal, months, interest)
+    result = calculate_monthly_payment(converted_principal, converted_months, converted_interest)
+    return result
+
 def get_output_value(keyword):
-    result = 0
     if keyword == keywords[Keyword.MONTHS]:
         result = paydown_time_calculator()
     elif keyword == keywords[Keyword.PAYMENT]:
@@ -229,13 +253,78 @@ def get_guardian_message():
     result = guardian_texts[GuardianText.INCORRECT_PARAMETERS]
     return result
 
-def command_line_guardian(user_input):
-    result = True
+def count_none_values(user_input):
+    result = 0
+    if user_input.type == None:
+        result += 1
+    if user_input.principal == None:
+        result += 1
+    if user_input.periods == None:
+        result += 1
+    if user_input.interest == None:
+        result += 1
+    if user_input.payment == None:
+        result += 1
     return result
 
-def check_calculation_type(calculation_type):
+def can_convert(user_input):
+    result = True
+    if user_input.principal != None:
+        try:
+            float(user_input.principal)
+        except Exception:
+            result = False
+        else:
+            if float(user_input.principal) < 0:
+                result = False
+    if user_input.periods != None:
+        try:
+            int(user_input.periods)
+        except Exception:
+            result = False
+        else:
+            if int(user_input.periods) < 0:
+                result = False
+    if user_input.interest != None:
+        try:
+            float(user_input.interest)
+        except Exception:
+            result = False
+        else:
+            if float(user_input.interest) < 0:
+                result = False
+    if user_input.payment != None:
+        try:
+            float(user_input.payment)
+        except Exception:
+            result = False
+        else:
+            if float(user_input.payment) < 0:
+                result = False
+    return result
+
+def command_line_guardian(user_input):
+    result = True
+    if count_none_values(user_input) < 4:
+        result = False
+    elif count_none_values(user_input) == 5:
+        result = False
+    if not can_convert(user_input):
+        result = False
+    return result
+
+def is_conflicting_calculation_type_and_parameters(user_input):
+    result = False
+    if user_input.calculation_type == command_line_keywords[CommandLineKeyword.DIFFERANTIATE]:
+        if user_input.payment != None:
+            result = True
+    return result
+
+def is_valid_calculation_type(calculation_type):
     result = True
     if calculation_type not in [command_line_keywords[CommandLineKeyword.ANNUITY], command_line_keywords[CommandLineKeyword.DIFFERANTIATE]]:
+        result = False
+    if calculation_type == None:
         result = False
     return result
 
@@ -243,7 +332,7 @@ def check_command_line_input(user_input):
     result = True
     if not command_line_guardian(user_input):
         result = False
-    elif not check_calculation_type(user_input.type):
+    elif not is_valid_calculation_type(user_input.type):
         result = False
     return result
 
