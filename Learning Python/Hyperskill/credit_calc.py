@@ -351,15 +351,32 @@ def get_command_line_input():
     return result
 
 def overpayment_calculation(user_input):
-    result = '1'
+    result = '\n'
     return result
 
 def annuity_calculation(user_input):
-    result = '1'
+    result = 'annuity result'
     return result
 
 def diff_calculation(user_input):
-    result = '1'
+    result = ''
+    month = 1
+    while month <= user_input.periods:
+        payment = user_input.principal \
+                  / user_input.periods \
+                  + user_input.interest \
+                    * (user_input.principal \
+                        - (user_input.principal \
+                            * (month \
+                            - 1
+                              ) \
+                          / user_input.periods
+                          )
+                      )
+        payment = math.ceil(payment)
+        message = f'Month {month}: paid out {payment}\n'
+        result += message
+        month += 1
     return result
 
 def start_calculation(user_input):
@@ -377,9 +394,13 @@ def command_line_handler():
         result = get_guardian_message()
     else:
         result = start_calculation(user_input)
-        result = '1'
     return result
 
 if __name__ == "__main__":
-    result = command_line_handler()
+    #result = command_line_handler()
+    user_input = UserInput()
+    user_input.principal = 1000000
+    user_input.periods = 10
+    user_input.interest = 10 / 100 / 12
+    result = diff_calculation(user_input)
     print(result)

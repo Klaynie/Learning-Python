@@ -112,9 +112,10 @@ class CalculateOverpaymentCases(unittest.TestCase):
         self.assertEqual(calculate_overpayment(), 52000)
 class CalculateDiffCases(unittest.TestCase):
     def test_diff_1(self):
-        principal = 1000000
-        periods = 10
-        interest = 10 / 100 / 12
+        user_input = UserInput()
+        user_input.principal = 1000000
+        user_input.periods = 10
+        user_input.interest = 10 / 100 / 12
         result = ("Month 1: paid out 108334\n"
                   "Month 2: paid out 107500\n"
                   "Month 3: paid out 106667\n"
@@ -124,12 +125,13 @@ class CalculateDiffCases(unittest.TestCase):
                   "Month 7: paid out 103334\n"
                   "Month 8: paid out 102500\n"
                   "Month 9: paid out 101667\n"
-                  "Month 10: paid out 100834")
-        self.assertEqual(calculate_overpayment(principal, periods, interest), result)
+                  "Month 10: paid out 100834\n")
+        self.assertEqual(diff_calculation(user_input), result)
     def test_diff_2(self):
-        principal = 500000
-        periods = 8
-        interest = 7.8 / 100 / 12
+        user_input = UserInput()
+        user_input.principal = 500000
+        user_input.periods = 8
+        user_input.interest = 7.8 / 100 / 12
         result = ("Month 1: paid out 65750\n"
                   "Month 2: paid out 65344\n"
                   "Month 3: paid out 64938\n"
@@ -137,8 +139,8 @@ class CalculateDiffCases(unittest.TestCase):
                   "Month 5: paid out 64125\n"
                   "Month 6: paid out 63719\n"
                   "Month 7: paid out 63313\n"
-                  "Month 8: paid out 62907")
-        self.assertEqual(calculate_overpayment(principal, periods, interest), result)
+                  "Month 8: paid out 62907\n")
+        self.assertEqual(diff_calculation(user_input), result)
 class NegativeInputValueCases(unittest.TestCase):
     def test_negative_input_1(self):
         user_input = UserInput()
