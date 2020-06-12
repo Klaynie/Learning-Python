@@ -254,6 +254,7 @@ def convert_input(input_):
     7) At the end of the expression, pop the stack and add all operators to the result.
     """
     # Find Algorithm to solve issue with expressions that start with '-'
+    # User enumerate in for loops for i, item in enumerate(list)
     global operator_symbols, bracket_symbols
     postfix_stack = deque()
     operators_stack = deque()
