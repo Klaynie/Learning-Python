@@ -1,14 +1,9 @@
 hobbies_Adam = ('reading', ('jogging', 'boxing', 'yoga'), 'movies')
 
 def unpack(input_tuple):
-    result = []
+    result = tuple()
     for item in input_tuple:
-        if isinstance(item, tuple):
-            for sub_item in item:
-                result.append(sub_item)
-        else:
-            result.append(item)
-    result = tuple(result)
+        result += (*item,) if isinstance(item, tuple) else (item,)
     return result
 
 print(unpack(hobbies_Adam))
