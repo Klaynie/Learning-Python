@@ -16,9 +16,7 @@ from collections import defaultdict
 transactions = [(38177, 34.38), (876, 999.99), (654276, 653678), (54366, 0.99),
                 (546, 987.65), (876, 3456), (654276, 0.55), (38177, 876.75), (876, 98.7)]
 
-total_transactions_list_dict = defaultdict(list)
+transaction_dict = defaultdict(list)
 
-for transaction in enumerate(transactions):
-    total_transactions_list_dict.setdefault(transaction[1][0], []).append(transaction[1][1])
-
-print(total_transactions_list_dict.items())
+for transaction in transactions:
+    transaction_dict.setdefault(transaction[0], []).append(transaction[1])
