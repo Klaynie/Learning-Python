@@ -20,54 +20,83 @@ class GetMatrixInputCases(TestCase):
     def test_get_matrix_input_01(self, mocked_input):
         number_of_rows = 4
         mocked_input.side_effect = ['1 2 3 4 5', '3 2 3 2 1', '8 0 9 9 1', '1 3 4 5 6']
-        result = [[1, 2, 3, 4, 5],\
-                  [3, 2, 3, 2, 1],\
-                  [8, 0, 9, 9, 1],\
-                  [1, 3, 4, 5, 6]]
+        result = [[1, 2, 3, 4, 5]\
+                 ,[3, 2, 3, 2, 1]\
+                 ,[8, 0, 9, 9, 1]\
+                 ,[1, 3, 4, 5, 6]]
         self.assertEqual(get_matrix_input(number_of_rows), result)
 
     @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
     def test_get_matrix_input_02(self, mocked_input):
         number_of_rows = 2
         mocked_input.side_effect = ['1 4 5', '4 5 5']
-        result = [[1, 4, 5],\
-                  [4, 5, 5]]
+        result = [[1, 4, 5]\
+                 ,[4, 5, 5]]
         self.assertEqual(get_matrix_input(number_of_rows), result)
 
 class AddMatrixCases(TestCase):
     def test_matrix_addition_01(self):
-        matrix_one = [[1, 2, 3, 4, 5],\
-                      [3, 2, 3, 2, 1],\
-                      [8, 0, 9, 9, 1],\
-                      [1, 3, 4, 5, 6]]
-        matrix_two = [[1, 1, 4, 4, 5],\
-                      [4, 4, 5, 7, 8],\
-                      [1, 2, 3, 9, 8],\
-                      [1, 0, 0, 0, 1]]
+        matrix_one = [[1, 2, 3, 4, 5]\
+                     ,[3, 2, 3, 2, 1]\
+                     ,[8, 0, 9, 9, 1]\
+                     ,[1, 3, 4, 5, 6]]
+        matrix_two = [[1, 1, 4, 4, 5]\
+                     ,[4, 4, 5, 7, 8]\
+                     ,[1, 2, 3, 9, 8]\
+                     ,[1, 0, 0, 0, 1]]
         list_of_matrices = [matrix_one, matrix_two]
-        result = [[2, 3, 7, 8, 10],\
-                  [7, 6, 8, 9, 9],\
-                  [9, 2, 12, 18, 9],\
-                  [2, 3, 4, 5, 7]]
+        result = [[2, 3, 7, 8, 10]\
+                 ,[7, 6, 8, 9, 9]\
+                 ,[9, 2, 12, 18, 9]\
+                 ,[2, 3, 4, 5, 7]]
         self.assertEqual(add_matrices(list_of_matrices), result)
 class MatrixCanBeAddedCases(TestCase):
     def test_matrix_can_be_added_01(self):
-        matrix_one = [[1, 2, 3, 4, 5],\
-                      [3, 2, 3, 2, 1],\
-                      [8, 0, 9, 9, 1],\
-                      [1, 3, 4, 5, 6]]
-        matrix_two = [[1, 1, 4, 4, 5],\
-                      [4, 4, 5, 7, 8],\
-                      [1, 2, 3, 9, 8],\
-                      [1, 0, 0, 0, 1]]
+        matrix_one = [[1, 2, 3, 4, 5]\
+                     ,[3, 2, 3, 2, 1]\
+                     ,[8, 0, 9, 9, 1]\
+                     ,[1, 3, 4, 5, 6]]
+        matrix_two = [[1, 1, 4, 4, 5]\
+                     ,[4, 4, 5, 7, 8]\
+                     ,[1, 2, 3, 9, 8]\
+                     ,[1, 0, 0, 0, 1]]
         list_of_matrices = [matrix_one, matrix_two]
         self.assertTrue(matrices_can_be_added(list_of_matrices))
     def test_matrix_can_be_added_02(self):
-        matrix_one = [[1, 4, 5],\
-                      [4, 5, 5]]
-        matrix_two = [[0, 1, 0, 4, 5],\
-                      [1, 7, 8, 9, 4],\
-                      [1, 2, 3, 5, 6],\
-                      [1, 3, 4, 3, 8]]
+        matrix_one = [[1, 4, 5]\
+                     ,[4, 5, 5]]
+        matrix_two = [[0, 1, 0, 4, 5]\
+                     ,[1, 7, 8, 9, 4]\
+                     ,[1, 2, 3, 5, 6]\
+                     ,[1, 3, 4, 3, 8]]
         list_of_matrices = [matrix_one, matrix_two]
         self.assertFalse(matrices_can_be_added(list_of_matrices))
+
+class ConvertMatrixToStringCases(TestCase):
+    def test_convert_matrix_2_string_01(self):
+        matrix = [[2, 3, 7, 8, 10]\
+                 ,[7, 6, 8, 9, 9]\
+                 ,[9, 2, 12, 18, 9]\
+                 ,[2, 3, 4, 5, 7]]
+        result = '2 3 7 8 10\n'\
+                 '7 6 8 9 9\n'\
+                 '9 2 12 18 9\n'\
+                 '2 3 4 5 7'
+        self.assertEqual(convert_matrix_2_string(matrix), result)
+
+class PrintCorrectOutcomeTest(TestCase):
+    @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
+    def test_correct_outcome_addition_01(self, mocked_input):
+        mocked_input.side_effect = ['4 5', '1 2 3 4 5', '3 2 3 2 1', '8 0 9 9 1', '1 3 4 5 6'\
+                                   ,'4 5', '1 1 4 4 5', '4 4 5 7 8', '1 2 3 9 8', '1 0 0 0 1']
+        result = '2 3 7 8 10\n'\
+                 '7 6 8 9 9\n'\
+                 '9 2 12 18 9\n'\
+                 '2 3 4 5 7'
+        self.assertEqual(matrix_calculator(), result)
+    @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
+    def test_correct_outcome_addition_02(self, mocked_input):
+        mocked_input.side_effect = ['2 3', '1 4 5', '4 5 5'\
+                                   ,'4 5', '0 1 0 4 5', '1 7 8 9 4', '1 2 3 5 6', '1 3 4 3 8']
+        result = 'ERROR'
+        self.assertEqual(matrix_calculator(), result)

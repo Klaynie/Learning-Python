@@ -1,3 +1,16 @@
+def convert_matrix_2_string(matrix):
+    result = ''
+    for row_counter, row in enumerate(matrix, 1):
+        for item_counter, item in enumerate(row, 1):
+            if item_counter < len(row):
+                result += str(item)
+                result += ' '
+            else:
+                result += str(item)
+        if row_counter < len(matrix):
+            result += '\n'
+    return result
+
 def add_matrices(list_of_matrices):
     result = []
     for row in list_of_matrices[0]:
@@ -33,23 +46,24 @@ def get_matrix_input(number_of_rows):
         result.append(row)
     return result
 
-def matrix_calculator():
+def matrix_addition(number_of_matrices=2):
     result = []
     list_of_matrices = []
-    for _ in range(2):
+    for _ in range(number_of_matrices):
         number_of_rows, number_of_columns = get_row_and_column_numbers()
         matrix = get_matrix_input(number_of_rows)
         list_of_matrices.append(matrix)
     if matrices_can_be_added(list_of_matrices):
         result = add_matrices(list_of_matrices)
-    else:
-        result = 'ERROR'
+    return result
 
-matrix_one = [[1, 4, 5],\
-                [4, 5, 5]]
-matrix_two = [[0, 1, 0, 4, 5],\
-                [1, 7, 8, 9, 4],\
-                [1, 2, 3, 5, 6],\
-                [1, 3, 4, 3, 8]]
-list_of_matrices = [matrix_one, matrix_two]
-print(matrices_can_be_added(list_of_matrices))
+def matrix_calculator():
+    result = matrix_addition()
+    if result == []:
+        result = 'ERROR'
+    else:
+        result = convert_matrix_2_string(result)
+    return result
+
+if __name__ == "__main__":
+    print(matrix_calculator())
