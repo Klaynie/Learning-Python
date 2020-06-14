@@ -83,7 +83,7 @@ class ConvertMatrixToStringCases(TestCase):
                  '9 2 12 18 9\n'\
                  '2 3 4 5 7'
         self.assertEqual(convert_matrix_2_string(matrix), result)
-
+"""
 class PrintCorrectOutcomeTest(TestCase):
     @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
     def test_correct_outcome_addition_01(self, mocked_input):
@@ -100,3 +100,21 @@ class PrintCorrectOutcomeTest(TestCase):
                                    ,'4 5', '0 1 0 4 5', '1 7 8 9 4', '1 2 3 5 6', '1 3 4 3 8']
         result = 'ERROR'
         self.assertEqual(matrix_calculator(), result)
+"""
+class MultiplyMatrixByConstantCases(TestCase):
+    def test_matrix_by_constant_multiplication_01(self):
+        matrix = [[1, 2, 3]\
+                 ,[4, 5, 6]\
+                 ,[7, 8, 9]]
+        constant = 3
+        result = [[3, 6, 9]\
+                 ,[12, 15, 18]\
+                 ,[21, 24, 27]]
+        self.assertEqual(multiply_matrix_by_constant(matrix, constant), result)
+    def test_matrix_by_constant_multiplication_02(self):
+        matrix = [[1, 2, 3]\
+                 ,[4, 5, 6]]
+        constant = 0
+        result = [[0, 0, 0]\
+                 ,[0, 0, 0]]
+        self.assertEqual(multiply_matrix_by_constant(matrix, constant), result)
