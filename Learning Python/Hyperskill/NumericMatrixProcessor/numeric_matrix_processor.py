@@ -1,3 +1,32 @@
+from enum import IntEnum
+
+class Keyword(IntEnum):
+    EXIT = 0
+    ADD = 1
+    MULTI_BY_CONST = 2
+    MATRIX_MULTI = 3
+
+class UserMessage(IntEnum):
+    ERROR = 0
+    MENU = 1
+    CHOICE = 2
+    MATIRX_SIZE = 3
+    ENTER_MATRIX = 4
+    ENTER_CONSTANT = 5
+    RESULT = 6
+
+keywords = ['EXIT']
+user_messages = ['ERROR'
+                 ,'1. Add matrices\n'\
+                  '2. Multiply matrix by a constant\n'\
+                  '3. Multiply matrices\n'\
+                  '0. Exit'
+                ,'Your choice: '
+                ,'Enter size of matrix: '
+                ,'Enter matrix:'
+                ,'Enter constant: '
+                ,'The result is:']
+
 def convert_matrix_2_string(matrix):
     result = ''
     for row_counter, row in enumerate(matrix, 1):
@@ -74,15 +103,43 @@ def matrix_by_constant_multiplication():
     constant = get_constant()
     result = multiply_matrix_by_constant(matrix, constant)
     return result
-    
-def matrix_calculator():
-    #result = matrix_addition()
-    result = matrix_by_constant_multiplication()
-    if result == []:
-        result = 'ERROR'
-    else:
-        result = convert_matrix_2_string(result)
+
+def matrix_multiplication():
+    pass
+
+def get_menu_choice():
+    return int(input(user_messages[UserMessage.CHOICE]))
+
+def input_handler():
+    result = None
+    action = get_menu_choice()
+    placeholder_matrix = [[1, 2, 3]\
+                         ,[4, 5, 6]\
+                         ,[7, 8, 9]]
+    if action == Keyword.ADD:
+        result = placeholder_matrix #matrix_addition()
+    elif action == Keyword.MULTI_BY_CONST:
+        result = placeholder_matrix #matrix_by_constant_multiplication()
+    elif action == Keyword.MATRIX_MULTI:
+        result = placeholder_matrix #matrix_multiplication()
+    elif action == Keyword.EXIT:
+        result = keywords[Keyword.EXIT]
     return result
 
+def calculator_loop():
+    global keywords, user_messages
+    keep_going = True
+    while keep_going:
+        print(user_messages[UserMessage.MENU])
+        result = input_handler()
+        if result == keywords[Keyword.EXIT]:
+            keep_going = False
+        elif result == []:
+            print(user_messages[UserMessage.ERROR])
+        else:
+            print(user_messages[UserMessage.RESULT])
+            print(convert_matrix_2_string(result))
+        
+
 if __name__ == "__main__":
-    print(matrix_calculator())
+    calculator_loop()
