@@ -80,7 +80,13 @@ def get_matrix_input(number_of_rows, message=None):
     result = []
     print(message)
     for row_counter in range(number_of_rows):
-        row = [int(_) for _ in input().split()]
+        raw_row = input().split()
+        row = []
+        for item in raw_row:
+            if item.isdigit():
+                row.append(int(item))
+            else:
+                row.append(float(item))
         result.append(row)
     return result
 
@@ -109,7 +115,12 @@ def multiply_matrix_by_constant(matrix, constant):
     return result
 
 def get_constant(message=None):
-    return int(input(message))
+    result = input(message)
+    if result.isdigit():
+        result = int(result)
+    else:
+        result = float(result)
+    return result
 
 def matrix_by_constant_multiplication():
     result = []
@@ -128,15 +139,15 @@ def get_menu_choice():
 def input_handler():
     result = None
     action = get_menu_choice()
-    placeholder_matrix = [[1, 2, 3]\
-                         ,[4, 5, 6]\
-                         ,[7, 8, 9]]
+    placeholder_matrix = [[94, 37, 137]\
+                         ,[80, 42, 118]\
+                         ,[30, 18, 44]]
     if action == Keyword.ADD:
-        result = matrix_addition()
+        result = convert_matrix_2_string(matrix_addition())
     elif action == Keyword.MULTI_BY_CONST:
-        result = matrix_by_constant_multiplication()
+        result = convert_matrix_2_string(matrix_by_constant_multiplication())
     elif action == Keyword.MATRIX_MULTI:
-        result = placeholder_matrix #matrix_multiplication()
+        result = convert_matrix_2_string(placeholder_matrix) #matrix_multiplication()
     elif action == Keyword.EXIT:
         result = keywords[Keyword.EXIT]
     return result
@@ -153,9 +164,10 @@ def calculator_loop():
             print(user_messages[UserMessage.ERROR])
         else:
             print(user_messages[UserMessage.RESULT])
-            print(convert_matrix_2_string(result))
+            print(result)
             print('\n')
         
 
 if __name__ == "__main__":
-    calculator_loop()
+    #calculator_loop()
+    print(input_handler())

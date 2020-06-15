@@ -1,4 +1,5 @@
 from unittest import mock
+from unittest.mock import patch, call
 from unittest import TestCase
 from Hyperskill.NumericMatrixProcessor.numeric_matrix_processor import *
 
@@ -83,24 +84,35 @@ class ConvertMatrixToStringCases(TestCase):
                  '9 2 12 18 9\n'\
                  '2 3 4 5 7'
         self.assertEqual(convert_matrix_2_string(matrix), result)
-"""
 class PrintCorrectOutcomeTest(TestCase):
     @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
-    def test_correct_outcome_addition_01(self, mocked_input):
-        mocked_input.side_effect = ['4 5', '1 2 3 4 5', '3 2 3 2 1', '8 0 9 9 1', '1 3 4 5 6'\
+    def test_print_addition_01(self, mocked_input):
+        mocked_input.side_effect = ['1'
+                                   ,'4 5', '1 2 3 4 5', '3 2 3 2 1', '8 0 9 9 1', '1 3 4 5 6'\
                                    ,'4 5', '1 1 4 4 5', '4 4 5 7 8', '1 2 3 9 8', '1 0 0 0 1']
         result = '2 3 7 8 10\n'\
                  '7 6 8 9 9\n'\
                  '9 2 12 18 9\n'\
                  '2 3 4 5 7'
-        self.assertEqual(matrix_calculator(), result)
+        self.assertEqual(input_handler(), result)
     @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
-    def test_correct_outcome_addition_02(self, mocked_input):
-        mocked_input.side_effect = ['2 3', '1 4 5', '4 5 5'\
-                                   ,'4 5', '0 1 0 4 5', '1 7 8 9 4', '1 2 3 5 6', '1 3 4 3 8']
-        result = 'ERROR'
-        self.assertEqual(matrix_calculator(), result)
-"""
+    def test_print_multiply_by_constant_01(self, mocked_input):
+        mocked_input.side_effect = ['2'
+                                   ,'2 2', '1.5 7.0', '6.0 5.0'\
+                                   ,'0.5']
+        result = '0.75 3.5\n'\
+                 '3.0 2.5'
+        self.assertEqual(input_handler(), result)
+
+    @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
+    def test_print_multiply_matrices_01(self, mocked_input):
+        mocked_input.side_effect = ['3'
+                                   ,'3 3', '1 7 7', '6 6 4'\
+                                   ,'3 3', '3 2 4', '5 5 9', '8 0 10']
+        result = '94 37 137\n'\
+                 '80 42 118\n'\
+                 '30 18 44'
+        self.assertEqual(input_handler(), result)
 class MultiplyMatrixByConstantCases(TestCase):
     def test_matrix_by_constant_multiplication_01(self):
         matrix = [[1, 2, 3]\
@@ -117,4 +129,12 @@ class MultiplyMatrixByConstantCases(TestCase):
         constant = 0
         result = [[0, 0, 0]\
                  ,[0, 0, 0]]
+        self.assertEqual(multiply_matrix_by_constant(matrix, constant), result)
+
+    def test_matrix_by_constant_multiplication_03(self):
+        matrix = [[1.5, 7.0]\
+                 ,[6.0, 5.0]]
+        constant = 0.5
+        result = [[0.75, 3.5]\
+                 ,[3.0, 2.5]]
         self.assertEqual(multiply_matrix_by_constant(matrix, constant), result)
