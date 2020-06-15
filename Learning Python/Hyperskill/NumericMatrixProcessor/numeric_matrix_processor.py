@@ -142,10 +142,15 @@ def get_constant(message=None):
         result = float(result)
     return result
 
-def matrix_by_constant_multiplication():
+def get_single_matrix_data():
     result = []
     number_of_rows, number_of_columns = get_row_and_column_numbers(user_messages[UserMessage.MATIRX_SIZE])
-    matrix = get_matrix_input(number_of_rows, user_messages[UserMessage.ENTER_MATRIX])
+    result = get_matrix_input(number_of_rows, user_messages[UserMessage.ENTER_MATRIX])
+    return result
+
+def matrix_by_constant_multiplication():
+    result = []
+    matrix = get_single_matrix_data()
     constant = get_constant(user_messages[UserMessage.ENTER_CONSTANT])
     result = multiply_matrix_by_constant(matrix, constant)
     return result
@@ -182,28 +187,35 @@ def matrix_multiplication():
 def get_menu_choice():
     return int(input(user_messages[UserMessage.CHOICE]))
 
-def transpose_horizontal_line():
-    result = [[1, 7, 7]\
-             ,[6, 6, 4]\
-             ,[4, 2, 1]]
+def transpose_horizontal_line(matrix):
+    result = []
+    for i in range(len(matrix) - 1, -1, -1):
+        row = matrix[i]
+        result.append(row)
     return result
 
-def transpose_vertical_line():
-    result = [[1, 7, 7]\
-             ,[6, 6, 4]\
-             ,[4, 2, 1]]
+def transpose_vertical_line(matrix):
+    result = matrix
+    for row in result:
+        row.reverse()
     return result
 
-def transpose_side_diagonal():
-    result = [[1, 7, 7]\
-             ,[6, 6, 4]\
-             ,[4, 2, 1]]
+def transpose_side_diagonal(matrix):
+    result = []
+    for i in range(len(matrix) - 1, -1, -1):
+        row = []
+        for j in range(len(matrix[0]) - 1, -1, -1):
+            row.append(matrix[j][i])
+        result.append(row)
     return result
 
-def transpose_main_diagonal():
-    result = [[1, 7, 7]\
-             ,[6, 6, 4]\
-             ,[4, 2, 1]]
+def transpose_main_diagonal(matrix):
+    result = []
+    for i in range(len(matrix)):
+        row = []
+        for j in range(len(matrix[0])):
+            row.append(matrix[j][i])
+        result.append(row)
     return result
 
 def transpose_matrix():
@@ -211,14 +223,15 @@ def transpose_matrix():
     print('\n')
     print(user_messages[UserMessage.TRANSPOSE])
     action = get_menu_choice()
+    matrix = get_single_matrix_data()
     if action == Transpose.MAIN_DIAGONAL:
-        result = transpose_main_diagonal()
+        result = transpose_main_diagonal(matrix)
     elif action == Transpose.SIDE_DIAGONAL:
-        result = transpose_side_diagonal()
+        result = transpose_side_diagonal(matrix)
     elif action == Transpose.VERTICAL_LINE:
-        result = transpose_vertical_line()
+        result = transpose_vertical_line(matrix)
     elif action == Transpose.HORIZONTAL_LINE:
-        result == transpose_horizontal_line()
+        result == transpose_horizontal_line(matrix)
     return result
 
 def input_handler():

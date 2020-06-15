@@ -70,6 +70,55 @@ class MultiplyMatrixCases(TestCase):
         result = [[44, 56]\
                  ,[35, 44]]
         self.assertEqual(multiply_matrices(list_of_matrices), result)
+class TransposeMatrixCases(TestCase):
+    def test_matrix_transpose_main_diagonal_01(self):
+        matrix = [[1, 1, 1, 1]\
+                 ,[2, 2, 2, 2]\
+                 ,[3, 3, 3, 3]\
+                 ,[4, 4, 4, 4]]
+        result = [[1, 2, 3, 4]\
+                 ,[1, 2, 3, 4]\
+                 ,[1, 2, 3, 4]\
+                 ,[1, 2, 3, 4]]
+        self.assertEqual(transpose_main_diagonal(matrix), result)
+    def test_matrix_transpose_main_diagonal_02(self):
+        matrix = [[1, 7, 7]\
+                 ,[6, 6, 4]\
+                 ,[4, 2, 1]]
+        result = [[1, 6, 4]\
+                 ,[7, 6, 2]\
+                 ,[7, 4, 1]]
+        self.assertEqual(transpose_main_diagonal(matrix), result)
+    def test_matrix_transpose_side_diagonal_01(self):
+        matrix = [[1, 1, 1, -1]\
+                 ,[2, 2, 2, -2]\
+                 ,[3, 3, 3, -3]\
+                 ,[4, 4, 4, -4]]
+        result = [[-4, -3, -2, -1]\
+                 ,[4, 3, 2, 1]\
+                 ,[4, 3, 2, 1]\
+                 ,[4, 3, 2, 1]]
+        self.assertEqual(transpose_side_diagonal(matrix), result)
+    def test_matrix_transpose_vertical_line_01(self):
+        matrix = [[1, 2, 3, 4]\
+                 ,[5, 6, 7, 8]\
+                 ,[9, 10, 11, 12]\
+                 ,[13, 14, 15, 16]]
+        result = [[4, 3, 2, 1]\
+                 ,[8, 7, 6, 5]\
+                 ,[12, 11, 10, 9]\
+                 ,[16, 15, 14, 13]]
+        self.assertEqual(transpose_vertical_line(matrix), result)
+    def test_matrix_transpose_horizontal_line_01(self):
+        matrix = [[1, 2, 3, 4]\
+                 ,[5, 6, 7, 8]\
+                 ,[9, 10, 11, 12]\
+                 ,[13, 14, 15, 16]]
+        result = [[13, 14, 15, 16]\
+                 ,[9, 10, 11, 12]\
+                 ,[5, 6, 7, 8]\
+                 ,[1, 2, 3, 4]]
+        self.assertEqual(transpose_horizontal_line(matrix), result)
 class MatrixCanBeAddedCases(TestCase):
     def test_matrix_can_be_added_01(self):
         matrix_one = [[1, 2, 3, 4, 5]\
