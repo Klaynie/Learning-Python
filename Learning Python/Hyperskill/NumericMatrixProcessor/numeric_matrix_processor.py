@@ -108,14 +108,14 @@ def multiply_matrix_by_constant(matrix, constant):
         result.append(result_row)
     return result
 
-def get_constant():
-    return int(input())
+def get_constant(message=None):
+    return int(input(message))
 
 def matrix_by_constant_multiplication():
     result = []
-    number_of_rows, number_of_columns = get_row_and_column_numbers()
-    matrix = get_matrix_input(number_of_rows)
-    constant = get_constant()
+    number_of_rows, number_of_columns = get_row_and_column_numbers(user_messages[UserMessage.MATIRX_SIZE])
+    matrix = get_matrix_input(number_of_rows, user_messages[UserMessage.ENTER_MATRIX])
+    constant = get_constant(user_messages[UserMessage.ENTER_CONSTANT])
     result = multiply_matrix_by_constant(matrix, constant)
     return result
 
@@ -134,7 +134,7 @@ def input_handler():
     if action == Keyword.ADD:
         result = matrix_addition()
     elif action == Keyword.MULTI_BY_CONST:
-        result = placeholder_matrix #matrix_by_constant_multiplication()
+        result = matrix_by_constant_multiplication()
     elif action == Keyword.MATRIX_MULTI:
         result = placeholder_matrix #matrix_multiplication()
     elif action == Keyword.EXIT:
