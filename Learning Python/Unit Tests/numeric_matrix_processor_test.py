@@ -209,7 +209,7 @@ class PrintCorrectOutcomeTest(TestCase):
                  '3.0 2.5'
         self.assertEqual(input_handler(), result)
     @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
-    def test_print_multiply_matrices_01(self, mocked_input):
+    def test_print_multiply_matrices_02(self, mocked_input):
         mocked_input.side_effect = ['3'
                                    ,'3 3', '1 7 7', '6 6 4', '4 2 1'\
                                    ,'3 3', '3 2 4', '5 5 9', '8 0 10']
@@ -224,6 +224,60 @@ class PrintCorrectOutcomeTest(TestCase):
                                    ,'3 2', '1 2', '3 4', '5 6']
         result = '44 56\n'\
                  '35 44'
+        self.assertEqual(input_handler(), result)
+    @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
+    def test_print_transpose_matrix_01(self, mocked_input):
+        mocked_input.side_effect = ['4'
+                                   ,'1'
+                                   ,'4 4'
+                                   ,'1 1 1 1', '2 2 2 2', '3 3 3 3', '4 4 4 4']
+        result = '1 2 3 4\n'\
+                 '1 2 3 4\n'\
+                 '1 2 3 4\n'\
+                 '1 2 3 4'
+        self.assertEqual(input_handler(), result)
+    @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
+    def test_print_transpose_matrix_02(self, mocked_input):
+        mocked_input.side_effect = ['4'
+                                   ,'2'
+                                   ,'4 4'
+                                   ,'1 1 1 -1', '2 2 2 -2', '3 3 3 -3', '4 4 4 -4']
+        result = '-4 -3 -2 -1\n'\
+                 '4 3 2 1\n'\
+                 '4 3 2 1\n'\
+                 '4 3 2 1'
+        self.assertEqual(input_handler(), result)
+    @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
+    def test_print_transpose_matrix_03(self, mocked_input):
+        mocked_input.side_effect = ['4'
+                                   ,'3'
+                                   ,'4 4'
+                                   ,'1 2 3 4', '5 6 7 8', '9 10 11 12', '13 14 15 16']
+        result = '4 3 2 1\n'\
+                 '8 7 6 5\n'\
+                 '12 11 10 9\n'\
+                 '16 15 14 13'
+        self.assertEqual(input_handler(), result)
+    @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
+    def test_print_transpose_matrix_04(self, mocked_input):
+        mocked_input.side_effect = ['4'
+                                   ,'4'
+                                   ,'4 4'
+                                   ,'1 2 3 4', '5 6 7 8', '9 10 11 12', '13 14 15 16']
+        result = '13 14 15 16\n'\
+                 '9 10 11 12\n'\
+                 '5 6 7 8\n'\
+                 '1 2 3 4'
+        self.assertEqual(input_handler(), result)
+    @mock.patch('Hyperskill.NumericMatrixProcessor.numeric_matrix_processor.input', create=True)
+    def test_print_transpose_matrix_05(self, mocked_input):
+        mocked_input.side_effect = ['4'
+                                   ,'1'
+                                   ,'3 3'
+                                   ,'1 7 7', '6 6 4', '4 2 1']
+        result = '1 6 4\n'\
+                 '7 6 2\n'\
+                 '7 4 1'
         self.assertEqual(input_handler(), result)
 class MultiplyMatrixByConstantCases(TestCase):
     def test_matrix_by_constant_multiplication_01(self):

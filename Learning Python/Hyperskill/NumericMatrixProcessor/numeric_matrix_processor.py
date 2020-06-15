@@ -103,7 +103,8 @@ def get_matrix_input(number_of_rows, message=None):
         raw_row = input().split()
         row = []
         for item in raw_row:
-            if item.isdigit():
+            temp_item = item
+            if temp_item.replace('-','').isdigit():
                 row.append(int(item))
             else:
                 row.append(float(item))
@@ -231,7 +232,7 @@ def transpose_matrix():
     elif action == Transpose.VERTICAL_LINE:
         result = transpose_vertical_line(matrix)
     elif action == Transpose.HORIZONTAL_LINE:
-        result == transpose_horizontal_line(matrix)
+        result = transpose_horizontal_line(matrix)
     return result
 
 def input_handler():
