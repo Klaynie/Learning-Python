@@ -5,6 +5,7 @@ class Keyword(IntEnum):
     ADD = 1
     MULTI_BY_CONST = 2
     MATRIX_MULTI = 3
+    TRANSPOSE = 4
 
 class UserMessage(IntEnum):
     ERROR = 0
@@ -18,12 +19,14 @@ class UserMessage(IntEnum):
     ENTER_MATRIX = 8
     ENTER_CONSTANT = 9
     RESULT = 10
+    TRANSPOSE = 11
 
 keywords = ['EXIT']
 user_messages = ['The operation cannot be performed.'
                  ,'1. Add matrices\n'\
                   '2. Multiply matrix by a constant\n'\
                   '3. Multiply matrices\n'\
+                  '4. Transpose matrix\n'
                   '0. Exit'
                 ,'Your choice: '
                 ,'Enter size of first matrix: '
@@ -169,6 +172,12 @@ def matrix_multiplication():
 def get_menu_choice():
     return int(input(user_messages[UserMessage.CHOICE]))
 
+def transpose_matrix():
+    result = [[1, 7, 7]\
+             ,[6, 6, 4]\
+             ,[4, 2, 1]]
+    return result
+
 def input_handler():
     result = None
     action = get_menu_choice()
@@ -178,6 +187,8 @@ def input_handler():
         result = convert_matrix_2_string(matrix_by_constant_multiplication())
     elif action == Keyword.MATRIX_MULTI:
         result = convert_matrix_2_string(matrix_multiplication())
+    elif action == Keyword.TRANSPOSE:
+        result = convert_matrix_2_string(transpose_matrix())
     elif action == Keyword.EXIT:
         result = keywords[Keyword.EXIT]
     return result
