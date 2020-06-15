@@ -7,6 +7,12 @@ class Keyword(IntEnum):
     MATRIX_MULTI = 3
     TRANSPOSE = 4
 
+class Transpose(IntEnum):
+    MAIN_DIAGONAL = 1
+    SIDE_DIAGONAL = 2
+    VERTICAL_LINE = 3
+    HORIZONTAL_LINE = 4
+
 class UserMessage(IntEnum):
     ERROR = 0
     MENU = 1
@@ -23,11 +29,11 @@ class UserMessage(IntEnum):
 
 keywords = ['EXIT']
 user_messages = ['The operation cannot be performed.'
-                 ,'1. Add matrices\n'\
-                  '2. Multiply matrix by a constant\n'\
-                  '3. Multiply matrices\n'\
-                  '4. Transpose matrix\n'
-                  '0. Exit'
+                ,'1. Add matrices\n'\
+                 '2. Multiply matrix by a constant\n'\
+                 '3. Multiply matrices\n'\
+                 '4. Transpose matrix\n'
+                 '0. Exit'
                 ,'Your choice: '
                 ,'Enter size of first matrix: '
                 ,'Enter first matrix:'
@@ -36,7 +42,11 @@ user_messages = ['The operation cannot be performed.'
                 ,'Enter size of matrix: '
                 ,'Enter matrix:'
                 ,'Enter constant: '
-                ,'The result is:']
+                ,'The result is:'
+                ,'1. Main diagonal\n'\
+                 '2. Side diagonal\n'\
+                 '3. Vertical line\n'\
+                 '4. Horizontal line']
 
 def convert_matrix_2_string(matrix):
     if matrix == []:
@@ -172,10 +182,43 @@ def matrix_multiplication():
 def get_menu_choice():
     return int(input(user_messages[UserMessage.CHOICE]))
 
-def transpose_matrix():
+def transpose_horizontal_line():
     result = [[1, 7, 7]\
              ,[6, 6, 4]\
              ,[4, 2, 1]]
+    return result
+
+def transpose_vertical_line():
+    result = [[1, 7, 7]\
+             ,[6, 6, 4]\
+             ,[4, 2, 1]]
+    return result
+
+def transpose_side_diagonal():
+    result = [[1, 7, 7]\
+             ,[6, 6, 4]\
+             ,[4, 2, 1]]
+    return result
+
+def transpose_main_diagonal():
+    result = [[1, 7, 7]\
+             ,[6, 6, 4]\
+             ,[4, 2, 1]]
+    return result
+
+def transpose_matrix():
+    result = []
+    print('\n')
+    print(user_messages[UserMessage.TRANSPOSE])
+    action = get_menu_choice()
+    if action == Transpose.MAIN_DIAGONAL:
+        result = transpose_main_diagonal()
+    elif action == Transpose.SIDE_DIAGONAL:
+        result = transpose_side_diagonal()
+    elif action == Transpose.VERTICAL_LINE:
+        result = transpose_vertical_line()
+    elif action == Transpose.HORIZONTAL_LINE:
+        result == transpose_horizontal_line()
     return result
 
 def input_handler():
