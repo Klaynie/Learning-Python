@@ -10,10 +10,14 @@ class UserMessage(IntEnum):
     ERROR = 0
     MENU = 1
     CHOICE = 2
-    MATIRX_SIZE = 3
-    ENTER_MATRIX = 4
-    ENTER_CONSTANT = 5
-    RESULT = 6
+    ADD_MATIRX_SIZE_1 = 3
+    ENTER_MATRIX_1 = 4
+    ADD_MATIRX_SIZE_2 = 5
+    ENTER_MATRIX_2 = 6
+    MATIRX_SIZE = 7
+    ENTER_MATRIX = 8
+    ENTER_CONSTANT = 9
+    RESULT = 10
 
 keywords = ['EXIT']
 user_messages = ['ERROR'
@@ -22,6 +26,10 @@ user_messages = ['ERROR'
                   '3. Multiply matrices\n'\
                   '0. Exit'
                 ,'Your choice: '
+                ,'Enter size of first matrix: '
+                ,'Enter first matrix:'
+                ,'Enter size of second matrix: '
+                ,'Enter second matrix:'
                 ,'Enter size of matrix: '
                 ,'Enter matrix:'
                 ,'Enter constant: '
@@ -64,24 +72,31 @@ def matrices_can_be_added(list_of_matrices):
                 result = False
     return result
 
-def get_row_and_column_numbers():
-    number_of_rows, number_of_columns = (int(_) for _ in input().split())
+def get_row_and_column_numbers(message=None):
+    number_of_rows, number_of_columns = (int(_) for _ in input(message).split())
     return number_of_rows, number_of_columns
 
-def get_matrix_input(number_of_rows):
+def get_matrix_input(number_of_rows, message=None):
     result = []
+    print(message)
     for row_counter in range(number_of_rows):
         row = [int(_) for _ in input().split()]
         result.append(row)
     return result
 
-def matrix_addition(number_of_matrices=2):
-    result = []
+def get_matrices_for_addition():
     list_of_matrices = []
-    for _ in range(number_of_matrices):
-        number_of_rows, number_of_columns = get_row_and_column_numbers()
-        matrix = get_matrix_input(number_of_rows)
-        list_of_matrices.append(matrix)
+    n_row_first, n_column_first = get_row_and_column_numbers(user_messages[UserMessage.ADD_MATIRX_SIZE_1])
+    first_matrix = get_matrix_input(n_row_first, user_messages[UserMessage.ENTER_MATRIX_1])
+    list_of_matrices.append(first_matrix)
+    n_row_second, n_column_second = get_row_and_column_numbers(user_messages[UserMessage.ADD_MATIRX_SIZE_2])
+    second_matrix = get_matrix_input(n_row_second, user_messages[UserMessage.ENTER_MATRIX_2])
+    list_of_matrices.append(second_matrix)
+    return list_of_matrices
+
+def matrix_addition():
+    result = []
+    list_of_matrices = get_matrices_for_addition()
     if matrices_can_be_added(list_of_matrices):
         result = add_matrices(list_of_matrices)
     return result
@@ -117,7 +132,7 @@ def input_handler():
                          ,[4, 5, 6]\
                          ,[7, 8, 9]]
     if action == Keyword.ADD:
-        result = placeholder_matrix #matrix_addition()
+        result = matrix_addition()
     elif action == Keyword.MULTI_BY_CONST:
         result = placeholder_matrix #matrix_by_constant_multiplication()
     elif action == Keyword.MATRIX_MULTI:
@@ -139,6 +154,7 @@ def calculator_loop():
         else:
             print(user_messages[UserMessage.RESULT])
             print(convert_matrix_2_string(result))
+            print('\n')
         
 
 if __name__ == "__main__":
