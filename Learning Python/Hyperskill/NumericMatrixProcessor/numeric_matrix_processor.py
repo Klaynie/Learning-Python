@@ -20,7 +20,7 @@ class UserMessage(IntEnum):
     RESULT = 10
 
 keywords = ['EXIT']
-user_messages = ['ERROR'
+user_messages = ['The operation cannot be performed.'
                  ,'1. Add matrices\n'\
                   '2. Multiply matrix by a constant\n'\
                   '3. Multiply matrices\n'\
@@ -61,11 +61,15 @@ def add_matrices(list_of_matrices):
         matrix_counter += 1
     return result
 
+def get_matrix_dimensions(list_of_matrices):
+    result = []
+    for matrix in list_of_matrices:
+        result.append((len(matrix), len(matrix[0])))
+    return result
+
 def matrices_can_be_added(list_of_matrices):
     result = True
-    dimensions = []
-    for matrix in list_of_matrices:
-        dimensions.append((len(matrix), len(matrix[0])))
+    dimensions = get_matrix_dimensions(list_of_matrices)
     for i in range(len(dimensions)):
         for j in range(len(dimensions)):
             if dimensions[0][j] != dimensions[i][j]:
@@ -90,7 +94,7 @@ def get_matrix_input(number_of_rows, message=None):
         result.append(row)
     return result
 
-def get_matrices_for_addition():
+def get_matrices_for_calculation():
     list_of_matrices = []
     n_row_first, n_column_first = get_row_and_column_numbers(user_messages[UserMessage.ADD_MATIRX_SIZE_1])
     first_matrix = get_matrix_input(n_row_first, user_messages[UserMessage.ENTER_MATRIX_1])
@@ -102,7 +106,7 @@ def get_matrices_for_addition():
 
 def matrix_addition():
     result = []
-    list_of_matrices = get_matrices_for_addition()
+    list_of_matrices = get_matrices_for_calculation()
     if matrices_can_be_added(list_of_matrices):
         result = add_matrices(list_of_matrices)
     return result
@@ -130,8 +134,34 @@ def matrix_by_constant_multiplication():
     result = multiply_matrix_by_constant(matrix, constant)
     return result
 
+def multiply_matrices(list_of_matrices):
+    result = []
+    dimensions = get_matrix_dimensions(list_of_matrices)
+    for i in range(dimensions[0][0]):
+        row = []
+        for k in range(dimensions[1][1]):
+            figure = 0
+            for j in range(dimensions[0][1]):
+                figure += list_of_matrices[0][i][j] * list_of_matrices[1][j][k]
+            row.append(figure)
+        result.append(row)
+    return result
+
+def matrices_can_be_multiplied(list_of_matrices):
+    result = True
+    dimensions = []
+    for matrix in list_of_matrices:
+        dimensions.append((len(matrix), len(matrix[0])))
+    if dimensions[0][1] != dimensions[1][0]:
+        result = False
+    return result
+
 def matrix_multiplication():
-    pass
+    result = []
+    list_of_matrices = get_matrices_for_calculation()
+    if matrices_can_be_multiplied(list_of_matrices):
+        result = multiply_matrices(list_of_matrices)
+    return result
 
 def get_menu_choice():
     return int(input(user_messages[UserMessage.CHOICE]))
@@ -139,15 +169,12 @@ def get_menu_choice():
 def input_handler():
     result = None
     action = get_menu_choice()
-    placeholder_matrix = [[94, 37, 137]\
-                         ,[80, 42, 118]\
-                         ,[30, 18, 44]]
     if action == Keyword.ADD:
         result = convert_matrix_2_string(matrix_addition())
     elif action == Keyword.MULTI_BY_CONST:
         result = convert_matrix_2_string(matrix_by_constant_multiplication())
     elif action == Keyword.MATRIX_MULTI:
-        result = convert_matrix_2_string(placeholder_matrix) #matrix_multiplication()
+        result = convert_matrix_2_string(matrix_multiplication())
     elif action == Keyword.EXIT:
         result = keywords[Keyword.EXIT]
     return result
@@ -169,5 +196,4 @@ def calculator_loop():
         
 
 if __name__ == "__main__":
-    #calculator_loop()
-    print(input_handler())
+    calculator_loop()
