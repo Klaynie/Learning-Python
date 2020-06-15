@@ -36,16 +36,19 @@ user_messages = ['The operation cannot be performed.'
                 ,'The result is:']
 
 def convert_matrix_2_string(matrix):
-    result = ''
-    for row_counter, row in enumerate(matrix, 1):
-        for item_counter, item in enumerate(row, 1):
-            if item_counter < len(row):
-                result += str(item)
-                result += ' '
-            else:
-                result += str(item)
-        if row_counter < len(matrix):
-            result += '\n'
+    if matrix == []:
+        result = []
+    else:
+        result = ''
+        for row_counter, row in enumerate(matrix, 1):
+            for item_counter, item in enumerate(row, 1):
+                if item_counter < len(row):
+                    result += str(item)
+                    result += ' '
+                else:
+                    result += str(item)
+            if row_counter < len(matrix):
+                result += '\n'
     return result
 
 def add_matrices(list_of_matrices):
@@ -189,6 +192,7 @@ def calculator_loop():
             keep_going = False
         elif result == []:
             print(user_messages[UserMessage.ERROR])
+            print('\n')
         else:
             print(user_messages[UserMessage.RESULT])
             print(result)
