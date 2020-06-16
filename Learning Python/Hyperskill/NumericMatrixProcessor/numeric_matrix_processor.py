@@ -1,4 +1,5 @@
 from enum import IntEnum
+import numpy as np
 
 class Keyword(IntEnum):
     EXIT = 0
@@ -237,9 +238,16 @@ def transpose_matrix():
         result = transpose_horizontal_line(matrix)
     return result
 
-def calculate_determinante():
-    result = 42
+def calculate_determinante(matrix):
+    matrix_array = np.array(matrix)
+    result = np.linalg.det(matrix_array)
+    return int(round(result))
+
+
+def determinante_calculation():
+    result = 0
     matrix = get_single_matrix_data()
+    result = calculate_determinante(matrix)
     return result
 
 def input_handler():
@@ -277,4 +285,8 @@ def calculator_loop():
         
 
 if __name__ == "__main__":
-    calculator_loop()
+    #calculator_loop()
+    matrix = [[1, 7, 7]\
+                ,[6, 6, 4]\
+                ,[4, 2, 1]]
+    print(calculate_determinante(matrix))

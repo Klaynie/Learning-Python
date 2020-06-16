@@ -303,3 +303,35 @@ class MultiplyMatrixByConstantCases(TestCase):
         result = [[0.75, 3.5]\
                  ,[3.0, 2.5]]
         self.assertEqual(multiply_matrix_by_constant(matrix, constant), result)
+class DeterimanteCalculationCases(TestCase):
+    def test_determinante_calculation_01(self):
+        matrix = [[1, 7, 7]\
+                 ,[6, 6, 4]\
+                 ,[4, 2, 1]]
+        result = -16
+        self.assertEqual(calculate_determinante(matrix), result)
+    def test_determinante_calculation_02(self):
+        matrix = [[1, 2, 3, 4, 5]\
+                 ,[4, 5, 6, 4, 3]\
+                 ,[0, 0, 0, 1, 5]\
+                 ,[1, 3, 9, 8, 7]\
+                 ,[5, 8, 4, 7, 11]]
+        result = 191
+        self.assertEqual(calculate_determinante(matrix), result)
+    def test_determinante_calculation_03(self):
+        matrix = [[8, 2, 3]\
+                 ,[1, 0, 1]\
+                 ,[2, 5, 1]]
+        result = -23
+        self.assertEqual(calculate_determinante(matrix), result)
+    def test_determinante_calculation_04(self):
+        matrix = [[8, 2, 3]\
+                 ,[1, 0, 1]\
+                 ,[2, 5, 1]]
+        result = -23
+        self.assertEqual(calculate_determinante(matrix), result)
+    def test_determinante_calculation_05(self):
+        matrix = [[1, -4]\
+                 ,[-2, 5]]
+        result = -3
+        self.assertEqual(calculate_determinante(matrix), result)
