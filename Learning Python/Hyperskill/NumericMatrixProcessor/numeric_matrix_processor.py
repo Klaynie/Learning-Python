@@ -8,6 +8,7 @@ class Keyword(IntEnum):
     MATRIX_MULTI = 3
     TRANSPOSE = 4
     DETERMINANT = 5
+    INVERSE = 6
 
 class Transpose(IntEnum):
     MAIN_DIAGONAL = 1
@@ -34,8 +35,9 @@ user_messages = ['The operation cannot be performed.'
                 ,'1. Add matrices\n'\
                  '2. Multiply matrix by a constant\n'\
                  '3. Multiply matrices\n'\
-                 '4. Transpose matrix\n'
-                 '5. Calculate a determinant\n'
+                 '4. Transpose matrix\n' \
+                 '5. Calculate a determinant\n' \
+                 '6. Inverse matrix\n' \
                  '0. Exit'
                 ,'Your choice: '
                 ,'Enter size of first matrix: '
@@ -250,6 +252,18 @@ def determinante_calculation():
     result = calculate_determinante(matrix)
     return result
 
+def calculate_inverse(matrix):
+    matrix_array = np.array(matrix)
+    result = np.linalg.inv(matrix_array)
+    return result
+    
+
+def inverse_calculation():
+    result = []
+    matrix = get_single_matrix_data()
+    result = calculate_inverse(matrix)
+    return result
+
 def input_handler():
     result = None
     action = get_menu_choice()
@@ -262,7 +276,9 @@ def input_handler():
     elif action == Keyword.TRANSPOSE:
         result = convert_matrix_2_string(transpose_matrix())
     elif action == Keyword.DETERMINANT:
-        result = calculate_determinante()
+        result = determinante_calculation()
+    elif action == Keyword.INVERSE:
+        result = convert_matrix_2_string(inverse_calculation())
     elif action == Keyword.EXIT:
         result = keywords[Keyword.EXIT]
     return result
@@ -285,8 +301,4 @@ def calculator_loop():
         
 
 if __name__ == "__main__":
-    #calculator_loop()
-    matrix = [[1, 7, 7]\
-                ,[6, 6, 4]\
-                ,[4, 2, 1]]
-    print(calculate_determinante(matrix))
+    calculator_loop()
