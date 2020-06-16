@@ -6,6 +6,7 @@ class Keyword(IntEnum):
     MULTI_BY_CONST = 2
     MATRIX_MULTI = 3
     TRANSPOSE = 4
+    DETERMINANT = 5
 
 class Transpose(IntEnum):
     MAIN_DIAGONAL = 1
@@ -33,6 +34,7 @@ user_messages = ['The operation cannot be performed.'
                  '2. Multiply matrix by a constant\n'\
                  '3. Multiply matrices\n'\
                  '4. Transpose matrix\n'
+                 '5. Calculate a determinant\n'
                  '0. Exit'
                 ,'Your choice: '
                 ,'Enter size of first matrix: '
@@ -235,6 +237,11 @@ def transpose_matrix():
         result = transpose_horizontal_line(matrix)
     return result
 
+def calculate_determinante():
+    result = 42
+    matrix = get_single_matrix_data()
+    return result
+
 def input_handler():
     result = None
     action = get_menu_choice()
@@ -246,6 +253,8 @@ def input_handler():
         result = convert_matrix_2_string(matrix_multiplication())
     elif action == Keyword.TRANSPOSE:
         result = convert_matrix_2_string(transpose_matrix())
+    elif action == Keyword.DETERMINANT:
+        result = calculate_determinante()
     elif action == Keyword.EXIT:
         result = keywords[Keyword.EXIT]
     return result
