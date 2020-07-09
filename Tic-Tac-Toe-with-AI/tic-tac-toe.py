@@ -3,12 +3,14 @@ import random
 
 class GameSession():
     
-    def __init__(self, cells):
-        global symbol_for_x, symbol_for_o
-        self.cells = cells.replace('_',empty_cell_symbol)
+    def __init__(self, player_1, player_2):
+        global symbol_for_x, symbol_for_o, empty_cell_symbol
+        self.cells = 9 * empty_cell_symbol
+        self.player_1 = player_1
+        self.player_2 = player_2
         self.symbol_for_x = symbol_for_x
         self.symbol_for_o = symbol_for_o
-        self.turn = self.count_symbol(self.get_symbol_for_x()) + self.count_symbol(self.get_symbol_for_o())
+        self.turn = 0
         self.scope = [1, 2, 3]
     
     def get_game_state(self):
@@ -17,7 +19,7 @@ class GameSession():
         count_o = self.count_symbol(symbol_for_o)
         count_x = self.count_symbol(symbol_for_x)
         count_win_conditions, count_x_wins, count_o_wins = self.count_field_states(field_states)
-        if count_win_conditions > 1:
+        if count_win_conditions > 2:
             result = error_messages[ErrorMessage.IMPOSSIBLE]
         elif count_o > count_x + 1 or count_x > count_o + 1:
             result = error_messages[ErrorMessage.IMPOSSIBLE]
@@ -30,6 +32,12 @@ class GameSession():
         else:
             result = game_final_messages[GameFinaleMessage.DRAW]
         return result
+    
+    def get_player_1(self):
+        return self.player_1
+    
+    def get_player_2(self):
+        return self.player_2
     
     def get_symbol_for_x(self):
         return self.symbol_for_x
@@ -113,6 +121,7 @@ class GameSession():
 class UserPrompt(IntEnum):
     INPUT_CELL = 0
     INPUT_COORDINATES = 1
+    INPUT_COMMAND = 2
 
 class ErrorMessage(IntEnum):
     IMPOSSIBLE = 0
@@ -120,6 +129,7 @@ class ErrorMessage(IntEnum):
     NON_NUMBER = 2
     OUT_OF_RANGE = 3
     OCCUPIED = 4
+    BAD_PARAMETERS = 5
 
 class GameContinueMessage(IntEnum):
     NOT_FINISHED = 0
@@ -132,18 +142,29 @@ class GameFinaleMessage(IntEnum):
 class AiTurnMessage(IntEnum):
     EASY = 0
 
+class PlayerOption(IntEnum):
+    USER = 0
+    EASY = 1
+
+class StartCommand(IntEnum):
+    START = 0
+    EXIT = 1
+
 symbol_for_x = 'X'
 symbol_for_o = 'O'
 empty_cell_symbol = ' '
-user_input_prompts = ["Enter cells: ", "Enter the coordinates: "]
+user_input_prompts = ["Enter cells: ", "Enter the coordinates: ", "Input command: "]
 game_continues_messages = ["Game not finished"]
 game_final_messages = [symbol_for_x + " wins", symbol_for_o + " wins", "Draw"]
 error_messages = ["Impossible"\
                  ,"Please provide the correct amount of fields!"\
                  ,"You should enter numbers!"\
                  ,"Coordinates should be from 1 to 3!"\
-                 ,"This cell is occupied! Choose another one!"]
+                 ,"This cell is occupied! Choose another one!"\
+                 ,"Bad parameters!"]
 ai_turn_messages = ['Making move level "easy"']
+player_options = ["user", "easy"]
+start_commands = ["start", "exit"]
 
 def is_correct_length(field_input):
     result = True
@@ -219,34 +240,82 @@ def ai_turn(game_session):
             keep_generating = False
     return result
 
-def game_loop(game_session):
-    global user_input_prompts
+def player_turn():
+    return input(user_input_prompts[UserPrompt.INPUT_CELL]).split()
+
+def turn_loop(game_session):
+    stay_in_turn = True
+    turn_counter = game_session.get_turn()
+    player_1 = game_session.get_player_1()
+    player_2 = game_session.get_player_2()
+    while stay_in_turn:
+        if turn_counter % 2 == 0:
+            if player_1 == player_options[PlayerOption.USER]:
+                new_field_input = player_turn()
+            else:
+                new_field_input = ai_turn(game_session)
+        elif turn_counter % 2 != 0:
+            if player_2 == player_options[PlayerOption.USER]:
+                new_field_input = player_turn()
+            else:
+                new_field_input = ai_turn(game_session)
+        if is_valid_turn(game_session, new_field_input):
+            stay_in_turn = False
+            cell = convert_input_to_cell(new_field_input)
+            if turn_counter % 2 == 0:
+                game_session.update_cell_with_value(cell, game_session.get_symbol_for_x())
+                game_session.set_turn()
+            elif turn_counter % 2 != 0:
+                game_session.update_cell_with_value(cell, game_session.get_symbol_for_o())
+                game_session.set_turn()
+
+def is_valid_command(user_input):
+    result = False
+    if user_input == start_commands[StartCommand.EXIT]:
+        result = True
+    else:
+        commands = user_input.split()
+        if len(commands) != 3:
+            result = False
+        elif len(commands) == 3:
+            if commands[0] == start_commands[StartCommand.START] \
+            and commands[1] in player_options \
+            and commands[2] in player_options:
+                result = True
+    return result
+
+def get_user_command():
+    keep_requesting_commnad = True
+    while keep_requesting_commnad:
+        result = input(user_input_prompts[UserPrompt.INPUT_COMMAND])
+        if is_valid_command(result):
+            keep_requesting_commnad = False
+        else:
+            print(error_messages[ErrorMessage.BAD_PARAMETERS])
+    return result
+        
+
+def game_loop():
+    global user_input_prompts, player_options, start_commands
     stay_in_game = True
     while stay_in_game:
-        stay_in_turn = True
-        turn_counter = game_session.get_turn()
-        while stay_in_turn:
-            if turn_counter % 2 == 0:
-                new_field_input = input(user_input_prompts[0]).split()
-            elif turn_counter % 2 != 0:
-                new_field_input = ai_turn(game_session)
-            if is_valid_turn(game_session, new_field_input):
-                stay_in_turn = False
-                cell = convert_input_to_cell(new_field_input)
-                if turn_counter % 2 == 0:
-                    game_session.update_cell_with_value(cell, game_session.get_symbol_for_x())
-                    game_session.set_turn()
-                elif turn_counter % 2 != 0:
-                    game_session.update_cell_with_value(cell, game_session.get_symbol_for_o())
-                    game_session.set_turn()
-        game_session.print_field()
-        game_state = game_session.get_game_state()
-        print(game_state)
-        if game_state not in game_continues_messages:
+        action = get_user_command()
+        result = action.split()
+        if result[0] == start_commands[StartCommand.EXIT]:
             stay_in_game = False
+        elif result[0] == start_commands[StartCommand.START]:
+            stay_in_session = True
+            player_1 = result[1]
+            player_2 = result[2]
+            game_session = GameSession(player_1, player_2)
+            game_session.print_field()
+        while stay_in_session:
+            turn_loop(game_session)
+            game_session.print_field()
+            game_state = game_session.get_game_state()
+            print(game_state)
+            if game_state not in game_continues_messages:
+                stay_in_session = False
 
 if __name__ == "__main__":
-    cells = '_________'
-    new_game_session = GameSession(cells)
-    new_game_session.print_field()
-    game_loop(new_game_session)
+    game_loop()
