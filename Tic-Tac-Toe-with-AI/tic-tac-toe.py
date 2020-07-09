@@ -118,6 +118,35 @@ class GameSession():
             result = False
         return result
 
+    def check_win_condition(self, symbol):
+        field_states = self.convert_field_to_states()
+        result = [0, 0]
+        for i, lists in enumerate(field_states, 1):
+            for j, items in enumerate(lists, 1):
+                counter = 0
+                combination = []
+                for k, item in enumerate(items, 1):
+                    if item == symbol:
+                        counter += 1
+                if counter >= 2:
+                    combination.append(i)
+                    combination.append(j)
+                    combination.append(k)
+                    if combination[0] == 2:
+                        result[0] = combination[1]
+                        result[1] = combination[2]
+                    elif combination[0] == 1:
+                        result[0] = combination[2]
+                        result[1] = combination[1]
+                    elif combination[0] == 3:
+                        if combination[1] == 1:
+                            result[0] = combination[1]
+                            result[1] = combination[2]
+                        elif combination[1] == 2:
+                            result[0] = 3
+                            result[1] = combination[2]
+        return result
+
 class UserPrompt(IntEnum):
     INPUT_CELL = 0
     INPUT_COORDINATES = 1
@@ -141,10 +170,14 @@ class GameFinaleMessage(IntEnum):
 
 class AiTurnMessage(IntEnum):
     EASY = 0
+    MEDIUM = 1
+    HARD = 2
 
 class PlayerOption(IntEnum):
     USER = 0
     EASY = 1
+    MEDIUM = 2
+    HARD = 3
 
 class StartCommand(IntEnum):
     START = 0
@@ -162,8 +195,8 @@ error_messages = ["Impossible"\
                  ,"Coordinates should be from 1 to 3!"\
                  ,"This cell is occupied! Choose another one!"\
                  ,"Bad parameters!"]
-ai_turn_messages = ['Making move level "easy"']
-player_options = ["user", "easy"]
+ai_turn_messages = ['Making move level "easy"', 'Making move level "medium"', 'Making move level "hard"']
+player_options = ["user", "easy", "medium", "hard"]
 start_commands = ["start", "exit"]
 
 def is_correct_length(field_input):
@@ -226,9 +259,7 @@ def convert_input_to_cell(new_field_input):
     elif new_field_input == [3, 1]:
         return 8
 
-def ai_turn(game_session):
-    global ai_turn_messages
-    print(ai_turn_messages[AiTurnMessage.EASY])
+def generate_easy_move(game_session):
     keep_generating = True
     while keep_generating:
         field_1 = random.randint(1,3)
@@ -238,6 +269,37 @@ def ai_turn(game_session):
         if game_session.cell_is_empty(cell_number):
             result = [str(field_1), str(field_2)]
             keep_generating = False
+    return result
+
+def generate_medium_move(game_session, player):
+    if player == 1:
+        result = game_session.check_win_condition(game_session.get_symbol_for_x())
+    else:
+        result = game_session.check_win_condition(game_session.get_symbol_for_o())
+    if result != [0, 0]:
+        cell_number = convert_input_to_cell(result)
+        if not game_session.cell_is_empty(cell_number):
+            result = [0, 0]
+    if result == [0, 0]:
+        result = generate_easy_move(game_session)
+    result = [str(result[0]), str(result[1])]
+    return result
+
+def ai_turn(game_session, player):
+    global ai_turn_messages
+    if player == 1:
+        level = game_session.get_player_1()
+    else:
+        level = game_session.get_player_2()
+    if level == player_options[PlayerOption.EASY]:
+        print(ai_turn_messages[AiTurnMessage.EASY])
+        result = generate_easy_move(game_session)
+    elif level == player_options[PlayerOption.MEDIUM]:
+        print(ai_turn_messages[AiTurnMessage.MEDIUM])
+        result = generate_medium_move(game_session, player)
+    elif level == player_options[PlayerOption.HARD]:
+        print(ai_turn_messages[AiTurnMessage.HARD])
+        result = generate_medium_move(game_session, player)
     return result
 
 def player_turn():
@@ -253,12 +315,12 @@ def turn_loop(game_session):
             if player_1 == player_options[PlayerOption.USER]:
                 new_field_input = player_turn()
             else:
-                new_field_input = ai_turn(game_session)
+                new_field_input = ai_turn(game_session, 1)
         elif turn_counter % 2 != 0:
             if player_2 == player_options[PlayerOption.USER]:
                 new_field_input = player_turn()
             else:
-                new_field_input = ai_turn(game_session)
+                new_field_input = ai_turn(game_session, 2)
         if is_valid_turn(game_session, new_field_input):
             stay_in_turn = False
             cell = convert_input_to_cell(new_field_input)
