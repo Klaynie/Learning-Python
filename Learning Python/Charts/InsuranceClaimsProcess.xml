@@ -1,10 +1,10 @@
-<mxfile host="app.diagrams.net" modified="2020-08-07T11:20:13.659Z" agent="5.0 (Windows)" etag="8HvN2aVIz-fIY-GpnwLT" version="13.6.0" type="github">
+<mxfile host="app.diagrams.net" modified="2020-08-07T11:24:32.280Z" agent="5.0 (Windows)" etag="NCzh92RhBUvW6lO0N7Vj" version="13.6.0" type="github">
   <diagram id="b2fd9d0b-2112-5cd9-0d75-b0b2d4f76a37" name="Page-1">
     <mxGraphModel dx="1422" dy="791" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" background="#ffffff" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="3" value="&lt;font style=&quot;font-size: 21px&quot;&gt;Insurance Claims Process v1&lt;br&gt;&lt;/font&gt;" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;" parent="1" vertex="1">
+        <mxCell id="3" value="&lt;font style=&quot;font-size: 21px&quot;&gt;Insurance Claims Process v2&lt;br&gt;&lt;/font&gt;" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;" parent="1" vertex="1">
           <mxGeometry x="890" y="20" width="290" height="20" as="geometry" />
         </mxCell>
         <mxCell id="4" value="Christoph Lenz" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;" parent="1" vertex="1">
@@ -22,11 +22,10 @@
         <mxCell id="s0158eU1Dt8FKXNrc_Sl-45" value="Submit Claim" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="40" y="200" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="3uot0g02bdXtdsxl2pgg-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="s0158eU1Dt8FKXNrc_Sl-46" target="s0158eU1Dt8FKXNrc_Sl-47">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="s0158eU1Dt8FKXNrc_Sl-46" value="Send&lt;br&gt;Simple Forms" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="520" y="100" width="120" height="120" as="geometry" />
+        <mxCell id="3uot0g02bdXtdsxl2pgg-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="3uot0g02bdXtdsxl2pgg-29" target="s0158eU1Dt8FKXNrc_Sl-47">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="160" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="3uot0g02bdXtdsxl2pgg-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="s0158eU1Dt8FKXNrc_Sl-47" target="s0158eU1Dt8FKXNrc_Sl-48">
           <mxGeometry relative="1" as="geometry" />
@@ -58,15 +57,17 @@
         <mxCell id="3uot0g02bdXtdsxl2pgg-5" value="Valid Insurance?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="200" y="200" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="3uot0g02bdXtdsxl2pgg-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="3uot0g02bdXtdsxl2pgg-6" target="s0158eU1Dt8FKXNrc_Sl-46">
+        <mxCell id="3uot0g02bdXtdsxl2pgg-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="3uot0g02bdXtdsxl2pgg-6" target="3uot0g02bdXtdsxl2pgg-29">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="160" as="targetPoint" />
             <Array as="points">
               <mxPoint x="420" y="160" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="3uot0g02bdXtdsxl2pgg-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="3uot0g02bdXtdsxl2pgg-6" target="3uot0g02bdXtdsxl2pgg-7">
+        <mxCell id="3uot0g02bdXtdsxl2pgg-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="3uot0g02bdXtdsxl2pgg-6" target="3uot0g02bdXtdsxl2pgg-30">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="360" as="targetPoint" />
             <Array as="points">
               <mxPoint x="420" y="360" />
             </Array>
@@ -75,11 +76,17 @@
         <mxCell id="3uot0g02bdXtdsxl2pgg-6" value="Claim Serverity" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="360" y="200" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="3uot0g02bdXtdsxl2pgg-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="3uot0g02bdXtdsxl2pgg-7" target="s0158eU1Dt8FKXNrc_Sl-47">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="3uot0g02bdXtdsxl2pgg-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="3uot0g02bdXtdsxl2pgg-30" target="s0158eU1Dt8FKXNrc_Sl-47">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="360" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="3uot0g02bdXtdsxl2pgg-7" value="Send&lt;br&gt;Complex Forms" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="520" y="300" width="120" height="120" as="geometry" />
+        <mxCell id="3uot0g02bdXtdsxl2pgg-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="3uot0g02bdXtdsxl2pgg-8" target="s0158eU1Dt8FKXNrc_Sl-50">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="787" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="3uot0g02bdXtdsxl2pgg-8" value="Reject Claim" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="200" y="360" width="120" height="120" as="geometry" />
@@ -109,6 +116,12 @@
         </mxCell>
         <mxCell id="3uot0g02bdXtdsxl2pgg-12" value="Reject Forms" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="680" y="600" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="3uot0g02bdXtdsxl2pgg-29" value="Send&lt;br&gt;Simple Forms" style="shape=parallelogram;rounded=1;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3uot0g02bdXtdsxl2pgg-30" value="Send&lt;br&gt;Complex Forms" style="shape=parallelogram;rounded=1;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="330" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
