@@ -2,7 +2,7 @@ function factorial(int) {
     if (int === 0) {
         return 1;
     } else {
-        return n * factorial(n - 1);
+        return int * factorial(int - 1);
     }
 }
 
