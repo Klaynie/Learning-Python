@@ -5,4 +5,7 @@ def countLettersInString(stringIn,letterToCheck):
             count = count + 1
     print(count)
     
-countLettersInString('banana','a')
+#countLettersInString('banana','a')
+
+word = 'banana'
+print(word.count('a'))
