@@ -17,6 +17,7 @@ def any_lowercase2(s):
             return 'False'
     '''
     This function will always return 'True' as a string since the condition 'c'.islower() will always be True
+    as it is checking lowercase 'c' as a string and not the variable c
     '''
 def any_lowercase3(s):
     for c in s:
