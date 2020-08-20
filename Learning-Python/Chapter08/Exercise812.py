@@ -6,7 +6,7 @@ def rotate_word(word, amount):
     newWord = ''
     for letter in word:
         if letter.isnumeric():
-            newLetter = letter
+            new_letter = letter
         elif letter.islower():
             new_letter = find_new_letter(letter, amount, start_lower_case, end_lower_case)
         elif letter.isupper():
