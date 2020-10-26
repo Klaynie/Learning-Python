@@ -175,3 +175,23 @@ n::Msg_ReleaseLayer Processing error: message was deserialized, but the handler 
 
 ###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
 
+1603726072885	geckodriver	INFO	Listening on 127.0.0.1:64846
+1603726075909	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\coiz\\AppData\\Local\\Temp\\rust_mozprofileGLE24n"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1603726077852	Marionette	INFO	Listening on port 64854
+1603726077918	Marionette	WARN	TLS certificate errors will be ignored for this session
+Can't find symbol 'eglSwapBuffersWithDamageEXT'.
+JavaScript warning: https://earth.google.com/static/wasm/9.122.0.2/earthwasm.js, line 1: WebGL warning: texSubImage: Texture has not been initialized prior to a partial upload, forcing the browser to clear it. This may be slow.
+JavaScript warning: https://earth.google.com/static/wasm/9.122.0.2/earthwasm.js, line 1: WebGL warning: texSubImage: Tex image TEXTURE_2D level 0 is incurring lazy initialization.
+JavaScript warning: https://earth.google.com/static/wasm/9.122.0.2/earthwasm.js, line 1: WebGL warning: getParameter: pname: Invalid enum value MAX_SAMPLES
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x5A000D,name=PHttpChannel::Msg_DeletingChannel) Channel closing: too late to send/recv, messages will be lost
+
+1603726106972	Marionette	INFO	Stopped listening on port 64854
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
