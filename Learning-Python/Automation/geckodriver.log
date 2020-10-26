@@ -1,0 +1,125 @@
+1603724398020	geckodriver	INFO	Listening on 127.0.0.1:64040
+1603724401075	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\coiz\\AppData\\Local\\Temp\\rust_mozprofileGKYT6U"
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1603724403067	Marionette	INFO	Listening on port 64054
+1603724403117	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://code.jquery.com/jquery-1.10.2.min.js, line 2: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+Can't find symbol 'eglSwapBuffersWithDamageEXT'.
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+JavaScript error: https://www.seleniumeasy.com/sites/default/files/js/js_1pwJufKjiQsl5tLfRR9NEVuVtIW5DVu-beBr8FbgvmM.js, line 10: TypeError: $(...).get(...) is undefined
+1603724459736	Marionette	INFO	Stopped listening on port 64054
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1603724515863	geckodriver	INFO	Listening on 127.0.0.1:64149
+1603724518898	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\coiz\\AppData\\Local\\Temp\\rust_mozprofilel3g04D"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1603724520659	Marionette	INFO	Listening on port 64157
+1603724520907	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2274))
+1603724644685	Marionette	INFO	Stopped listening on port 64157
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1603724649914	geckodriver	INFO	Listening on 127.0.0.1:64247
+1603724652938	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\coiz\\AppData\\Local\\Temp\\rust_mozprofileSFJopQ"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1603724654719	Marionette	INFO	Listening on port 64255
+1603724654947	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2274))
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2274))
+1603724822814	Marionette	INFO	Stopped listening on port 64255
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1603724833313	geckodriver	INFO	Listening on 127.0.0.1:64356
+1603724836327	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\coiz\\AppData\\Local\\Temp\\rust_mozprofileXSI3pZ"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: SearchCache: "_readCacheFile: Error reading cache file:" (new Error("", "(unknown module)"))
+1603724838289	Marionette	INFO	Listening on port 64366
+1603724838346	Marionette	WARN	TLS certificate errors will be ignored for this session
+1603724874083	Marionette	INFO	Stopped listening on port 64366
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
