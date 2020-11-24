@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import datetime
+import pandas as pd
 
 
 def get_result(soup):
@@ -14,7 +15,6 @@ def get_result(soup):
 
 def create_url(count):
     return f'https://www.hays.de/jobsuche/stellenangebote-jobs/i/Banks-saving-banks-financial-service-providers/6E7A1D11-89E8-DE11-BAE0-0007E92E2CEA/p/{count}/?q=&e=false'
-    # return f'https://www.hays.de/jobsuche/stellenangebote-jobs/i/Banken-Sparkassen-Finanzdienstleister/6E7A1D11-89E8-DE11-BAE0-0007E92E2CEA/p/{count}/?q=&r=Frankfurt+am+Main%2C+DE&cityID=1884612&distance=20&e=false'
 
 
 def get_soup(url):
@@ -33,28 +33,6 @@ def get_job_urls(soup):
     return jobs_dict
 
 
-def convert_json_data(soup, json_data):
-    for item in json_data:
-        item = str(item)
-        item = item[item.find('{'): item.rfind('}') + 1]
-        job_details = json.loads(item)
-        # print(json.dumps(job_details, indent=4))
-        for key, value in job_details.items():
-            if key == 'datePosted':
-                print('date', key, value)
-            elif key == 'employmentType':
-                print('Art', key, value)
-                if value == 'CONTRACTING':
-                    meta_details = soup.find_all(
-                        'div', class_='row hays__job__details__job__meta__item')
-                    meta_detail = clean_meta_details(meta_details)
-                    print(meta_detail)
-            elif key == 'jobLocation':
-                print('Ort', key, value)
-            elif key == 'identifier':
-                print('Referenznummer', key, value)
-
-
 def clean_json(input_string):
     temp_string = input_string
     temp_string = temp_string.replace('\n', '')
@@ -67,13 +45,12 @@ def clean_json(input_string):
     return return_string
 
 
-def convert_json_data2(soup, json_data, result):
+def convert_json_data(soup, json_data, result):
     for item in json_data:
         item = str(item)
         item = item[item.find('{'): item.rfind('}') + 1]
         item = clean_json(item)
         job_details = json.loads(item)
-        # print(json.dumps(job_details, indent=4))
         for key, value in job_details.items():
             if key == 'datePosted':
                 result.append(value)
@@ -93,40 +70,6 @@ def convert_json_data2(soup, json_data, result):
     return result
 
 
-def print_details(soup):
-    print(80*'+')
-    desc = soup.find_all('div', class_='hays__job__detail__accordion__body')
-    json_data = soup.find_all('script', type='application/ld+json')
-    if len(json_data) > 1:
-        json_data = json_data[1]
-    convert_json_data(soup, json_data)
-    for count, item in enumerate(desc, 0):
-        list_items = item.find_all('li')
-        contact_details = item.find_all('span')
-        if count == 0:
-            print("Aufgaben")
-            aufgaben = clean_list_items(list_items)
-            print(aufgaben)
-        elif count == 1:
-            print("Qualifikation")
-            qualifikationen = clean_list_items(list_items)
-            print(qualifikationen)
-        elif count == 2:
-            print("Vorteile")
-            vorteile = clean_list_items(list_items)
-            print(vorteile)
-        elif count == 3:
-            print("Arbeitgeber")
-            arbeitgeber = clean_employer_details(item)
-            print(arbeitgeber)
-        elif count == len(desc) - 1:
-            print("Kontakt")
-            kontakt = clean_contact_details(contact_details)
-            print(kontakt)
-        print(80*"*")
-    print(80*'+')
-
-
 def write_details(soup, key, value, file_name):
     result = list()
     result.append(value)
@@ -135,37 +78,25 @@ def write_details(soup, key, value, file_name):
     json_data = soup.find_all('script', type='application/ld+json')
     if len(json_data) > 1:
         json_data = json_data[1]
-    convert_json_data2(soup, json_data, result)
+    convert_json_data(soup, json_data, result)
     for count, item in enumerate(desc, 0):
         list_items = item.find_all('li')
         contact_details = item.find_all('span')
         if count == 0:
-            print("Aufgaben")
             aufgaben = clean_list_items(list_items)
-            print(aufgaben)
             result.append(aufgaben)
         elif count == 1:
-            print("Qualifikation")
             qualifikationen = clean_list_items(list_items)
-            print(qualifikationen)
             result.append(qualifikationen)
         elif count == 2:
-            print("Vorteile")
             vorteile = clean_list_items(list_items)
-            print(vorteile)
             result.append(vorteile)
         elif count == 3:
-            print("Arbeitgeber")
             arbeitgeber = clean_employer_details(item)
-            print(arbeitgeber)
             result.append(arbeitgeber)
         elif count == len(desc) - 1:
-            print("Kontakt")
             kontakt = clean_contact_details(contact_details)
-            print(kontakt)
             result.append(kontakt)
-        print(80*'+')
-    print(80*'+')
     file = open(file_name, 'a')
     for item in result:
         file.write(f'{item}|')
@@ -241,16 +172,23 @@ def create_csv_file(file_name):
 def clean_file(file_name):
     text = open(file_name, 'r')
     text = ''.join([i for i in text]).replace('\\xa0', ' ')
-    output = open(f'Hays-{file_name}', "w")
+    text = ''.join([i for i in text]).replace('\\xad', '')
+    file_name = f'Hays-{file_name}'
+    output = open(file_name, 'w')
     output.writelines(text)
     output.close
 
 
-def print_all_job_listings(jobs_dict):
-    for key, value in jobs_dict.items():
-        print(value, key)
-        soup = get_soup(key)
-        print_details(soup)
+def convert_csv_to_excel(file_name):
+    file_name = f'Hays-{file_name}'
+    df = pd.read_csv(file_name, delimiter='|', encoding='ANSI')
+    df.reset_index(inplace=True)
+    cols = df.columns[1:]
+    df = df.drop('Kontakt', 1)
+    df.columns = cols
+    file_name = file_name.replace('csv', 'xlsx')
+    df.to_excel(
+        f'{file_name}', sheet_name='Hays', index=False)
 
 
 def write_all_job_listings(jobs_dict, file_name):
@@ -274,9 +212,9 @@ def main():
     write_jobs_dict_to_file(jobs_dict)
     file_name = generate_file_name('Job-Listings', 'csv')
     create_csv_file(file_name)
-    # print_all_job_listings(jobs_dict)
     write_all_job_listings(jobs_dict, file_name)
     clean_file(file_name)
+    convert_csv_to_excel(file_name)
 
 
 main()
