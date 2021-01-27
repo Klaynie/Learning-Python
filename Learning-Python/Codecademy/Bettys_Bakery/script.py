@@ -12,7 +12,9 @@ print(recipes)
 
 eggs = recipes[:, 2]
 print(eggs)
-print(eggs == 1)
+
+one_egg = recipes[(eggs == 1)]
+print(one_egg)
 
 cookies = recipes[2, :]
 print(cookies)
