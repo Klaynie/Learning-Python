@@ -137,6 +137,31 @@ def print_results(amount_in, currency_in):
     print(f"You received {amount_in:.2f} {currency_in.upper()}.")
 
 
+def initial_request(input_currency):
+    cache_request_url = create_request_url(input_currency)
+    result = fetch_json(cache_request_url)
+    return result
+
+
+def cache_processing(cache_in, request_in, currency_in):
+    result = cache_in
+    if is_valid_currency_input(currency_in):
+        print(user_outputs[CacheOutputs.CHECK_CACHE])
+        if not is_in_cache(result, currency_in):
+            print(user_outputs[CacheOutputs.CACHE_NOT_FOUND])
+            result = update_cache(result, request_in, currency_in)
+        else:
+            print(user_outputs[CacheOutputs.CACHE_FOUND])
+    return result
+
+
+def conversion_processing(cache_in, amount_in, currency_in):
+    if is_valid_amount_input(amount_in):
+        amount_in = float(amount_in)
+        result = convert_currency(cache_in, currency_in, amount_in)
+    return result
+
+
 def main():
     input_currency = convert_currency_input(get_user_input())
     output_currency = convert_currency_input(get_user_input())
@@ -145,25 +170,17 @@ def main():
     keep_going = True
 
     if is_valid_currency_input(input_currency):
-        cache_request_url = create_request_url(input_currency)
-        request = fetch_json(cache_request_url)
+        request = initial_request(input_currency)
         if is_valid_request(request):
             cache = initial_cache(request, input_currency)
+
             while keep_going:
-                if is_valid_currency_input(output_currency):
-                    print(user_outputs[CacheOutputs.CHECK_CACHE])
-                    if not is_in_cache(cache, output_currency):
-                        print(user_outputs[CacheOutputs.CACHE_NOT_FOUND])
-                        cache = update_cache(cache, request, output_currency)
-                    else:
-                        print(user_outputs[CacheOutputs.CACHE_FOUND])
-
-                if is_valid_amount_input(input_amount):
-                    input_amount = float(input_amount)
-                    output_amount = convert_currency(
-                        cache, output_currency, input_amount)
-
+                cache = cache_processing(cache, request, output_currency)
+                output_amount = conversion_processing(
+                    cache, input_amount, output_currency)
                 print_results(output_amount, output_currency)
+
+                # Request next currency or exit program if nothing provided
                 output_currency = convert_currency_input(get_user_input())
                 if len(output_currency) == 0:
                     keep_going = False
