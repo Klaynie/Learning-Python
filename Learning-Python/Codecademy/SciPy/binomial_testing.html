@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+            ;
+        }
+
+        div {
+            width: "90%";
+            height: "70%";
+        }
+    </style>
+
+<body>
+    <span>True Population Proportion:<input type="number" min=10 max=90 step=10 id="p" value=10>%</span>
+    <br>
+    <span>Probability of <i>exactly</i>&nbsp;<input id="sampleP" type="number" min=0 max=100 step=10 value=10>% of
+        survey respondents agreeing: <input type="text" readonly id="ans" value=0.3></span>
+    <div id="people">
+    </div>
+    <script src="https://unpkg.com/simple-statistics@5.1.0/dist/simple-statistics.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+        function update() {
+            var n = 10;
+            var k = n * parseInt(d3.select('#sampleP')._groups[0][0].value) / 100.0;
+            console.log(k)
+            var p = parseFloat(d3.select('#p')._groups[0][0].value) / 100.0;
+            // Calculate value
+            var binom = jStat.binomial(n, p);
+            // Display Probability
+            d3.select('#ans').attr('value', binom.pdf(k).toFixed(2));
+            // Display people
+            var div = d3.select('#people');
+            div.html('');
+            for (i = 0; i < n; i++) {
+                var img = div.append('img')
+                    .attr('src', 'https://content.codecademy.com/courses/learn-hypothesis-testing/binomial/person.png')
+                    .attr('width', '15%')
+                    .style('margin', '5px')
+                    .style('padding', '2px');
+                if (i >= k) {
+                    img.style('opacity', 0.5)
+                        .style('filter', 'alpha(opacity=50)')
+                        .style('border', '3px solid red');
+                } else {
+                    img.style('border', '3px solid green');
+                }
+            }
+        }
+
+        var ids = ['p', 'sampleP'];
+        ids.forEach(function (d) {
+            d3.select('#' + d)
+                .on('click', update);
+        })
+        update();
+    </script>
+    <script
+        type="text/javascript">(function () { window['__CF$cv$params'] = { r: '626952fc4bcccdbf', m: 'fba1bf5185c49a189b207ecb2dda4511ef62ca29-1614171150-1800-AXB8XNdB+wt7WDvY/IIsK3hB2/BwCgveKKqRx2N8kNfv3Kbj+8xeMPHuBNlbOVJFrBkEYaKRgYoXJT+bcdHnhSULC2+hfgDWmtyCjwwn1JJ7MMPHUNQcIzf9q9ViUvk9aiV0u9KDvNLsyBWdv+60nhkJlS4RSSxxaoZYJeAC8REPY7Wp2v3dmQD6YfLB3sMFQA==', s: [0x3b79538649, 0xe4efda1a7f], } })();</script>
+</body>
+
+</html>

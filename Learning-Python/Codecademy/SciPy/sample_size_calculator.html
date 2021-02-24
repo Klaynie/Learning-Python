@@ -1,0 +1,182 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        html,
+        text {
+            background-color: #224055;
+            color: white;
+            font-family: 'Oxygen', sans-serif;
+            fill: white;
+        }
+
+        body {
+            background-color: #224055;
+            color: white;
+            font-family: 'Oxygen', sans-serif;
+            font-size: 16px;
+        }
+
+        table {
+            margin-top: 10px;
+        }
+
+        td {
+            padding: 5px;
+            font-size: 25px;
+        }
+
+        input {
+            color: #1c3646;
+            font-size: 25px;
+        }
+
+        .percentLabel {
+            margin-left: 3px;
+        }
+
+        #population_size {
+            width: 150px;
+        }
+
+        .btn {
+            background-color: #939598;
+            border: 1px solid #162c38;
+        }
+
+        .btn:hover {
+            background-color: #aaaaaa;
+            border: 1px solid #162c38;
+        }
+
+        .btn.active {
+            background-color: #1c3646;
+            border: 1px solid #c0c0c0;
+        }
+
+        .btn.active:hover {
+            background-color: #1c3646;
+            border: 1px solid #c0c0c0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <table>
+            <tr>
+                <th></th>
+                <th class=""></th>
+            </tr>
+            <tr>
+                <td>
+                    Margin of error:
+                </td>
+                <td>
+                    <input type="number" value="5" step="1" min="0" max="100" id="margin"
+                        onchange="update()"></input><span class="percentLabel">%</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Confidence level:
+                </td>
+                <td>
+
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="confidence" id="confidence90" autocomplete="off" value="0.9"> 90%
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="confidence" id="confidence95" autocomplete="off" value="0.95"> 95%
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="confidence" id="confidence99" autocomplete="off" value="0.99"> 99%
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Population size:
+                </td>
+                <td>
+                    <input type="number" value="100000" step="100" min="0" max="100000" id="population_size"
+                        onchange="update()"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Likely sample proportion:
+                </td>
+                <td>
+                    <input type="number" value="50" step="1" min="0" max="100" id="proportion"
+                        onchange="update()"></input><span class="percentLabel">%</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Sample size: </td>
+                <td><span id="numSamples">383</span></td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <script>
+
+
+        function getSampleSize(conf_level, proportion, margin) {
+
+            let z = 1.96;//z-score for confidence level (95% for 1.95)
+            if (conf_level == 0.95) {
+                z = 1.96
+            }
+            else if (conf_level == 0.99) {
+                z = 2.576
+            }
+            else {
+                z = 1.645
+            }
+
+            min_samples = (z * z) * proportion * (1 - proportion) / (margin * margin);
+
+            return min_samples
+        }
+
+        function update() {
+            var proportion = parseFloat($("#proportion").val()) / 100
+            var confidence = parseFloat($('input[name=confidence]:checked').val())
+            var population_size = parseFloat($("#population_size").val())
+            var margin = parseFloat($("#margin").val()) / 100
+            num_samples = getSampleSize(confidence, proportion, margin)
+            num_samples = num_samples / (1 + (num_samples - 1) / (population_size))
+            num_samples = Math.round(num_samples)
+            $("#numSamples").html(num_samples)
+        }
+
+        function setup() {
+            $("input[type=radio][name=confidence]").change(function () {
+                $('input[name=confidence]').each(function () { $(this).parent().removeClass("active") })
+                $('input[name=confidence]:checked').parent().addClass("active")
+                update()
+            })
+            $("input").on("keyup", function () {
+                update()
+            })
+            $("input").on("click", function () {
+                update()
+            })
+        }
+
+        $(document).on("ready", setup())
+
+    </script>
+    <script
+        type="text/javascript">(function () { window['__CF$cv$params'] = { r: '626941ad2a483324', m: 'db00afe79fc43e9776cfc621cfe4ecb875bdddb4-1614170442-1800-Ac6fy63u2uUwxN9o6/hLnU8TcKSvfqGSGxreU3VmArVzeSQEdKKunK201iGkRz45Ag6wL37FzQC3TPag2twWqd5p5GN6c5BV1wOKHp0tEC+rA2I0U5iw8dmZYyzqB8bAiaVZVMPOFdv8555EtFnOyHwzYj84d9rDk6zq/EMcJui+rkr2jVKjKzYkYus5HNdOQQ==', s: [0x884744c716, 0x95beae32d2], } })();</script>
+</body>
+
+</html>
