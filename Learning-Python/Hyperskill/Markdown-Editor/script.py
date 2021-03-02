@@ -38,6 +38,7 @@ class Symbols(IntEnum):
     ITALIC = 5
     BOLD = 6
     CODE = 7
+    SPACE = 8
 
 
 commands = [
@@ -52,9 +53,8 @@ prompts = [
     'Choose a formatter: ', 'Unknown formatter or command. Please try again', 'Available formatters:', 'Special commands:', '- Text: ', '- Level: ', '- Label: ', '- URL: '
 ]
 
-
 symbols = [
-    '#', '[', ']', '(', ')', '*', '**', '`'
+    '#', '[', ']', '(', ')', '*', '**', '`', ' '
 ]
 
 formated_text = ''
@@ -92,7 +92,8 @@ def format_link():
     global formated_text
     label = get_user_input(prompts[Prompts.LABEL])
     url = get_user_input(prompts[Prompts.URL])
-    formated_text += symbols[Symbols.URL_LABEL_OPEN] + label + symbols[Symbols.URL_LABEL_CLOSE] \
+    formated_text += \
+        symbols[Symbols.URL_LABEL_OPEN] + label + symbols[Symbols.URL_LABEL_CLOSE] \
         + symbols[Symbols.URL_OPEN] + url + symbols[Symbols.URL_CLOSE]
 
 
@@ -106,7 +107,9 @@ def format_header():
     global formated_text
     level = int(get_user_input(prompts[Prompts.LEVEL]))
     text = get_user_input(prompts[Prompts.TEXT])
-    formated_text += level * symbols[Symbols.HEADER] + ' ' + text
+    formated_text += \
+        level * symbols[Symbols.HEADER] \
+        + symbols[Symbols.SPACE] + text
     format_line_break()
 
 
