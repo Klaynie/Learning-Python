@@ -1,7 +1,7 @@
 def nighttime(func):
-    def wrapper():
+    def wrapper(args):
         print('It is nighttime')
-        return func()
+        return func(args)
 
     return wrapper
 
