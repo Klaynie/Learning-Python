@@ -13,8 +13,8 @@ class Formats(IntEnum):
     LINK = 3
     INLINE_CODE = 4
     HEADER = 5
-    UNORDERED_LIST = 6
-    ORDERED_LIST = 7
+    ORDERED_LIST = 6
+    UNORDERED_LIST = 7
     LINE_BREAK = 8
 
 
@@ -27,6 +27,10 @@ class Prompts(IntEnum):
     LEVEL = 5
     LABEL = 6
     URL = 7
+    ROWS = 8
+    NUMBER = 9
+    INVALID_NUMBER = 10
+    NEGATIVE_NUMBER = 11
 
 
 class Symbols(IntEnum):
@@ -39,6 +43,8 @@ class Symbols(IntEnum):
     BOLD = 6
     CODE = 7
     SPACE = 8
+    ORDERED_LIST = 9
+    UNORDERED_LIST = 10
 
 
 commands = [
@@ -50,14 +56,14 @@ formats = [
 ]
 
 prompts = [
-    'Choose a formatter: ', 'Unknown formatter or command. Please try again', 'Available formatters:', 'Special commands:', '- Text: ', '- Level: ', '- Label: ', '- URL: '
+    'Choose a formatter: ', 'Unknown formatter or command. Please try again', 'Available formatters:', 'Special commands:', '- Text: ', '- Level: ', '- Label: ', '- URL: ', '- Number of rows: ', '- Row #%d: ', 'Not a valid number', 'The number of rows should be greater than zero'
 ]
 
 symbols = [
-    '#', '[', ']', '(', ')', '*', '**', '`', ' '
+    '#', '[', ']', '(', ')', '*', '**', '`', ' ', '%d. ', '* '
 ]
 
-formated_text = ''
+formatted_text = ''
 
 
 def get_user_input(prompt):
@@ -65,67 +71,92 @@ def get_user_input(prompt):
 
 
 def print_help():
-    global formated_text, formats, commands
+    global formatted_text, formats, commands
     print(prompts[Prompts.AVAILABLE_FORMATERS], ' '.join(formats))
     print(prompts[Prompts.SPECIAL_COMMANDS], ' '.join(commands))
 
 
 def format_plain():
-    global formated_text
+    global formatted_text
     text = get_user_input(prompts[Prompts.TEXT])
-    formated_text += text
+    formatted_text += text
 
 
 def format_bold():
-    global formated_text
+    global formatted_text
     text = get_user_input(prompts[Prompts.TEXT])
-    formated_text += symbols[Symbols.BOLD] + text + symbols[Symbols.BOLD]
+    formatted_text += symbols[Symbols.BOLD] + text + symbols[Symbols.BOLD]
 
 
 def format_italic():
-    global formated_text
+    global formatted_text
     text = get_user_input(prompts[Prompts.TEXT])
-    formated_text += symbols[Symbols.ITALIC] + text + symbols[Symbols.ITALIC]
+    formatted_text += symbols[Symbols.ITALIC] + text + symbols[Symbols.ITALIC]
 
 
 def format_link():
-    global formated_text
+    global formatted_text
     label = get_user_input(prompts[Prompts.LABEL])
     url = get_user_input(prompts[Prompts.URL])
-    formated_text += \
+    formatted_text += \
         symbols[Symbols.URL_LABEL_OPEN] + label + symbols[Symbols.URL_LABEL_CLOSE] \
         + symbols[Symbols.URL_OPEN] + url + symbols[Symbols.URL_CLOSE]
 
 
 def format_inline_code():
-    global formated_text
+    global formatted_text
     text = get_user_input(prompts[Prompts.TEXT])
-    formated_text += symbols[Symbols.CODE] + text + symbols[Symbols.CODE]
+    formatted_text += symbols[Symbols.CODE] + text + symbols[Symbols.CODE]
 
 
 def format_header():
-    global formated_text
+    global formatted_text
     level = int(get_user_input(prompts[Prompts.LEVEL]))
     text = get_user_input(prompts[Prompts.TEXT])
-    formated_text += \
+    formatted_text += \
         level * symbols[Symbols.HEADER] \
         + symbols[Symbols.SPACE] + text
     format_line_break()
 
 
+def list_generator(row, symbol):
+    global formatted_text
+    text = get_user_input(prompts[Prompts.NUMBER] % row)
+    formatted_text += symbol + text
+    format_line_break()
+
+
+def get_number_of_rows():
+    result = 0
+    try:
+        result = int(get_user_input(prompts[Prompts.ROWS]))
+    except ValueError:
+        print(prompts[Prompts.INVALID_NUMBER])
+    if result <= 0:
+        print(prompts[Prompts.NEGATIVE_NUMBER])
+        result = get_number_of_rows()
+    return result
+
+
 def format_ordered_list():
-    global formated_text
-    print(formats[Formats.ORDERED_LIST])
+    global formatted_text
+    number_of_rows = get_number_of_rows()
+    for row in range(1, number_of_rows + 1):
+        symbol = symbols[Symbols.ORDERED_LIST] % row
+        list_generator(row, symbol)
 
 
 def format_unordered_list():
-    global formated_text
-    print(formats[Formats.UNORDERED_LIST])
+    global formatted_text
+    number_of_rows = get_number_of_rows()
+    for row in range(1, number_of_rows + 1):
+        symbol = symbols[Symbols.UNORDERED_LIST]
+        list_generator(row, symbol)
 
 
 def format_line_break():
-    global formated_text
-    formated_text += '\n'
+    global formatted_text
+    formatted_text += '\n'
 
 
 def input_processor(user_input):
@@ -154,10 +185,17 @@ def input_processor(user_input):
         print(prompts[Prompts.UKNOWN_FORMATER])
 
 
+def save_file():
+    file_name = 'result.md'
+    with open(file_name, 'w') as f:
+        f.write(formatted_text)
+
+
 def input_handler():
     result = True
     user_input = get_user_input(prompts[Prompts.CHOOSE])
     if user_input == commands[Commands.DONE]:
+        save_file()
         result = False
     else:
         input_processor(user_input)
@@ -165,12 +203,12 @@ def input_handler():
 
 
 def main():
-    global formated_text
+    global formatted_text
     keep_going = True
     while keep_going:
         keep_going = input_handler()
         if keep_going:
-            print(formated_text)
+            print(formatted_text)
 
 
 main()
