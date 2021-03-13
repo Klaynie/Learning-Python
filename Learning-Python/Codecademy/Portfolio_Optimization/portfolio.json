@@ -1,0 +1,19 @@
+{
+    "portfolio": [
+        {
+            "name": "Nike",
+            "weight": 0.8,
+            "return": 0.014
+        },
+        {
+            "name": "Under Armour",
+            "weight": 0.16,
+            "return": 0.008
+        },
+        {
+            "name": "Skechers",
+            "weight": 0.04,
+            "return": 0.07
+        }
+    ]
+}
