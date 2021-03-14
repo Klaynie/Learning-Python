@@ -4,6 +4,8 @@ import cvxopt as opt
 from cvxopt import blas, solvers
 
 
+solvers.options['show_progress'] = False
+
 def return_portfolios(expected_returns, cov_matrix):
     port_returns = []
     port_volatility = []
