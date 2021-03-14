@@ -3,6 +3,7 @@ import numpy as np
 import cvxopt as opt
 from cvxopt import blas, solvers
 
+solvers.options['show_progress'] = False
 
 def return_portfolios(expected_returns, cov_matrix):
     port_returns = []
@@ -12,7 +13,7 @@ def return_portfolios(expected_returns, cov_matrix):
     selected = (expected_returns.axes)[0]
 
     num_assets = len(selected)
-    num_portfolios = 5000
+    num_portfolios = 100000
 
     for single_portfolio in range(num_portfolios):
         weights = np.random.random(num_assets)
