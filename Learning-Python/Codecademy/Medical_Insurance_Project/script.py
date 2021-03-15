@@ -47,8 +47,8 @@ class Patient:
 
 
 patient1 = Patient("John Doe", 25, 1, 22.2, 0, 0)
-# print(patient1.name)
-# patient1.estimated_insurance_cost()
-# patient1.update_age(26)
-# patient1.update_num_children(2)
+print(patient1.patient_profile())
+patient1.estimated_insurance_cost()
+patient1.update_age(26)
+patient1.update_num_children(2)
 print(patient1.patient_profile())
