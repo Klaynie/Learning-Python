@@ -1,0 +1,7 @@
+Creation:
+Total execution time create_file: 360 ms
+Total execution time create_database: 142515 ms
+
+Backup:
+Total execution time filter_sql: 78 ms
+Total execution time filter_python: 125 ms
