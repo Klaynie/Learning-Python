@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Interactive Image</title>
+  <link rel="stylesheet" href="styles.css">
+<script async src='/cdn-cgi/bm/cv/669835187/api.js'></script></head>
+<body>
+  <div class="main-container">
+    <div class="images">
+      <img class="interactive-img" src="assets/bar_graph_0.svg" alt='This image shows an empty set of chart axes. The y-axis is labeled with "Counts" and the four tick marks are "1000", "2000", "3000", and "4000."'>
+      <img class="interactive-img" src="assets/bar_graph_1.svg" alt='There is now one bar in the chart. It is labeled as "a" and goes up to 1000.'>
+      <img class="interactive-img" src="assets/bar_graph_2.svg" alt='There is now a second bar in the chart. It is labeled as "b" and goes up to 2000. This bar is the same width as the first bar but is twice as tall.'>
+      <img class="interactive-img" src="assets/bar_graph_3.svg" alt='There is now a third bar in the chart. It is labeled as "c" and goes up to 4000. This bar is the same width as the first and second bar. It is twice as tall as bar "b" and four times as tall as bar "a."'>
+      <img class="interactive-img" src="assets/bar_graph_4.svg" alt='There is now a fourth bar in the chart. It is labeled as "d" and goes up to 1000. This bar is the same width as the first, second, and third bar. It is a quarter as tall as bar "c", half as tall as bar "b", and as tall as bar "a."'>
+      
+    </div>
+    <br>
+    <div id="navigation">
+      <button id="previous" class="nav-button">
+        <img id="previous-img" src="assets/previous.svg">
+        <span>Back</span>
+      </button>
+      <button id="toggle" class="nav-button">
+        <img id="play-img" src="assets/play.svg" style="display:hidden">
+        <img id="pause-img" src="assets/pause.svg">
+      </button>
+      <button id="next" class="nav-button">
+        <span>Next</span>
+        <img id="next-img" src="assets/next.svg">
+      </button>
+    </div>
+    <div>
+    </div>
+  </div>
+  <div class="progress-container">
+    <div class="ordinality">
+      <span id="current-frame">1</span>/<span id="total-frames">X</span>
+    </div>
+    <div class="progress">
+      <div id="bar"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+<script type="text/javascript">(function(){window['__CF$cv$params']={r:'6424869068e44e20',m:'6d6bf2a66090eb1271b972db5f92f1e3a0be1579-1618818455-1800-AWUCruHxPVynyTBanbSMu3zLbWpgDPCiTDtMB+OMSBy/tULra8eb5sjjiWD80IxVVHoYRz3rkmUOeiXT8uCzWaHexP5yRwtPY+wodAUBO4Qsbmy5QxrKTjez7ilSdK/cZ1VyOtjEBBpzm3KSVwrWoaHbqu5Usiy94YJJOa/D3Y9sz7KO4hJ5iHfhlaLGLwn6v58QeAT0DDSB5Y3jAu0jkWi5G4FxXaUPz2SsuZq/g0DS',s:[0x7bb031ebb5,0x0e4b6e1a58],}})();</script></body>
+</html>
