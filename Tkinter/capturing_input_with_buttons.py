@@ -12,6 +12,9 @@ class Message(IntEnum):
     CLICKED = 0
 
 
+class FileName(IntEnum):
+    LOGO = 0
+
 button_texts = [
     'Click Me'
 ]
@@ -20,6 +23,9 @@ messages = [
     'Clicked!'
 ]
 
+filenames = [
+    'python_logo.gif'
+]
 
 class App:
 
@@ -34,7 +40,7 @@ class App:
 
         # Set image path
         self.f_path = os.path.dirname(__file__)
-        self.f_name = 'python_logo.gif'
+        self.f_name = filenames[FileName.LOGO]
         self.image_filepath = os.path.join(self.f_path, self.f_name)
 
         # Bind label to image and display it
