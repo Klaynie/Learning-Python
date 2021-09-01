@@ -141,31 +141,26 @@ class LinkedList:
     
   def stringify_list(self):
     string_list = ""
-    keep_going = True
-    node = self.get_head_node()
-    while keep_going:
-      string_list += str(node.get_value()) + "\n"
-      node = node.get_next_node()
-      if node == None:
-        keep_going = False
+    current_node = self.get_head_node()
+    while current_node:
+      if current_node.get_value() != None:
+        string_list += str(current_node.get_value()) + "\n"
+      current_node = current_node.get_next_node()
     return string_list
-
+  
   def remove_node(self, value_to_remove):
     current_node = self.get_head_node()
     if current_node.get_value() == value_to_remove:
       self.head_node = current_node.get_next_node()
     else:
-      keep_going = True
-      while keep_going:
-        previous_node = current_node
-        current_node = current_node.get_next_node()
-        if current_node.get_value() == None:
-          keep_going = False
-        elif current_node.get_value() == value_to_remove:
-          keep_going = False
-          current_next_node = current_node.get_next_node()
-          previous_node.set_next_node(current_next_node)
-
+      while current_node:
+        next_node = current_node.get_next_node()
+        if next_node.get_value() == value_to_remove:
+          current_node.set_next_node(next_node.get_next_node())
+          current_node = None
+        else:
+          current_node = next_node
+          
 my_linked_list = LinkedList(5)
 my_linked_list.insert_beginning(10)
 my_linked_list.insert_beginning(15)
