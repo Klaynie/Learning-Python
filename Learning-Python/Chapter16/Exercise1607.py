@@ -17,21 +17,18 @@ def time_until_date(date, timestamp):
     return date - timestamp
 
 def get_time_to_next_birthday(birthday, currentTimestamp):
-    if has_birthday_next_year(birthday, currentTimestamp):
-        return time_until_date(datetime.datetime(currentTimestamp.year, birthday.month, birthday.day), currentTimestamp)
-    else:
-        return time_until_date(datetime.datetime(currentTimestamp.year + 1, birthday.month, birthday.day), currentTimestamp)
+    return time_until_date(datetime.datetime(currentTimestamp.year + int(has_birthday_next_year(birthday, currentTimestamp)), birthday.month, birthday.day), currentTimestamp)
 
 def has_birthday_next_year(birthday, currentTimestamp):
-    result = True
+    result = False
     if birthday.month < currentTimestamp.month:
-        result = False
+        result = True
     else:
         if birthday.day < currentTimestamp.day:
-            result = False
+            result = True
     return result
 
-def has_birthday(birthday, currentTimestamp):
+def has_birthday_today(birthday, currentTimestamp):
     result = False
     if birthday.month == currentTimestamp.month and birthday.day == currentTimestamp.day:
             result = True
@@ -39,7 +36,7 @@ def has_birthday(birthday, currentTimestamp):
 
 def print_age_and_time_to_next_birthday(birthday):
     currentTimestamp = get_timestamp()
-    if has_birthday(birthday, currentTimestamp):
+    if has_birthday_today(birthday, currentTimestamp):
         print(f'You turn {current_age_from_birthday(birthday)} years old today. Happy Birthday! 🎉')
     else:
         print(f'You are {current_age_from_birthday(birthday)} years old. Time to next birthday: {get_time_to_next_birthday(birthday, currentTimestamp)}')
@@ -57,7 +54,7 @@ def find_double_date(birthday1, birthday2, n):
         nextDay += datetime.timedelta(days = 1)
     print(f'Age on {nextDay:%Y-%m-%d}. First person: {age_until_date(olderBirthday, nextDay)}. Second person: {age_until_date(youngerBirthday, nextDay)}')
 
-birthday1 = datetime.datetime(2000,12,10)
+birthday1 = datetime.datetime(2000,12,11)
 birthday2 = datetime.datetime(1977,2,2)
 
 print_age_and_time_to_next_birthday(birthday1)
