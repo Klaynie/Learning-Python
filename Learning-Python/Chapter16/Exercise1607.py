@@ -1,5 +1,4 @@
 import datetime
-import math
 import copy
 
 def get_timestamp():
@@ -53,11 +52,9 @@ def find_older_date(date1, date2):
 
 def find_double_date(birthday1, birthday2, n):
     olderBirthday, youngerBirthday = find_older_date(birthday1, birthday2)
-    nextDayCounter = 0
     nextDay = copy.deepcopy(youngerBirthday)
     while age_until_date(olderBirthday, nextDay) != age_until_date(youngerBirthday, nextDay)*n:
         nextDay += datetime.timedelta(days = 1)
-        nextDayCounter += 1
     print(f'Age on {nextDay:%Y-%m-%d}. First person: {age_until_date(olderBirthday, nextDay)}. Second person: {age_until_date(youngerBirthday, nextDay)}')
 
 birthday1 = datetime.datetime(2000,12,10)
