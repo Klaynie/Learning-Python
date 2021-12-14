@@ -47,10 +47,13 @@ def find_older_date(date1, date2):
     else:
         return date2, date1
 
-def find_double_date(birthday1, birthday2, n):
+def find_double_date(birthday1, birthday2):
+    find_n_date(birthday1, birthday2, n=2)
+
+def find_n_date(birthday1, birthday2, n):
     olderBirthday, youngerBirthday = find_older_date(birthday1, birthday2)
     nextDay = copy.deepcopy(youngerBirthday)
-    while age_until_date(olderBirthday, nextDay) != age_until_date(youngerBirthday, nextDay)*n:
+    while age_until_date(olderBirthday, nextDay) != age_until_date(youngerBirthday, nextDay) * n:
         nextDay += datetime.timedelta(days = 1)
     print(f'Age on {nextDay:%Y-%m-%d}. First person: {age_until_date(olderBirthday, nextDay)}. Second person: {age_until_date(youngerBirthday, nextDay)}')
 
@@ -58,4 +61,4 @@ birthday1 = datetime.datetime(2000,12,11)
 birthday2 = datetime.datetime(1977,2,2)
 
 print_age_and_time_to_next_birthday(birthday1)
-find_double_date(birthday1, birthday2, 3)
+find_n_date(birthday1, birthday2, 3)
